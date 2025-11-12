@@ -9,11 +9,6 @@
 target/
 build/
 
-# Maven
-.mvn/
-mvnw
-mvnw.cmd
-
 # Env & secrets
 .env
 *.env.*
