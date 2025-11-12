@@ -15,7 +15,6 @@
     <artifactId>zyren</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Zyren</name>
-    <description>Secure Pastebin &amp; URL Shortener with JWT Authentication</description>
 
     <properties>
         <java.version>21</java.version>
