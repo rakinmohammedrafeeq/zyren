@@ -11,6 +11,9 @@ spring:
   application:
     name: Zyren
 
+  main:
+    lazy-initialization: true
+
   datasource:
     url: ${SPRING_DATASOURCE_URL}
 
