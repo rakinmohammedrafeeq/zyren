@@ -1,0 +1,29 @@
+# Build output
+target/
+
+# Git
+.git
+.gitignore
+
+# Docs (optional)
+README.md
+LICENSE
+*.md
+
+# Local environment
+.env
+.env.*
+
+# IDE / editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS / temp
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+oradata/

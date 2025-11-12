@@ -1,0 +1,33 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Build
+target/
+build/
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Env & secrets
+.env
+*.env.*
+
+# Logs
+*.log
+logs/
+
+# Docker
+*.bak
+*.swp
+Dockerfile~
+oradata/
+
+# System
+.DS_Store
+Thumbs.db

@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+build/
+.out/
+.cache/
+.vite/
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE / Editor
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+__tests__/
+__mocks__/
+jest-html-reporters-*
+
+# Lint cache
+.eslintcache
+.stylelintcache
