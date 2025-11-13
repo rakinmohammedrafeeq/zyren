@@ -1,3 +1,12 @@
+# -------------------------------------------------------------------
+# NOTE:
+# For Local Docker Testing (Oracle):
+#   → Uncomment Oracle section and comment PostgreSQL section
+#
+# For Render Hosting (PostgreSQL):
+#   → Uncomment PostgreSQL section below and comment Oracle section
+# -------------------------------------------------------------------
+
 spring:
   application:
     name: Zyren
@@ -7,17 +16,28 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
+
+    ### Use this block when running Oracle locally with Docker ###
+    #    driver-class-name: oracle.jdbc.OracleDriver
+
+    ### Use this block for Render (PostgreSQL) ###
     driver-class-name: org.postgresql.Driver
+
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+
+          ### Use this block when running Oracle locally with Docker ###
+          #        dialect: org.hibernate.dialect.OracleDialect
+
+          ### Use this block for Render (PostgreSQL) ###
+          dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
     host: smtp.gmail.com
