@@ -12,6 +12,7 @@ public class ZyrenApplication {
     public static void main(String[] args) {
 
         try {
+
             Dotenv dotenv = Dotenv.load();
 
             System.setProperty("spring.datasource.url", dotenv.get("SPRING_DATASOURCE_URL"));
@@ -24,13 +25,18 @@ public class ZyrenApplication {
             System.setProperty("zyren.admin.email", dotenv.get("ZYREN_ADMIN_EMAIL"));
             System.setProperty("zyren.admin.password", dotenv.get("ZYREN_ADMIN_PASSWORD"));
 
+            System.setProperty("spring.mail.host", dotenv.get("SPRING_MAIL_HOST"));
+            System.setProperty("spring.mail.port", dotenv.get("SPRING_MAIL_PORT"));
             System.setProperty("spring.mail.username", dotenv.get("MAIL_USERNAME"));
             System.setProperty("spring.mail.password", dotenv.get("MAIL_PASSWORD"));
 
             System.setProperty("RESET_BASE_URL", dotenv.get("RESET_BASE_URL"));
+
         }
+
         catch (Exception ignored) {}
 
         SpringApplication.run(ZyrenApplication.class, args);
+
     }
 }
