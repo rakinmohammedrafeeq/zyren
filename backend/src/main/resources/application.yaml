@@ -4,7 +4,7 @@
 #   → Uncomment Oracle section and comment PostgreSQL section
 #
 # For Render Hosting (PostgreSQL):
-#   → Uncomment PostgreSQL section below and comment Oracle section
+#   → Use PostgreSQL section below
 # -------------------------------------------------------------------
 
 spring:
@@ -16,28 +16,17 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
-
-    ### Use this block when running Oracle locally with Docker ###
-    #    driver-class-name: oracle.jdbc.OracleDriver
-
-    ### Use this block for Render (PostgreSQL) ###
     driver-class-name: org.postgresql.Driver
-
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-
-          ### Use this block when running Oracle locally with Docker ###
-          #        dialect: org.hibernate.dialect.OracleDialect
-
-          ### Use this block for Render (PostgreSQL) ###
-          dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
     host: smtp.gmail.com
@@ -52,7 +41,7 @@ spring:
             enable: true
 
 server:
-  port: ${PORT:8080}
+  port: ${PORT}
   address: 0.0.0.0
 
 jwt:
@@ -71,11 +60,7 @@ management:
     web:
       base-path: /actuator
       exposure:
-        include: "*"
+        include: health,info
   endpoint:
     health:
-      probes:
-        enabled: true
-  health:
-    db:
-      enabled: false
+      show-details: always
