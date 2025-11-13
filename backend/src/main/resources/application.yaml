@@ -47,8 +47,9 @@ zyren:
 management:
   endpoints:
     web:
+      base-path: /actuator
       exposure:
-        include: health,info
+        include: "*"
   endpoint:
     health:
       show-details: always
