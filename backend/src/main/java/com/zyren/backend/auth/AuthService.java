@@ -29,6 +29,9 @@ public class AuthService {
     @Value("${RESET_BASE_URL}")
     private String resetBaseUrl;
 
+    @Value("${zyren.mail.from}")
+    private String mailFrom;
+
     public String register(String email, String password) {
         if (userRepository.findByEmail(email).isPresent())
             throw new RuntimeException("User already exists");
@@ -74,7 +77,7 @@ public class AuthService {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        msg.setFrom(System.getenv("MAIL_FROM"));
+        msg.setFrom(mailFrom);
         msg.setTo(user.getEmail());
         msg.setSubject("Reset your Zyren password");
         msg.setText(

@@ -2,6 +2,7 @@ package com.zyren.backend.contact;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.annotation.Validated;
@@ -15,13 +16,19 @@ public class ContactNewsletterController {
 
     private final JavaMailSender mailSender;
 
+    @Value("${zyren.mail.from}")
+    private String mailFrom;
+
+    @Value("${zyren.mail.to}")
+    private String mailTo;
+
     @PostMapping("/contact")
     public ResponseEntity<?> contact(@RequestBody @Validated ContactRequest req) {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        msg.setFrom(System.getenv("MAIL_FROM"));
-        msg.setTo(System.getenv("MAIL_TO"));
+        msg.setFrom(mailFrom);
+        msg.setTo(mailTo);
         msg.setSubject("Zyren Contact Message from: " + req.name());
         msg.setText(req.message() + "\n\nReply to: " + req.email());
 
@@ -37,8 +44,8 @@ public class ContactNewsletterController {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
-        msg.setFrom(System.getenv("MAIL_FROM"));
-        msg.setTo(System.getenv("MAIL_TO"));
+        msg.setFrom(mailFrom);
+        msg.setTo(mailTo);
         msg.setSubject("Zyren Newsletter Subscribe");
         msg.setText("New subscriber: " + req.email());
 

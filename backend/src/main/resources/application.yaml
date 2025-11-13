@@ -52,6 +52,9 @@ zyren:
   admin:
     email: ${ZYREN_ADMIN_EMAIL}
     password: ${ZYREN_ADMIN_PASSWORD}
+  mail:
+    from: ${MAIL_FROM}
+    to: ${MAIL_TO}
 
 management:
   server:

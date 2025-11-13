@@ -25,6 +25,9 @@ public class ZyrenApplication {
             System.setProperty("zyren.admin.email", dotenv.get("ZYREN_ADMIN_EMAIL"));
             System.setProperty("zyren.admin.password", dotenv.get("ZYREN_ADMIN_PASSWORD"));
 
+            System.setProperty("zyren.mail.from", dotenv.get("MAIL_FROM"));
+            System.setProperty("zyren.mail.to", dotenv.get("MAIL_TO"));
+
             System.setProperty("spring.mail.host", dotenv.get("SPRING_MAIL_HOST"));
             System.setProperty("spring.mail.port", dotenv.get("SPRING_MAIL_PORT"));
             System.setProperty("spring.mail.username", dotenv.get("MAIL_USERNAME"));
