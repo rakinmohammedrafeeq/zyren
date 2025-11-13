@@ -52,7 +52,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
+        configuration.setAllowedOrigins(List.of(
                 "https://zyren.netlify.app",
                 "http://localhost:5173"
         ));
