@@ -63,3 +63,12 @@ zyren:
   admin:
     email: ${ZYREN_ADMIN_EMAIL}
     password: ${ZYREN_ADMIN_PASSWORD}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
