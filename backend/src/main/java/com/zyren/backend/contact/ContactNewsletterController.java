@@ -19,7 +19,9 @@ public class ContactNewsletterController {
     public ResponseEntity<?> contact(@RequestBody @Validated ContactRequest req) {
 
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("rakinmohammedrafeeq@gmail.com");
+
+        msg.setFrom(System.getenv("MAIL_FROM"));
+        msg.setTo(System.getenv("MAIL_TO"));
         msg.setSubject("Zyren Contact Message from: " + req.name());
         msg.setText(req.message() + "\n\nReply to: " + req.email());
 
@@ -34,7 +36,9 @@ public class ContactNewsletterController {
     public ResponseEntity<?> subscribe(@RequestBody @Validated NewsletterSubscribeRequest req) {
 
         SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("rakinmohammedrafeeq@gmail.com");
+
+        msg.setFrom(System.getenv("MAIL_FROM"));
+        msg.setTo(System.getenv("MAIL_TO"));
         msg.setSubject("Zyren Newsletter Subscribe");
         msg.setText("New subscriber: " + req.email());
 

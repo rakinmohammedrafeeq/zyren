@@ -74,6 +74,7 @@ public class AuthService {
 
         SimpleMailMessage msg = new SimpleMailMessage();
 
+        msg.setFrom(System.getenv("MAIL_FROM"));
         msg.setTo(user.getEmail());
         msg.setSubject("Reset your Zyren password");
         msg.setText(
