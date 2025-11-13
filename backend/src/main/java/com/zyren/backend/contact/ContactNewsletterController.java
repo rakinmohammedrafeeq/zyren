@@ -4,8 +4,8 @@ import com.zyren.backend.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class ContactNewsletterController {
 
-    private final JavaMailSender mailSender;
+//    private final JavaMailSender mailSender;
     private final MailService mailService;
 
 //    @Value("${zyren.mail.from}")
