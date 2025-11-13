@@ -1,6 +1,7 @@
 package com.zyren.backend.auth;
 
 import com.zyren.backend.config.JwtUtil;
+import com.zyren.backend.mail.MailService;
 import com.zyren.backend.user.UserEntity;
 import com.zyren.backend.user.UserRepository;
 import com.zyren.backend.user.Role;
@@ -25,12 +26,13 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final JavaMailSender mailSender;
     private final PasswordResetTokenRepository tokenRepo;
+    private final MailService mailService;
 
     @Value("${RESET_BASE_URL}")
     private String resetBaseUrl;
 
-    @Value("${zyren.mail.from}")
-    private String mailFrom;
+//    @Value("${zyren.mail.from}")
+//    private String mailFrom;
 
     public String register(String email, String password) {
         if (userRepository.findByEmail(email).isPresent())
@@ -75,19 +77,36 @@ public class AuthService {
 
         String link = resetBaseUrl + "?token=" + token;
 
-        SimpleMailMessage msg = new SimpleMailMessage();
+//        SimpleMailMessage msg = new SimpleMailMessage();
+//
+//        msg.setFrom(mailFrom);
+//        msg.setTo(user.getEmail());
+//        msg.setSubject("Reset your Zyren password");
+//        msg.setText(
+//                "We received a request to reset your password.\n\n" +
+//                        "Click the link below to set a new password (valid for 30 minutes):\n" +
+//                        link + "\n\n" +
+//                        "If you didn't request this, you can ignore this email."
+//        );
+//
+//        mailSender.send(msg);
 
-        msg.setFrom(mailFrom);
-        msg.setTo(user.getEmail());
-        msg.setSubject("Reset your Zyren password");
-        msg.setText(
-                "We received a request to reset your password.\n\n" +
-                        "Click the link below to set a new password (valid for 30 minutes):\n" +
-                        link + "\n\n" +
-                        "If you didn't request this, you can ignore this email."
+        String html = """
+                <h3>Password Reset Requested</h3>
+                <p>Click the button below to reset your password:</p>
+                <a href="%s" style="display:inline-block;padding:10px 20px;
+                background:#4CAF50;color:white;text-decoration:none;border-radius:5px;">
+                Reset Password
+                </a>
+                <p>This link is valid for 30 minutes.</p>
+                """.formatted(link);
+
+        mailService.sendMail(
+                user.getEmail(),
+                "Reset your Zyren password",
+                html
         );
 
-        mailSender.send(msg);
     }
 
     public void resetPassword(String token, String newPassword) {

@@ -16,7 +16,13 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}
+
+    ### Use this block when running Oracle locally with Docker ###
+#    driver-class-name: oracle.jdbc.OracleDriver
+
+    ### Use this block for Render (PostgreSQL) ###
     driver-class-name: org.postgresql.Driver
+
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
@@ -26,19 +32,27 @@ spring:
     show-sql: true
     properties:
       hibernate:
+        ### Use this block when running Oracle locally with Docker ###
+#        dialect: org.hibernate.dialect.OracleDialect
+
+        ### Use this block for Render (PostgreSQL) ###
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  mail:
-    host: ${SPRING_MAIL_HOST}
-    port: ${SPRING_MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+#  mail:
+#    host: ${SPRING_MAIL_HOST}
+#    port: ${SPRING_MAIL_PORT}
+#    username: ${MAIL_USERNAME}
+#    password: ${MAIL_PASSWORD}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+
+resend:
+  api:
+    key: ${RESEND_API_KEY}
 
 server:
   port: ${PORT}
@@ -53,7 +67,7 @@ zyren:
     email: ${ZYREN_ADMIN_EMAIL}
     password: ${ZYREN_ADMIN_PASSWORD}
   mail:
-    from: ${MAIL_FROM}
+#    from: ${MAIL_FROM}
     to: ${MAIL_TO}
 
 management:
