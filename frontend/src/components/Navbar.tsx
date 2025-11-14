@@ -10,6 +10,7 @@ import { Settings, KeyRound, User as UserIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+
 export function Navbar() {
   const { token, email, isAdmin, logout } = useAuthContext();
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export function Navbar() {
     [0, 100],
     ['0 1px 3px rgba(0, 0, 0, 0.05)', '0 4px 12px rgba(0, 0, 0, 0.08)']
   );
+
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     if (savedTheme) {
@@ -40,12 +42,14 @@ export function Navbar() {
       document.documentElement.classList.toggle('dark', systemTheme === 'dark');
     }
   }, []);
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
+
   const handleLogoutClick = () => {
     setLogoutDialogOpen(true);
   };
@@ -57,14 +61,18 @@ export function Navbar() {
   const handleLogoutCancel = () => {
     setLogoutDialogOpen(false);
   };
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+
   const [activeSection, setActiveSection] = useState<string>('');
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
   const navLinksRef = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+
   useEffect(() => {
     if (location.pathname !== '/') return;
+
     const handleScroll = () => {
       const sections = ['about', 'how-it-works', 'features', 'contact'];
       const scrollPosition = window.scrollY + 100;
@@ -72,6 +80,7 @@ export function Navbar() {
         const section = document.getElementById(id);
         return section ? { id, top: section.offsetTop, bottom: section.offsetTop + section.offsetHeight } : null;
       }).filter(Boolean);
+
       let foundSection = '';
       for (const section of sectionPositions) {
         if (section && scrollPosition >= section.top && scrollPosition < section.bottom) {
@@ -81,10 +90,12 @@ export function Navbar() {
       }
       setActiveSection(foundSection);
     };
+
     handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
+
   useEffect(() => {
     if (activeSection && navLinksRef.current[activeSection]) {
       const activeLink = navLinksRef.current[activeSection];
@@ -96,10 +107,12 @@ export function Navbar() {
       setUnderlineStyle({ left: 0, width: 0 });
     }
   }, [activeSection]);
+
   const isHashActive = (hash: string) => {
     if (location.pathname !== '/') return false;
     return activeSection === hash;
   };
+
   const getLinkClassName = (path: string) => {
     const baseClasses = "rounded-full px-3 py-1.5 transition-all duration-200";
     const activeClasses = isActive(path)
@@ -107,6 +120,27 @@ export function Navbar() {
       : "text-foreground/80 hover:text-foreground hover:bg-accent/50";
     return `${baseClasses} ${activeClasses}`;
   };
+
+  if (location.pathname === '/reset-password') {
+    return (
+      <motion.nav
+        data-app-navbar
+        style={{ boxShadow: navbarShadow }}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 backdrop-blur-xl bg-background/50"
+      >
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-end">
+            <motion.div whileHover={{ scale: 1.05, rotate: 5 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="ghost" size="sm" onClick={toggleTheme} className="rounded-full w-9 h-9 p-0 transition-all duration-200" aria-label="Toggle theme">
+                {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </motion.nav>
+    );
+  }
+
   return (
     <>
       <motion.nav
@@ -118,8 +152,8 @@ export function Navbar() {
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            {}
-            <Link 
+            {/* Logo */}
+            <Link
               to="/" 
               className="flex items-center gap-2.5 group"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -139,7 +173,8 @@ export function Navbar() {
                 Zyren
               </span>
             </Link>
-            {}
+
+            {/* Center links */}
             {token ? (
               <div className="hidden md:flex items-center gap-1">
                 <Link to="/my-pastes">
@@ -193,7 +228,7 @@ export function Navbar() {
                 >
                   Contact
                 </Link>
-                {}
+                {/* Animated underline */}
                 <motion.div
                   className="absolute bottom-0 h-0.5 bg-red-600 dark:bg-red-400"
                   initial={{ left: 0, width: 0 }}
@@ -210,7 +245,8 @@ export function Navbar() {
                 />
               </div>
             )}
-            {}
+
+            {/* Right controls */}
             <div className="md:hidden flex items-center gap-3">
               <motion.div whileHover={{ scale: 1.05, rotate: 5 }} whileTap={{ scale: 0.95 }}>
                 <Button variant="ghost" size="sm" onClick={toggleTheme} className="rounded-full w-9 h-9 p-0 transition-all duration-200">
@@ -284,7 +320,8 @@ export function Navbar() {
                 </SheetContent>
               </Sheet>
             </div>
-            {}
+
+            {/* Desktop right controls */}
             <div className="hidden md:flex items-center gap-3">
               {token ? (
                 <>
@@ -368,6 +405,7 @@ export function Navbar() {
           </div>
         </div>
       </motion.nav>
+
       <Dialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
         <DialogContent>
           <DialogHeader>

@@ -24,6 +24,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminUserPastes from "./pages/AdminUserPastes";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+
 function RouteSyncer() {
   const location = useLocation();
   useEffect(() => {
@@ -32,6 +33,7 @@ function RouteSyncer() {
       "*",
     );
   }, [location.pathname]);
+
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
       if (event.data?.type === "navigate") {
@@ -42,6 +44,7 @@ function RouteSyncer() {
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
+
   useEffect(() => {
     if (location.hash) {
       setTimeout(() => {
@@ -56,6 +59,13 @@ function RouteSyncer() {
   }, [location.pathname, location.hash]);
   return null;
 }
+
+function ConditionalFooter() {
+  const location = useLocation();
+  if (location.pathname === '/reset-password') return null;
+  return <Footer />;
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
       <AuthProvider>
@@ -98,7 +108,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />
+          <ConditionalFooter />
         </BrowserRouter>
         <Toaster />
       </AuthProvider>
