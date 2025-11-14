@@ -118,24 +118,20 @@ export default function AdminUsers() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>ID</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Role</TableHead>
-                      <TableHead>Created At</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {paginatedUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell>{user.id}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>
                           <span className={`px-2 py-1 rounded text-xs ${user.role === 'ADMIN' ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                             {user.role}
                           </span>
                         </TableCell>
-                        <TableCell>{new Date(user.createdAt).toLocaleString()}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Link to={`/admin/users/${user.id}/pastes`}>
