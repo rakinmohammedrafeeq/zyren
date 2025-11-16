@@ -166,6 +166,30 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
+### Frontend Environment Variables
+
+The frontend requires a single environment variable:
+```
+VITE_API_BASE_URL=
+```
+
+If not provided, the frontend defaults to:
+```
+http://localhost:8080/api
+```
+
+Create a `.env` file inside the **frontend/** folder:
+```
+frontend/.env
+```
+
+Add:
+```
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+For production (Netlify), set the variable in **Netlify → Site Settings → Environment Variables**.
+
 ### Start the Frontend
 
 ```bash
@@ -205,7 +229,7 @@ Your deployment setup includes:
 
 ## Security Policy
 
-For the complete security policy, refer to **SECURITY.md**.  
+For the complete security policy, refer to **[SECURITY.md](SECURITY.md)**.  
 It outlines:
 
 - Supported versions  
