@@ -210,20 +210,21 @@ It outlines:
 
 ## License
 
-Zyren is licensed under the [MIT License](LICENSE).  
-See the `LICENSE` file for the full license details.
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## Contact
+## Contact  
 
-For any questions or suggestions, feel free to reach out:  
-- Email: rakinmohammedrafeeq@gmail.com  
-- LinkedIn: https://www.linkedin.com/in/rakinmohammedrafeeq  
-- GitHub: https://github.com/rakinmohammedrafeeq
+**For any questions or suggestions, feel free to reach out:**   
+- **Email:** rakinmohammedrafeeq@gmail.com  
+- **LinkedIn:** https://www.linkedin.com/in/rakinmohammedrafeeq  
+- **GitHub:** https://github.com/rakinmohammedrafeeq
 
 ---
 
-## Support
+## Support  
 
-If you find Zyren useful, consider giving the project a ⭐ on GitHub.
+If you find this project useful, consider giving it a ⭐ on GitHub or supporting my work:  
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/rakinmohammedrafeeq)
