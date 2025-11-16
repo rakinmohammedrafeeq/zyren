@@ -86,38 +86,46 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 ```
 Zyren/
 │
-├── docker-compose.yml           # Oracle Free DB for local development
-├── oradata/                     # Oracle DB pre-config files
-│
-├── backend/
+├── backend/                         # Spring Boot backend
 │   ├── pom.xml
-│   ├── Dockerfile               # Multi-stage Maven build
-│   ├── docker-compose.yml       # Backend container config
-│   ├── src/main/resources/
-│   │   └── application.yaml     # DB, JWT, mail, Resend config
-│   └── src/main/java/com/zyren/backend/
-│       ├── ZyrenApplication.java
-│       ├── config/              # Security, JWT, DataInitializer
-│       ├── auth/                # Login, register, reset password
-│       ├── user/                # User entity, admin controllers
-│       ├── paste/               # Paste CRUD + public access
-│       ├── contact/             # Contact + newsletter
-│       ├── exception/           # Global exception handling
-│       └── mail/                # Resend email service
+│   ├── Dockerfile                   # Multi-stage Maven build for Render
+│   ├── docker-compose.yml           # Backend container config (optional local)
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/zyren/backend/
+│   │   │   │   ├── ZyrenApplication.java
+│   │   │   │   ├── config/          # Security, JWT, CORS, initializers
+│   │   │   │   ├── auth/            # Login, register, reset-password
+│   │   │   │   ├── user/            # User entity, admin controllers
+│   │   │   │   ├── paste/           # Paste CRUD + public access API
+│   │   │   │   ├── contact/         # Contact & newsletter endpoints
+│   │   │   │   ├── exception/       # Global exception handling
+│   │   │   │   └── mail/            # Resend email service
+│   │   └── resources/
+│   │       └── application.yaml     # DB, JWT, mail & Resend config
 │
-└── frontend/
-    ├── package.json
-    ├── vite.config.ts
-    ├── index.html
-    └── src/
-        ├── main.tsx
-        ├── contexts/AuthContext.tsx
-        ├── api/axios.ts
-        ├── lib/api.ts
-        ├── components/
-        ├── pages/ (Auth, Paste, Public, Admin)
-        ├── ui/
-        └── index.css
+├── frontend/                        # React + Vite frontend
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── index.html
+│   └── src/
+│       ├── main.tsx
+│       ├── contexts/                # AuthContext (JWT + role state)
+│       ├── api/                     # Axios client with interceptors
+│       ├── lib/                     # Centralized API helper
+│       ├── components/              # Reusable UI components
+│       ├── pages/                   # Auth, Paste, Public, Admin pages
+│       ├── ui/                      # Radix-style components
+│       └── index.css                # Tailwind v4 config + themes
+│
+├── oradata/                          # Oracle Free DB config for local dev
+│
+├── docker-compose.yml                # Oracle database local setup
+│
+├── README.md                         # Project documentation
+├── SECURITY.md                       # Security policy
+├── LICENSE                           # MIT License
+└── .gitignore                        # Git ignore rules
 ```
 
 ---
