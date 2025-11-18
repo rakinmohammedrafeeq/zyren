@@ -16,7 +16,7 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 - Create, edit, delete personal pastes  
 - Optional expiry (in minutes)  
 - Auto-expiration scheduler and nightly cleanup  
-- Public access using unique 8-character paste codes  
+- Public access using paste codes (auto-generates an 8-character code if left empty; supports letters, numbers, '-', and '_')
 - Fetch public pastes without authentication
 
 ### Public Paste Access
