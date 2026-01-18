@@ -18,8 +18,9 @@ public class PasteController {
     public ResponseEntity<PasteEntity> createPaste(@RequestParam String title,
                                                    @RequestParam String content,
                                                    @RequestParam(defaultValue = "TEXT") String type,
-                                                   @RequestParam(required = false) Integer expiryMinutes) {
-        return ResponseEntity.ok(pasteService.createPaste(title, content, type, expiryMinutes));
+                                                   @RequestParam(required = false) Integer expiryMinutes,
+                                                   @RequestParam(required = false, name = "code") String customCode) {
+        return ResponseEntity.ok(pasteService.createPaste(title, content, type, expiryMinutes, customCode));
     }
 
     @GetMapping("/me")

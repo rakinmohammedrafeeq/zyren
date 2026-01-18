@@ -13,6 +13,7 @@ export default function CreatePaste() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [expiryMinutes, setExpiryMinutes] = useState('');
+  const [customCode, setCustomCode] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,14 +26,21 @@ export default function CreatePaste() {
       if (expiryMinutes) {
         params.set('expiryMinutes', String(parseInt(expiryMinutes)));
       }
+      const trimmedCode = customCode.trim();
+      if (trimmedCode) {
+        const codeRegex = /^[A-Za-z0-9_-]+$/;
+        if (!codeRegex.test(trimmedCode)) {
+          throw new Error("Invalid code format. Use only letters, numbers, '-' or '_'.");
+        }
+        params.set('code', trimmedCode);
+      }
       params.set('type', 'TEXT');
       await api.post('/paste', params, { suppressErrorToast: true });
       toast.success('Paste created successfully!');
       navigate('/my-pastes');
     } catch (error) {
-      type Err = { response?: { data?: { message?: string } } };
-      const err = error as Err;
-      toast.error(err.response?.data?.message || 'Failed to create paste. Please try again.');
+      const message = error instanceof Error ? error.message : (typeof (error as any)?.response?.data === 'string' ? (error as any).response.data : (error as any)?.response?.data?.message);
+      toast.error(message || 'Failed to create paste. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -80,6 +88,16 @@ export default function CreatePaste() {
                   placeholder="Leave empty for no expiry"
                   min="1"
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="customCode">Custom Code (optional)</Label>
+                <Input
+                  id="customCode"
+                  value={customCode}
+                  onChange={(e) => setCustomCode(e.target.value)}
+                  placeholder="e.g. my-snippet-123"
+                />
+                <p className="text-xs text-muted-foreground">If provided, this will be used as the public code for your paste. Allowed: letters, numbers, '-' and '_'. Leave empty to auto-generate an 8-character code.</p>
               </div>
               <div className="flex gap-2">
                 <Button type="submit" disabled={loading}>

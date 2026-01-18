@@ -18,7 +18,7 @@ public class PasteService {
     private final UserRepository userRepository;
     private final CodeGenerator codeGenerator;
 
-    public PasteEntity createPaste(String title, String content, String type, Integer expiryMinutes) {
+    public PasteEntity createPaste(String title, String content, String type, Integer expiryMinutes, String customCode) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -27,11 +27,26 @@ public class PasteService {
                 ? LocalDateTime.now().plusMinutes(expiryMinutes)
                 : null;
 
+        String finalCode;
+        if (customCode != null && !customCode.isBlank()) {
+            String candidate = customCode.trim();
+            if (!candidate.matches("[A-Za-z0-9_-]+")) {
+                throw new RuntimeException("Invalid code format. Use only letters, numbers, '-' or '_'.");
+            }
+            boolean exists = pasteRepository.findByCode(candidate).isPresent();
+            if (exists) {
+                throw new RuntimeException("Code already in use. Please choose a different code.");
+            }
+            finalCode = candidate;
+        } else {
+            finalCode = codeGenerator.generateUniqueCode();
+        }
+
         PasteEntity paste = PasteEntity.builder()
                 .title(title)
                 .content(content)
                 .type(type)
-                .code(codeGenerator.generateCode())
+                .code(finalCode)
                 .createdAt(LocalDateTime.now())
                 .expiryAt(expiryAt)
                 .owner(owner)

@@ -101,8 +101,6 @@ export default function PublicAccessPage() {
                     placeholder="Enter paste code..."
                     className="h-12 text-base bg-background/50 border-border/50 focus:border-primary/50 transition-colors"
                     required
-                    minLength={8}
-                    maxLength={8}
                     autoFocus
                   />
                 </div>
@@ -110,7 +108,7 @@ export default function PublicAccessPage() {
                   type="submit" 
                   size="lg" 
                   className="w-full rounded-full gap-2 h-12"
-                  disabled={code.trim().length !== 8}
+                  disabled={!code.trim()}
                 >
                   Continue
                   <ArrowRight className="h-4 w-4" />

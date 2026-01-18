@@ -25,5 +25,13 @@ app:
 
 zyren:
   admin:
-    email: admin@test.local
-    password: password123
+    email:
+      1: admin1@test.local
+      2: admin2@test.local
+    password:
+      1: password123
+      2: password456
+
+resend:
+  api:
+    key: test-api-key

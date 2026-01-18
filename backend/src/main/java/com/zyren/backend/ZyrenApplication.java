@@ -22,11 +22,11 @@ public class ZyrenApplication {
             System.setProperty("jwt.secret", dotenv.get("JWT_SECRET"));
             System.setProperty("jwt.expiration", dotenv.get("JWT_EXPIRATION"));
 
-            System.setProperty("zyren.admin.email", dotenv.get("ZYREN_ADMIN_EMAIL"));
-            System.setProperty("zyren.admin.password", dotenv.get("ZYREN_ADMIN_PASSWORD"));
+            System.setProperty("zyren.admin.email.1", dotenv.get("ZYREN_ADMIN_EMAIL_1"));
+            System.setProperty("zyren.admin.password.1", dotenv.get("ZYREN_ADMIN_PASSWORD_1"));
+            System.setProperty("zyren.admin.email.2", dotenv.get("ZYREN_ADMIN_EMAIL_2"));
+            System.setProperty("zyren.admin.password.2", dotenv.get("ZYREN_ADMIN_PASSWORD_2"));
 
-//            System.setProperty("zyren.mail.from", dotenv.get("MAIL_FROM"));
-            System.setProperty("zyren.mail.to", dotenv.get("MAIL_TO"));
 
             System.setProperty("resend.api.key", dotenv.get("RESEND_API_KEY"));
 

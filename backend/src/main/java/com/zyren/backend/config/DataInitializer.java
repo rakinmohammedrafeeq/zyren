@@ -16,30 +16,41 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${zyren.admin.email}")
-    private String adminEmail;
+    @Value("${zyren.admin.email.1:}")
+    private String adminEmail1;
 
-    @Value("${zyren.admin.password}")
-    private String adminPassword;
+    @Value("${zyren.admin.password.1:}")
+    private String adminPassword1;
+
+    @Value("${zyren.admin.email.2:}")
+    private String adminEmail2;
+
+    @Value("${zyren.admin.password.2:}")
+    private String adminPassword2;
 
     @Override
     public void run(String... args) {
+        createAdminIfNotExists(adminEmail1, adminPassword1, "Admin 1");
+        createAdminIfNotExists(adminEmail2, adminPassword2, "Admin 2");
+    }
 
-        if (adminEmail == null || adminEmail.isBlank()) {
-            System.out.println("No ZYREN_ADMIN_EMAIL set. Skipping admin creation.");
+    private void createAdminIfNotExists(String email, String password, String adminName) {
+        if (email == null || email.isBlank()) {
+            System.out.println(String.format("No %s email set. Skipping %s creation.", adminName, adminName));
             return;
         }
 
-        if (userRepository.findByEmail(adminEmail).isEmpty()) {
-
+        if (userRepository.findByEmail(email).isEmpty()) {
             UserEntity admin = UserEntity.builder()
-                    .email(adminEmail)
-                    .password(passwordEncoder.encode(adminPassword))
+                    .email(email)
+                    .password(passwordEncoder.encode(password))
                     .role(Role.ADMIN)
                     .build();
 
             userRepository.save(admin);
-
+            System.out.println(String.format("%s created successfully with email: %s", adminName, email));
+        } else {
+            System.out.println(String.format("%s already exists with email: %s", adminName, email));
         }
     }
 }

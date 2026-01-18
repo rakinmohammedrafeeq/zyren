@@ -55,24 +55,25 @@ resend:
     key: ${RESEND_API_KEY}
 
 server:
-  port: ${PORT}
+  port: ${PORT:8080}
   address: 0.0.0.0
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION}
+  secret: ${JWT_SECRET:z9xD5p9bJ2rQv1uLk8sA4tN3fB0yW6rE5qH7oM2cV1jG9pK0nU4xT8sF3eR6wY1lZ}
+  expiration: ${JWT_EXPIRATION:86400000}
 
 zyren:
   admin:
-    email: ${ZYREN_ADMIN_EMAIL}
-    password: ${ZYREN_ADMIN_PASSWORD}
-  mail:
-#    from: ${MAIL_FROM}
-    to: ${MAIL_TO}
+    email:
+      1: ${ZYREN_ADMIN_EMAIL_1}
+      2: ${ZYREN_ADMIN_EMAIL_2}
+    password:
+      1: ${ZYREN_ADMIN_PASSWORD_1}
+      2: ${ZYREN_ADMIN_PASSWORD_2}
 
 management:
   server:
-    port: ${PORT}
+    port: ${PORT:8080}
   endpoints:
     web:
       base-path: /actuator
