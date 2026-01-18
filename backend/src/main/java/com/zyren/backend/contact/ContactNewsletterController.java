@@ -1,9 +1,9 @@
 package com.zyren.backend.contact;
 
-import com.zyren.backend.config.AdminEmailConfig;
 import com.zyren.backend.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.mail.SimpleMailMessage;
 //import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.validation.annotation.Validated;
@@ -17,10 +17,12 @@ public class ContactNewsletterController {
 
 //    private final JavaMailSender mailSender;
     private final MailService mailService;
-    private final AdminEmailConfig adminEmailConfig;
 
 //    @Value("${zyren.mail.from}")
 //    private String mailFrom;
+
+    @Value("${zyren.mail.to}")
+    private String mailTo;
 
     @PostMapping("/contact")
     public ResponseEntity<?> contact(@RequestBody @Validated ContactRequest req) {
@@ -43,8 +45,7 @@ public class ContactNewsletterController {
                 <p><strong>Message:</strong><br>%s</p>
                 """.formatted(req.name(), req.email(), req.message());
 
-        // Send to all admin emails
-        mailService.sendMail(adminEmailConfig.getAdminEmailsArray(), subject, html);
+        mailService.sendMail(mailTo, subject, html);
 
         return ResponseEntity.ok().body(
                 java.util.Map.of("ok", true, "message", "Message sent successfully")
@@ -64,9 +65,8 @@ public class ContactNewsletterController {
 //
 //        mailSender.send(msg);
 
-        // Send to all admin emails
         mailService.sendMail(
-                adminEmailConfig.getAdminEmailsArray(),
+                mailTo,
                 "Zyren Newsletter Subscribe",
                 "<p>New newsletter subscriber:</p><strong>" + req.email() + "</strong>"
         );
