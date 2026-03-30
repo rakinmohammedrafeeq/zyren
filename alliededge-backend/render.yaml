@@ -1,0 +1,12 @@
+# Exported from Render on 2026-02-14T12:32:19Z
+version: "1"
+databases:
+- name: alliededge-postgres
+  databaseName: alliededge_prod
+  user: alliededge_prod_user
+  plan: free
+  region: singapore
+  ipAllowList:
+  - source: 0.0.0.0/0
+    description: everywhere
+  postgresMajorVersion: "18"
