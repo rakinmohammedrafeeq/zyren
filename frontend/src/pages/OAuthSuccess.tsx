@@ -30,7 +30,7 @@ export default function OAuthSuccess() {
       if ((payload?.sub as string | undefined) !== undefined) {
         localStorage.setItem('email', payload?.sub as string);
       }
-      window.location.href = '/';
+      window.location.href = '/my-pastes';
     }
   }, []);
 
