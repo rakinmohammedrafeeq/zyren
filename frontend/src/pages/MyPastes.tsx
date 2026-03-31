@@ -7,6 +7,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from 'sonner';
 import { Loader2, Trash2, Edit, ExternalLink, Copy } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
+import { MediaPreview } from '@/components/MediaPreview';
+import Linkify from "linkify-react";
+
 interface Paste {
   id: number;
   title: string;
@@ -14,12 +17,17 @@ interface Paste {
   code: string;
   createdAt: string;
   expiryAt?: string;
+  mediaUrl?: string;
+  mediaPublicId?: string;
+  mediaType?: string;
 }
+// noinspection JSUnusedGlobalSymbols
 export default function MyPastes() {
   const [pastes, setPastes] = useState<Paste[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [pasteToDelete, setPasteToDelete] = useState<number | null>(null);
+
   useEffect(() => {
     const fetchPastes = async () => {
       try {
@@ -35,10 +43,12 @@ export default function MyPastes() {
     };
     fetchPastes();
   }, []);
+
   const handleDeleteClick = (id: number) => {
     setPasteToDelete(id);
     setDeleteDialogOpen(true);
   };
+
   const handleDeleteConfirm = async () => {
     if (pasteToDelete !== null) {
       try {
@@ -55,15 +65,18 @@ export default function MyPastes() {
       }
     }
   };
+
   const handleDeleteCancel = () => {
     setDeleteDialogOpen(false);
     setPasteToDelete(null);
   };
+
   const copyPublicLink = (code: string) => {
     const url = `${window.location.origin}/public/${code}`;
     navigator.clipboard.writeText(url);
     toast.success('Link copied to clipboard!');
   };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -74,6 +87,7 @@ export default function MyPastes() {
       </div>
     );
   }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -134,10 +148,27 @@ export default function MyPastes() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm">
-                    {paste.content.substring(0, 200)}
-                    {paste.content.length > 200 && '...'}
-                  </pre>
+                  {paste.mediaUrl && paste.mediaPublicId && paste.mediaType && (
+                    <div className="mb-4">
+                      <MediaPreview
+                        media={{ secureUrl: paste.mediaUrl, publicId: paste.mediaPublicId, resourceType: paste.mediaType }}
+                        isPublicView={false}
+                      />
+                    </div>
+                  )}
+                  <div className="whitespace-pre-wrap break-words text-black dark:text-white">
+                    <Linkify
+                      options={{
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        defaultProtocol: "https",
+                        className: "text-blue-600 dark:text-blue-400 underline hover:opacity-80 break-all",
+                      }}
+                    >
+                      {paste.content.substring(0, 200)}
+                      {paste.content.length > 200 ? '...' : ''}
+                    </Linkify>
+                  </div>
                 </CardContent>
               </Card>
             ))}

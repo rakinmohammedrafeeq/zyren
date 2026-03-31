@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate, Navigate } from 'react-router';
 import { useAuthContext } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
@@ -25,6 +23,12 @@ export default function Register() {
   if (token) {
     return <Navigate to="/my-pastes" replace />;
   }
+  const isFormValid =
+    email &&
+    password &&
+    confirmPassword &&
+    password === confirmPassword &&
+    acceptedTerms;
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     if (value) {
@@ -36,6 +40,9 @@ export default function Register() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid) {
+      return;
+    }
     const validation = validatePassword(password, email);
     if (!validation.isValid) {
       setPasswordErrors(validation.errors);
@@ -67,7 +74,8 @@ export default function Register() {
         suppressErrorToast: true, 
       });
       const data = loginResp.data; 
-      login(data.token, email, data.role);
+      const tokenValue = data.token as string;
+      login(tokenValue, email, data.role, data.provider ?? null);
       toast.success('Registration successful!');
       navigate('/my-pastes');
     } catch (error) {
@@ -82,112 +90,133 @@ export default function Register() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Register</CardTitle>
-            <CardDescription>Create a new account to start sharing pastes</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="you@example.com"
-                  autoFocus
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
+        <div className="max-w-md w-full mx-auto mt-10">
+          <Card className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-black dark:text-white">Register</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">Create a new account to start sharing pastes</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium text-black dark:text-gray-200">Email</Label>
                   <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
-                    placeholder="••••••••"
-                    className="pr-10"
-                    maxLength={32}
+                    placeholder="Enter your email"
+                    autoFocus
+                    className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
                 </div>
-                {passwordErrors.length > 0 && (
-                  <div className="mt-2 space-y-1">
-                    {passwordErrors.map((error, index) => (
-                      <div key={index} className="flex items-start gap-2 text-xs text-destructive">
-                        <AlertCircle className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                        <span>{error}</span>
-                      </div>
-                    ))}
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-sm font-medium text-black dark:text-gray-200">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => handlePasswordChange(e.target.value)}
+                      required
+                      placeholder="Enter your password"
+                      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200 pr-10"
+                      maxLength={32}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
                   </div>
-                )}
-                <div className="text-xs text-muted-foreground mt-2">
-                  Password must contain: 8+ characters, uppercase, lowercase, number, and special character (!@#$%^&*_-+)
+                  {passwordErrors.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      {passwordErrors.map((error, index) => (
+                        <div key={index} className="flex items-start gap-2 text-xs text-destructive">
+                          <AlertCircle className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                          <span>{error}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                    Password must contain: 8+ characters, uppercase, lowercase, number, and special character (!@#$%^&*_-+)
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    placeholder="••••••••"
-                    className="pr-10"
-                    maxLength={32}
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="text-sm font-medium text-black dark:text-gray-200">Confirm Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      placeholder="Re-enter your password"
+                      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200 pr-10"
+                      maxLength={32}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {password !== confirmPassword && confirmPassword && (
+                    <p className="text-red-500 text-xs">Passwords do not match</p>
+                  )}
+                </div>
+                <div className="flex items-start gap-2 text-sm leading-relaxed">
+                  <input
+                    type="checkbox"
+                    checked={acceptedTerms}
+                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    className="mt-1 accent-red-500"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
+
+                  <p className="text-gray-700 dark:text-gray-300">
+                    I agree to the{" "}
+                    <Link to="/terms" className="text-red-500 hover:underline">
+                      Terms & Conditions
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="text-red-500 hover:underline">
+                      Privacy Policy
+                    </Link>
+                  </p>
                 </div>
-              </div>
-              <div className="flex items-start gap-2 pt-2">
-                <Checkbox
-                  id="terms"
-                  checked={acceptedTerms}
-                  onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
-                  className="mt-0.5"
-                />
-                <Label htmlFor="terms" className="text-sm font-normal leading-relaxed cursor-pointer">
-                  I agree to the{' '}
-                  <Link to="/terms" className="text-primary hover:underline">
-                    Terms & Conditions
+                <button
+                  type="submit"
+                  disabled={!isFormValid || loading}
+                  className={`w-full py-2 rounded-lg font-medium transition transition-all duration-200 ${
+                    isFormValid && !loading
+                      ? "bg-red-500 hover:bg-red-600 text-white"
+                      : "bg-gray-400 dark:bg-neutral-700 text-gray-200 cursor-not-allowed"
+                  }`}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />Registering...
+                    </>
+                  ) : (
+                    'Register'
+                  )}
+                </button>
+                <div className="text-sm text-center">
+                  Already have an account?{' '}
+                  <Link to="/login" className="text-primary hover:underline">
+                    Login
                   </Link>
-                  {' '}and{' '}
-                  <Link to="/privacy" className="text-primary hover:underline">
-                    Privacy Policy
-                  </Link>
-                </Label>
-              </div>
-              <Button type="submit" className="w-full" disabled={loading || passwordErrors.length > 0 || !acceptedTerms}>
-                {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Registering...</> : 'Register'}
-              </Button>
-              <div className="text-sm text-center">
-                Already have an account?{' '}
-                <Link to="/login" className="text-primary hover:underline">
-                  Login
-                </Link>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

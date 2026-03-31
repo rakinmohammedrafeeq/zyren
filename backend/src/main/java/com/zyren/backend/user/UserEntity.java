@@ -19,9 +19,20 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
+    @Column
+    private String displayName;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column
+    private String provider;
+
+    public Role getRole() {
+        return role;
+    }
 }

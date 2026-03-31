@@ -35,7 +35,7 @@ export default function ForgotPassword() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md rounded-xl shadow-lg p-6 bg-white dark:bg-neutral-900">
           <CardHeader>
             <CardTitle>Forgot Password</CardTitle>
             <CardDescription>
@@ -49,7 +49,7 @@ export default function ForgotPassword() {
                   We've sent a password reset link to <strong>{email}</strong>. Please check your inbox.
                 </p>
                 <Link to={backHref}>
-                  <Button className="w-full">{backLabel}</Button>
+                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white rounded-md">{backLabel}</Button>
                 </Link>
               </div>
             ) : (
@@ -64,9 +64,10 @@ export default function ForgotPassword() {
                     required
                     placeholder="you@example.com"
                     autoFocus
+                    className="bg-transparent border border-gray-600 rounded-md px-3 py-2"
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white rounded-md" disabled={loading}>
                   {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Sending...</> : 'Send Reset Link'}
                 </Button>
                 <div className="text-sm text-center">

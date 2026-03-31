@@ -15,13 +15,30 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String email) {
-        return Jwts.builder()
+    public String generateToken(String email, String role, String provider) {
+        var builder = Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration));
+
+        if (role != null && !role.isBlank()) {
+            builder.claim("role", role);
+        }
+        if (provider != null && !provider.isBlank()) {
+            builder.claim("provider", provider);
+        }
+
+        return builder
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
+    }
+
+    public String generateToken(String email, String role) {
+        return generateToken(email, role, null);
+    }
+
+    public String generateToken(String email) {
+        return generateToken(email, null, null);
     }
 
     public String extractEmail(String token) {

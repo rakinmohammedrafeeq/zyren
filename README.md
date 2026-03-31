@@ -1,6 +1,6 @@
 # Zyren – Secure Paste Sharing Platform
 
-Zyren is a full-stack paste-sharing platform that allows users to create, manage, and share text/code snippets with optional expiration, public access via unique codes, and authentication with role-based admin control.  
+Zyren is a full-stack paste-sharing platform that allows users to create, manage, and share text/code snippets with optional expiration, public access via unique codes, and authentication with role-based access control (including an admin panel).  
 It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email workflows, with optional Oracle DB for local development.
 
 ---
@@ -9,6 +9,7 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 
 ### Authentication & Roles
 - User registration and login with JWT authentication  
+- Google OAuth2 sign-in (creates/links accounts and issues JWT on success)
 - Role-based access: USER and ADMIN  
 - Admin-only access for user and paste management
 
@@ -18,6 +19,16 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 - Auto-expiration scheduler and nightly cleanup  
 - Public access using paste codes (auto-generates an 8-character code if left empty; supports letters, numbers, '-', and '_')
 - Fetch public pastes without authentication
+- Optional media metadata stored on pastes (URL + publicId + media type)
+
+### Media Uploads (Cloudinary)
+- Upload media via backend endpoint (multipart/form-data)
+- Supported types (server-side): JPEG, PNG, WebP, MP4/MOV, PDF
+- Size limits:
+  - Backend: 20MB (`spring.servlet.multipart.*`)
+  - UI guardrails: 15MB
+- Attach uploaded media to a paste (stored as `mediaUrl`, `mediaPublicId`, `mediaType`)
+- Secure deletion: only the paste owner (or an admin) can delete media, and the backend verifies the media belongs to the paste before deleting
 
 ### Public Paste Access
 - Dedicated page to enter and view pastes by code  
@@ -37,12 +48,56 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 - React + Tailwind CSS v4  
 - Dark/Light mode (saved in localStorage)  
 - Responsive layout with modern design  
-- Smooth transitions, toasts, and clean navigation  
+- Smooth transitions, toasts, and clean navigation
 
 ### Integrations
 - Resend email API  
-- Axios with JWT interceptors  
+- Cloudinary media storage
+- Axios with JWT interceptors + consistent error toasts
 - Contact form and newsletter subscription endpoints
+
+---
+
+## API Endpoints (Backend)
+
+All backend routes are under the `/api` prefix unless noted.
+
+### Auth
+- `POST /api/auth/register` (form params: `email`, `password`)
+- `POST /api/auth/login` (form params: `email`, `password`) → returns `{ token, email, role }`
+- `POST /api/auth/forgot-password` (JSON body: `{ "email": "..." }`)
+- `POST /api/auth/reset-password?token=...` (JSON body: `{ "newPassword": "..." }`)
+
+### OAuth2 (Google)
+- `GET /oauth2/authorization/google` (starts OAuth flow)
+- OAuth callback: handled by Spring Security (`/login/oauth2/code/google`)
+- Success handler redirects to the frontend route:
+  - `GET /oauth-success?token=...` (frontend)
+
+> Note: the backend OAuth2 success handler currently redirects to `http://localhost:5173/oauth-success?token=...`. For production, this should be made environment-driven.
+
+### Paste
+- `POST /api/paste` (form params: `title`, `content`, optional `expiryMinutes`, optional `code`, optional `mediaUrl`, `mediaPublicId`, `mediaType`)
+- `GET /api/paste/me` (list your pastes)
+- `PUT /api/paste/{id}` (update title/content + optional media fields)
+- `DELETE /api/paste/{id}` (delete your paste)
+- `DELETE /api/paste/admin/{id}` (admin-only delete)
+
+### Public paste
+- `GET /api/public/{code}` (no auth)
+
+### Media
+- `POST /api/media/upload` (multipart `file`) → returns `{ secureUrl, publicId, resourceType }`
+- `DELETE /api/media/delete?pasteId=...&publicId=...`
+
+### Admin
+- `GET /api/admin/users`
+- `GET /api/admin/users/{id}/pastes`
+- `DELETE /api/admin/users/{id}`
+
+### Contact + Newsletter
+- `POST /api/contact` (JSON body: contact form fields)
+- `POST /api/newsletter/subscribe` (JSON body: `{ "email": "..." }`)
 
 ---
 
@@ -60,10 +115,11 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 ### Backend
 - Java 21  
 - Spring Boot 3.5.x  
-- Spring Security  
+- Spring Security (JWT + OAuth2 Client)  
 - Spring Data JPA  
 - JWT (jjwt)  
 - Resend API  
+- Cloudinary  
 - PostgreSQL (production) / Oracle (local development)  
 - Maven  
 - Docker support
@@ -77,7 +133,7 @@ It is built using Spring Boot, React, PostgreSQL (Render), and Resend for email 
 - Axios + interceptors  
 - React Router v7  
 - Zod + React Hook Form  
-- Sonner notifications  
+- Sonner notifications
 
 ---
 
@@ -95,14 +151,15 @@ Zyren/
 │   │   │   ├── java/com/zyren/backend/
 │   │   │   │   ├── ZyrenApplication.java
 │   │   │   │   ├── config/          # Security, JWT, CORS, initializers
-│   │   │   │   ├── auth/            # Login, register, reset-password
+│   │   │   │   ├── auth/            # Login, register, reset-password, OAuth handlers
 │   │   │   │   ├── user/            # User entity, admin controllers
 │   │   │   │   ├── paste/           # Paste CRUD + public access API
+│   │   │   │   ├── media/           # Cloudinary upload/delete endpoints
 │   │   │   │   ├── contact/         # Contact & newsletter endpoints
 │   │   │   │   ├── exception/       # Global exception handling
 │   │   │   │   └── mail/            # Resend email service
 │   │   └── resources/
-│   │       └── application.yaml     # DB, JWT, mail & Resend config
+│   │       └── application.yaml     # DB, JWT, Resend, Cloudinary config
 │
 ├── frontend/                        # React + Vite frontend
 │   ├── package.json
@@ -110,7 +167,7 @@ Zyren/
 │   ├── index.html
 │   └── src/
 │       ├── main.tsx
-│       ├── contexts/                # AuthContext (JWT + role state)
+│       ├── contexts/                # AuthContext (JWT + role/provider state)
 │       ├── api/                     # Axios client with interceptors
 │       ├── lib/                     # Centralized API helper
 │       ├── components/              # Reusable UI components
@@ -118,7 +175,7 @@ Zyren/
 │       ├── ui/                      # Radix-style components
 │       └── index.css                # Tailwind v4 config + themes
 │
-├── oradata/                          # Oracle Free DB config for local dev
+├── oradata/                          # Oracle Free DB data dir for local dev
 │
 ├── docker-compose.yml                # Oracle database local setup
 │
@@ -135,8 +192,12 @@ Zyren/
 ### Backend Requirements
 - Java 21  
 - Maven  
-- PostgreSQL or Oracle  
-- Required environment variables:
+- PostgreSQL or Oracle
+
+### Required environment variables
+
+> Note: The backend reads most configuration from environment variables (and also supports loading from a local `.env` via `java-dotenv`).
+
 ```
 SPRING_DATASOURCE_URL=
 SPRING_DATASOURCE_USERNAME=
@@ -145,12 +206,28 @@ SPRING_DATASOURCE_PASSWORD=
 JWT_SECRET=
 JWT_EXPIRATION=
 
-ZYREN_ADMIN_EMAIL=
-ZYREN_ADMIN_PASSWORD=
+# Admin accounts (supports 2 configured admins)
+ZYREN_ADMIN_EMAIL_1=
+ZYREN_ADMIN_PASSWORD_1=
+ZYREN_ADMIN_EMAIL_2=
+ZYREN_ADMIN_PASSWORD_2=
 
+# Email (Resend)
 RESEND_API_KEY=
 MAIL_TO=
 RESET_BASE_URL=
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+# Google OAuth
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# CORS (comma-separated)
+APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
 PORT=
 ```
@@ -223,7 +300,7 @@ Your deployment setup includes:
 - Netlify → Hosts the React (Vite) frontend  
 - Render → Hosts the Spring Boot backend (Dockerfile build)  
 - Render → Provides PostgreSQL as the production database  
-- Local Oracle DB via Docker → For local development option  
+- Local Oracle DB via Docker → For local development option
 
 ---
 
@@ -236,7 +313,7 @@ It outlines:
 - Responsible disclosure guidelines  
 - Private reporting process  
 - Required information when reporting vulnerabilities  
-- Response timelines  
+- Response timelines
 
 ---
 

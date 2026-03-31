@@ -24,6 +24,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminUserPastes from "./pages/AdminUserPastes";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import OAuthSuccess from "./pages/OAuthSuccess";
 
 function RouteSyncer() {
   const location = useLocation();
@@ -77,6 +78,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
             <Route path="/public" element={<PublicAccessPage />} />
             <Route path="/public/:code" element={<PublicPaste />} />
             <Route path="/create-paste" element={

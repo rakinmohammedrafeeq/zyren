@@ -19,6 +19,8 @@ public interface PasteRepository extends JpaRepository<PasteEntity, Long> {
 
     List<PasteEntity> findByOwnerAndExpiredFalse(UserEntity owner);
 
+    Optional<PasteEntity> findByMediaPublicId(String mediaPublicId);
+
     @Transactional
     @Modifying
     @Query("delete from PasteEntity p where p.owner.id = :ownerId")

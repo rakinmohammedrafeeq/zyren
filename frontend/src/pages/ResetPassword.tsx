@@ -69,7 +69,7 @@ export default function ResetPassword() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md rounded-xl shadow-lg p-6 bg-white dark:bg-neutral-900">
           <CardHeader>
             <CardTitle>Reset Password</CardTitle>
             <CardDescription>Enter your new password</CardDescription>
@@ -86,7 +86,7 @@ export default function ResetPassword() {
                     onChange={(e) => handlePasswordChange(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="pr-10"
+                    className="pr-10 bg-transparent border border-gray-600 rounded-md px-3 py-2"
                     maxLength={32}
                     autoFocus
                   />
@@ -123,7 +123,7 @@ export default function ResetPassword() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     placeholder="••••••••"
-                    className="pr-10"
+                    className="pr-10 bg-transparent border border-gray-600 rounded-md px-3 py-2"
                     maxLength={32}
                   />
                   <button
@@ -136,7 +136,7 @@ export default function ResetPassword() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading || passwordErrors.length > 0}>
+              <Button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white rounded-md" disabled={loading || passwordErrors.length > 0}>
                 {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Resetting...</> : 'Reset Password'}
               </Button>
             </form>

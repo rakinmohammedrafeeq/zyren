@@ -10,12 +10,26 @@ declare module 'axios' {
   }
 }
 
+const isFormData = (value: unknown): value is FormData =>
+  typeof FormData !== 'undefined' && value instanceof FormData;
+
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     Accept: 'application/json',
   },
   timeout: 30000,
+  // Keep axios from trying to serialize FormData; pass through untouched.
+  transformRequest: [(data, headers) => {
+    if (isFormData(data)) {
+      if (headers) {
+        delete (headers as Record<string, unknown>)['Content-Type'];
+        delete (headers as Record<string, unknown>)['content-type'];
+      }
+      return data;
+    }
+    return data;
+  }],
 });
 
 api.interceptors.request.use(
@@ -27,6 +41,24 @@ api.interceptors.request.use(
         (config.headers as Record<string, string>).Authorization = `Bearer ${token}`;
       }
     }
+
+    // Never force JSON content-type on FormData uploads
+    if (config.data && isFormData(config.data)) {
+      config.headers = config.headers ?? {};
+      delete (config.headers as Record<string, unknown>)['Content-Type'];
+      delete (config.headers as Record<string, unknown>)['content-type'];
+
+      if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+        const file = (config.data as FormData).get('file') as File | null;
+        console.debug('[api] Uploading file', {
+          name: file?.name,
+          size: file?.size,
+          type: file?.type,
+          url: config.baseURL + (config.url || ''),
+        });
+      }
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -34,11 +66,13 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<any>) => {
+  (error: AxiosError<unknown>) => {
     const status = error.response?.status;
-    const data = error.response?.data as any;
+    const data = error.response?.data as Record<string, unknown> | undefined;
     const serverMessage: string | undefined =
-      data?.message || data?.error || data?.detail;
+      (data && (data['message'] as string | undefined)) ||
+      (data && (data['error'] as string | undefined)) ||
+      (data && (data['detail'] as string | undefined));
     const suppressToast = error.config?.suppressErrorToast === true;
 
     if (!suppressToast) {
@@ -52,7 +86,9 @@ api.interceptors.response.use(
             localStorage.removeItem('token');
             localStorage.removeItem('email');
             localStorage.removeItem('role');
-          } catch {}
+          } catch {
+            // ignore
+          }
           if (typeof window !== 'undefined') {
             window.location.href = '/login';
           }
@@ -119,7 +155,7 @@ export type ApiError = AxiosError<{
   message?: string;
   error?: string;
   detail?: string;
-  [k: string]: any;
+  [k: string]: unknown;
 }>;
 
 export default api;

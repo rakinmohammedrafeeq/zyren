@@ -14,6 +14,25 @@ spring:
   main:
     lazy-initialization: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
   datasource:
     url: ${SPRING_DATASOURCE_URL}
 
@@ -38,6 +57,11 @@ spring:
         ### Use this block for Render (PostgreSQL) ###
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 #  mail:
 #    host: ${SPRING_MAIL_HOST}
 #    port: ${SPRING_MAIL_PORT}
@@ -54,13 +78,18 @@ resend:
   api:
     key: ${RESEND_API_KEY}
 
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
 server:
   port: ${PORT:8080}
   address: 0.0.0.0
 
 jwt:
-  secret: ${JWT_SECRET:z9xD5p9bJ2rQv1uLk8sA4tN3fB0yW6rE5qH7oM2cV1jG9pK0nU4xT8sF3eR6wY1lZ}
-  expiration: ${JWT_EXPIRATION:86400000}
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
 
 zyren:
   admin:

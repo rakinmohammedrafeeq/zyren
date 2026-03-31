@@ -93,7 +93,7 @@ export function Footer() {
               <h3 className="text-lg font-semibold tracking-tight">Zyren</h3>
             </Link>
             <p className="text-sm text-foreground/70 leading-relaxed">
-              A secure platform for storing, managing, and sharing text and code snippets — privately or publicly — with instant access through shareable codes.
+              A secure, full-stack platform for storing, managing, and sharing text, code, and media — privately or publicly — with instant access through shareable codes and robust security.
             </p>
             <div className="flex items-center gap-3">
               <button

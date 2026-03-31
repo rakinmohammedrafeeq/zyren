@@ -19,8 +19,11 @@ public class PasteController {
                                                    @RequestParam String content,
                                                    @RequestParam(defaultValue = "TEXT") String type,
                                                    @RequestParam(required = false) Integer expiryMinutes,
-                                                   @RequestParam(required = false, name = "code") String customCode) {
-        return ResponseEntity.ok(pasteService.createPaste(title, content, type, expiryMinutes, customCode));
+                                                   @RequestParam(required = false, name = "code") String customCode,
+                                                   @RequestParam(required = false) String mediaUrl,
+                                                   @RequestParam(required = false) String mediaPublicId,
+                                                   @RequestParam(required = false) String mediaType) {
+        return ResponseEntity.ok(pasteService.createPaste(title, content, type, expiryMinutes, customCode, mediaUrl, mediaPublicId, mediaType));
     }
 
     @GetMapping("/me")
@@ -37,8 +40,11 @@ public class PasteController {
     @PutMapping("/{id}")
     public ResponseEntity<PasteEntity> editPaste(@PathVariable Long id,
                                                  @RequestParam String title,
-                                                 @RequestParam String content) {
-        return ResponseEntity.ok(pasteService.editPaste(id, title, content));
+                                                 @RequestParam String content,
+                                                 @RequestParam(required = false) String mediaUrl,
+                                                 @RequestParam(required = false) String mediaPublicId,
+                                                 @RequestParam(required = false) String mediaType) {
+        return ResponseEntity.ok(pasteService.editPaste(id, title, content, mediaUrl, mediaPublicId, mediaType));
     }
 
     @DeleteMapping("/admin/{id}")

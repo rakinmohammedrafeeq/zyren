@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import java.io.IOException;
 
 @Component
@@ -23,38 +26,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    private final AntPathRequestMatcher authPaths = new AntPathRequestMatcher("/api/auth/**");
+    private final AntPathRequestMatcher publicPaths = new AntPathRequestMatcher("/api/public/**");
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (request.getServletPath().startsWith("/public")) {
+        // Always allow preflight and public/auth endpoints
+        if (HttpMethod.OPTIONS.matches(request.getMethod()) ||
+                authPaths.matches(request) || publicPaths.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         final String authHeader = request.getHeader("Authorization");
 
-        String token = null;
-        String userEmail = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ") &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
+            String token = authHeader.substring(7);
+            try {
+                String userEmail = jwtUtil.extractEmail(token);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            userEmail = jwtUtil.extractEmail(token);
-        }
+                if (userEmail != null && jwtUtil.validateToken(token)) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-
-            if (jwtUtil.validateToken(token)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            } catch (Exception ignored) {
+                // Ignore invalid/malformed token and continue without authentication
             }
         }
 

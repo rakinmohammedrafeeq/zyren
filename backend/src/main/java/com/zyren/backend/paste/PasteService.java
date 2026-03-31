@@ -1,5 +1,6 @@
 package com.zyren.backend.paste;
 
+import com.zyren.backend.user.Role;
 import com.zyren.backend.user.UserEntity;
 import com.zyren.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class PasteService {
     private final CodeGenerator codeGenerator;
 
     public PasteEntity createPaste(String title, String content, String type, Integer expiryMinutes, String customCode) {
+        return createPaste(title, content, type, expiryMinutes, customCode, null, null, null);
+    }
+
+    public PasteEntity createPaste(String title, String content, String type, Integer expiryMinutes, String customCode,
+                                   String mediaUrl, String mediaPublicId, String mediaType) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -50,6 +56,9 @@ public class PasteService {
                 .createdAt(LocalDateTime.now())
                 .expiryAt(expiryAt)
                 .owner(owner)
+                .mediaUrl(mediaUrl)
+                .mediaPublicId(mediaPublicId)
+                .mediaType(mediaType)
                 .build();
 
         return pasteRepository.save(paste);
@@ -76,7 +85,7 @@ public class PasteService {
         return paste;
     }
 
-    public PasteEntity editPaste(Long id, String newTitle, String newContent) {
+    public PasteEntity editPaste(Long id, String newTitle, String newContent, String mediaUrl, String mediaPublicId, String mediaType) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         UserEntity owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -84,12 +93,20 @@ public class PasteService {
         PasteEntity paste = pasteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paste not found"));
 
-        if (!paste.getOwner().getId().equals(owner.getId())) {
+        boolean isOwner = paste.getOwner().getId().equals(owner.getId());
+        boolean isAdmin = owner.getRole() == Role.ADMIN;
+        if (!isOwner && !isAdmin) {
             throw new RuntimeException("You can only edit your own pastes!");
         }
 
         paste.setTitle(newTitle);
         paste.setContent(newContent);
+
+        // Update media info
+        paste.setMediaUrl(mediaUrl);
+        paste.setMediaPublicId(mediaPublicId);
+        paste.setMediaType(mediaType);
+
         return pasteRepository.save(paste);
     }
 
@@ -101,7 +118,9 @@ public class PasteService {
         PasteEntity paste = pasteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paste not found"));
 
-        if (!paste.getOwner().getId().equals(owner.getId())) {
+        boolean isOwner = paste.getOwner().getId().equals(owner.getId());
+        boolean isAdmin = owner.getRole() == Role.ADMIN;
+        if (!isOwner && !isAdmin) {
             throw new RuntimeException("You are not allowed to delete this paste!");
         }
 

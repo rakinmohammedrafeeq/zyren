@@ -42,8 +42,9 @@ public class AuthService {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .role(Role.USER)
+                .provider("LOCAL")
+                .displayName(email)
                 .build();
-
         userRepository.save(user);
 
         return "User registered successfully!";
@@ -52,12 +53,10 @@ public class AuthService {
     public String login(String email, String password) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (user.getPassword() == null || !passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-
-        return jwtUtil.generateToken(email);
+        return jwtUtil.generateToken(user.getEmail(), user.getRole().name(), user.getProvider());
     }
 
     public void requestPasswordReset(String email) {

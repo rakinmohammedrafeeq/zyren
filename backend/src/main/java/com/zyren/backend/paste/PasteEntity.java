@@ -39,6 +39,12 @@ public class PasteEntity {
     @Column(unique = true, nullable = false)
     private String code;
 
+    private String mediaUrl;
+
+    private String mediaPublicId;
+
+    private String mediaType;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime expiryAt;

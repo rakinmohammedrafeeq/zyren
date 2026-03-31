@@ -3,27 +3,21 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { LogOut, FileText, Users, Moon, Sun, Menu, X } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Settings, KeyRound, User as UserIcon } from 'lucide-react';
-import { toast } from 'sonner';
+import { LogOut, FileText, Users, Moon, Sun, Menu } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { KeyRound, User as UserIcon } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
+/* noinspection JSUnusedGlobalSymbols */
 export function Navbar() {
-  const { token, email, isAdmin, logout } = useAuthContext();
+  const { token, email, isAdmin, logout, provider } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const { scrollY } = useScroll();
-  const navbarBg = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 0.9)']
-  );
   const navbarShadow = useTransform(
     scrollY,
     [0, 100],
@@ -296,18 +290,34 @@ export function Navbar() {
                     ) : (
                       <>
                         <div className="flex flex-col gap-3">
-                          <a href="#about" onClick={() => setMobileMenuOpen(false)} className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#about' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}>
+                          <Link
+                            to="/#about"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#about' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}
+                          >
                             About
-                          </a>
-                          <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#how-it-works' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}>
+                          </Link>
+                          <Link
+                            to="/#how-it-works"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#how-it-works' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}
+                          >
                             How It Works
-                          </a>
-                          <a href="#features" onClick={() => setMobileMenuOpen(false)} className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#features' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}>
+                          </Link>
+                          <Link
+                            to="/#features"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#features' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}
+                          >
                             Features
-                          </a>
-                          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#contact' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}>
+                          </Link>
+                          <Link
+                            to="/#contact"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`text-sm px-3 py-2 rounded-md transition-all duration-200 ${location.hash === '#contact' ? 'text-foreground font-semibold bg-accent/70' : 'text-foreground/70 hover:text-foreground hover:bg-accent/50'}`}
+                          >
                             Contact
-                          </a>
+                          </Link>
                         </div>
                         <div className="border-t border-border/30 pt-4">
                           <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
@@ -357,15 +367,20 @@ export function Navbar() {
                         <div className="px-2 pt-2 pb-1">
                           <div className="text-sm font-semibold">{isAdmin ? 'Admin' : 'User'}</div>
                           <div className="text-xs text-muted-foreground truncate">{email}</div>
+                          {provider === 'GOOGLE' && (
+                            <div className="mt-1 text-[11px] text-muted-foreground">Signed in with Google</div>
+                          )}
                         </div>
                         <DropdownMenuSeparator className="my-1 h-px bg-border/60" />
-                        <DropdownMenuItem
-                          className="gap-2 rounded-lg px-2.5 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:bg-accent/60 data-[highlighted]:bg-accent/60 hover:bg-accent/60"
-                          onClick={() => navigate('/forgot-password')}
-                        >
-                          <KeyRound className="h-4 w-4" />
-                          <span>Change Password</span>
-                        </DropdownMenuItem>
+                        {provider !== 'GOOGLE' && (
+                          <DropdownMenuItem
+                            className="gap-2 rounded-lg px-2.5 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:bg-accent/60 data-[highlighted]:bg-accent/60 hover:bg-accent/60"
+                            onClick={() => navigate('/forgot-password')}
+                          >
+                            <KeyRound className="h-4 w-4" />
+                            <span>Change Password</span>
+                          </DropdownMenuItem>
+                        )}
                         {isAdmin && (
                           <DropdownMenuItem
                             className="gap-2 rounded-lg px-2.5 py-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:bg-accent/60 data-[highlighted]:bg-accent/60 hover:bg-accent/60"
