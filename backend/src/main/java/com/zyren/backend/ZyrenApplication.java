@@ -22,8 +22,6 @@ public class ZyrenApplication {
             System.setProperty("jwt.secret", dotenv.get("JWT_SECRET"));
             System.setProperty("jwt.expiration", dotenv.get("JWT_EXPIRATION"));
 
-            System.setProperty("server.port", dotenv.get("PORT"));
-
             System.setProperty("zyren.admin.email.1", dotenv.get("ZYREN_ADMIN_EMAIL_1"));
             System.setProperty("zyren.admin.password.1", dotenv.get("ZYREN_ADMIN_PASSWORD_1"));
             System.setProperty("zyren.admin.email.2", dotenv.get("ZYREN_ADMIN_EMAIL_2"));
@@ -45,10 +43,8 @@ public class ZyrenApplication {
             System.setProperty("cloudinary.api-key", dotenv.get("CLOUDINARY_API_KEY"));
             System.setProperty("cloudinary.api-secret", dotenv.get("CLOUDINARY_API_SECRET"));
 
-            // Google OAuth
             System.setProperty("spring.security.oauth2.client.registration.google.client-id",
                     dotenv.get("GOOGLE_CLIENT_ID"));
-
             System.setProperty("spring.security.oauth2.client.registration.google.client-secret",
                     dotenv.get("GOOGLE_CLIENT_SECRET"));
 
