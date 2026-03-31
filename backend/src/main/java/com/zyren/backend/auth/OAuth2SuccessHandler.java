@@ -64,6 +64,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name(), user.getProvider());
         String encodedToken = URLEncoder.encode(token, StandardCharsets.UTF_8);
-        response.sendRedirect("http://localhost:5173/oauth-success?token=" + encodedToken);
+//        response.sendRedirect("http://localhost:5173/oauth-success?token=" + encodedToken);
+        response.sendRedirect("https://zyren.netlify.app/oauth-success?token=" + encodedToken);
     }
 }
