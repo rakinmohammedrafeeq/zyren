@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { FileText, Lock, Clock, Share2, ChevronDown, ArrowUp, File, Upload, Link as LinkIcon, MoreHorizontal, Loader2 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { toast } from "sonner";
 import api from "@/lib/api";
@@ -99,7 +98,6 @@ export default function Landing() {
   };
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      <Navbar />
       {}
       <motion.section
         id="hero"

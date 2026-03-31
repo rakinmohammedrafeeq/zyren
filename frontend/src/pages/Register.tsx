@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import { validatePassword } from '@/lib/passwordValidation';
 import api from '@/lib/api';
 export default function Register() {
@@ -88,7 +87,6 @@ export default function Register() {
   };
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="max-w-md w-full mx-auto mt-10">
           <Card className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4">

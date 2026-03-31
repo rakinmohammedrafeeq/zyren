@@ -111,6 +111,7 @@
   }
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--app-nav-h);
   }
   body {
     @apply bg-background text-foreground;
@@ -119,7 +120,8 @@
   [role="button"]:not([disabled]) {
     cursor: pointer;
   }
-  body:has(nav[data-app-navbar]) {
-    padding-top: 72px; 
+
+  :root {
+    --app-nav-h: 72px;
   }
 }

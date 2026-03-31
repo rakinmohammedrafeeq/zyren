@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import { validatePassword } from '@/lib/passwordValidation';
 import api from '@/lib/api';
 
@@ -67,7 +66,6 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md rounded-xl shadow-lg p-6 bg-white dark:bg-neutral-900">
           <CardHeader>

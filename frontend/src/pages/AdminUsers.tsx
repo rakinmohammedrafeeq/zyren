@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { Loader2, Trash2, FileText, Search } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import { useAuthContext } from '@/contexts/AuthContext';
 interface User {
   id: number;
@@ -84,7 +83,6 @@ export default function AdminUsers() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
@@ -93,7 +91,6 @@ export default function AdminUsers() {
   }
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 container mx-auto p-4 max-w-6xl">
         <Card className="mt-8">
           <CardHeader>

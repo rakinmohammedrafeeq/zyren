@@ -10,7 +10,6 @@ import NotFound from "./pages/NotFound.tsx";
 import "./types/global.d.ts";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Footer } from "./components/Footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -25,6 +24,7 @@ import AdminUserPastes from "./pages/AdminUserPastes";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import OAuthSuccess from "./pages/OAuthSuccess";
+import { AppLayout } from "./components/AppLayout";
 
 function RouteSyncer() {
   const location = useLocation();
@@ -61,58 +61,74 @@ function RouteSyncer() {
   return null;
 }
 
-function ConditionalFooter() {
-  const location = useLocation();
-  if (location.pathname === '/reset-password') return null;
-  return <Footer />;
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route path="/public" element={<PublicAccessPage />} />
+        <Route path="/public/:code" element={<PublicPaste />} />
+        <Route
+          path="/create-paste"
+          element={
+            <ProtectedRoute>
+              <CreatePaste />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-pastes"
+          element={
+            <ProtectedRoute>
+              <MyPastes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-paste/:id"
+          element={
+            <ProtectedRoute>
+              <EditPaste />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users/:userId/pastes"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminUserPastes />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
 }
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-      <AuthProvider>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/oauth-success" element={<OAuthSuccess />} />
-            <Route path="/public" element={<PublicAccessPage />} />
-            <Route path="/public/:code" element={<PublicPaste />} />
-            <Route path="/create-paste" element={
-              <ProtectedRoute>
-                <CreatePaste />
-              </ProtectedRoute>
-            } />
-            <Route path="/my-pastes" element={
-              <ProtectedRoute>
-                <MyPastes />
-              </ProtectedRoute>
-            } />
-            <Route path="/edit-paste/:id" element={
-              <ProtectedRoute>
-                <EditPaste />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/users" element={
-              <ProtectedRoute adminOnly>
-                <AdminUsers />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/users/:userId/pastes" element={
-              <ProtectedRoute adminOnly>
-                <AdminUserPastes />
-              </ProtectedRoute>
-            } />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <ConditionalFooter />
-        </BrowserRouter>
-        <Toaster />
-      </AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <RouteSyncer />
+        <AppRoutes />
+      </BrowserRouter>
+      <Toaster />
+    </AuthProvider>
   </StrictMode>,
 );

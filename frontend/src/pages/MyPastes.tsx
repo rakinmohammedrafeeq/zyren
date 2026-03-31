@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Loader2, Trash2, Edit, ExternalLink, Copy } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import { MediaPreview } from '@/components/MediaPreview';
 import Linkify from "linkify-react";
 
@@ -80,7 +79,6 @@ export default function MyPastes() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
@@ -90,7 +88,6 @@ export default function MyPastes() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 container mx-auto p-4 max-w-5xl">
         <div className="flex justify-end items-center mb-6 mt-8">
           <Link to="/create-paste">

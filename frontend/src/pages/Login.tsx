@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import api from '@/lib/api';
 import googleIcon from '@/assets/google-icon.svg';
 
@@ -54,7 +53,6 @@ export default function Login() {
   };
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="max-w-md w-full mx-auto mt-10">
           <Card className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4">
@@ -115,7 +113,8 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => {
-                    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+                    // window.location.href = "http://localhost:8080/oauth2/authorization/google";
+                    window.location.href = "https://zyren-backend.onrender.com/oauth2/authorization/google";
                   }}
                   className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border bg-white text-black border-gray-300 hover:bg-gray-100 dark:bg-neutral-800 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 transition"
                 >

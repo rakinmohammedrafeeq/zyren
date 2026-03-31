@@ -23,6 +23,7 @@ export function Navbar() {
     [0, 100],
     ['0 1px 3px rgba(0, 0, 0, 0.05)', '0 4px 12px rgba(0, 0, 0, 0.08)']
   );
+  const navRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -115,12 +116,35 @@ export function Navbar() {
     return `${baseClasses} ${activeClasses}`;
   };
 
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+
+    const setNavHeightVar = () => {
+      const height = Math.ceil(el.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--app-nav-h', `${height}px`);
+    };
+
+    setNavHeightVar();
+
+    // Keep the value in sync on responsive layout changes.
+    const ro = new ResizeObserver(() => setNavHeightVar());
+    ro.observe(el);
+
+    window.addEventListener('resize', setNavHeightVar);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', setNavHeightVar);
+    };
+  }, []);
+
   if (location.pathname === '/reset-password') {
     return (
       <motion.nav
+        ref={navRef}
         data-app-navbar
         style={{ boxShadow: navbarShadow }}
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 backdrop-blur-xl bg-background/50"
+        className="sticky top-0 z-40 border-b border-border/30 backdrop-blur-xl bg-background/50"
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-end">
@@ -138,11 +162,12 @@ export function Navbar() {
   return (
     <>
       <motion.nav
+        ref={navRef}
         data-app-navbar
         style={{
           boxShadow: navbarShadow,
         }}
-        className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 backdrop-blur-xl bg-background/50"
+        className="sticky top-0 z-40 border-b border-border/30 backdrop-blur-xl bg-background/50"
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">

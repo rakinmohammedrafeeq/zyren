@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
 import { MediaPreview } from '@/components/MediaPreview';
 
 interface Paste { id: number; title: string; content: string; mediaUrl?: string; mediaPublicId?: string; mediaType?: string; }
@@ -148,7 +147,6 @@ export default function EditPaste() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
         <div className="flex-1 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
@@ -158,7 +156,6 @@ export default function EditPaste() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
       <div className="flex-1 container mx-auto p-4 max-w-3xl">
         <Card className="mt-8">
           <CardHeader>
