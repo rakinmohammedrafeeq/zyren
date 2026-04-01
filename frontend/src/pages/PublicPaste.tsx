@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, Copy, Sparkles, Moon, Sun } from 'lucide-react';
+import { Loader2, Copy, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '@/contexts/AuthContext';
 import api from '@/lib/api';
@@ -28,24 +28,6 @@ const PublicPaste = () => {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const { token } = useAuthContext();
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    };
-    updateTheme();
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
 
   useEffect(() => {
     const fetchPublicPaste = async () => {
@@ -102,44 +84,6 @@ const PublicPaste = () => {
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="border-b border-border/40 backdrop-blur-sm bg-background/80 sticky top-0 z-10"
-      >
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-5xl">
-          <Link to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity">
-            <img
-              src={
-                theme === 'light'
-                  ? "https://harmless-tapir-303.convex.cloud/api/storage/0fa135bb-61af-462c-bdbb-705fa1931cff"
-                  : "https://harmless-tapir-303.convex.cloud/api/storage/ad0ffa05-6096-4828-a7ce-c0fbbef0f2cc"
-              }
-              alt="Zyren Logo"
-              className="h-7 w-7"
-            />
-            <span>Zyren</span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="rounded-full w-9 h-9 p-0"
-            >
-              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </Button>
-            {!token && (
-              <Link to="/login">
-                <Button variant="outline" size="sm" className="rounded-full gap-2">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Create your own
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
-      </motion.header>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

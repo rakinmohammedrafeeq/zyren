@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 /* noinspection JSUnusedGlobalSymbols */
-export function Navbar() {
+export function FullNavbar() {
   const { token, email, isAdmin, logout, provider } = useAuthContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -467,3 +467,101 @@ export function Navbar() {
     </>
   );
 }
+
+export function MinimalNavbar() {
+  const { token } = useAuthContext();
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const { scrollY } = useScroll();
+  const navbarShadow = useTransform(
+    scrollY,
+    [0, 100],
+    ['0 1px 3px rgba(0, 0, 0, 0.05)', '0 4px 12px rgba(0, 0, 0, 0.08)']
+  );
+  const navRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const systemTheme = prefersDark ? 'dark' : 'light';
+      setTheme(systemTheme);
+      document.documentElement.classList.toggle('dark', systemTheme === 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
+
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+
+    const setNavHeightVar = () => {
+      const height = Math.ceil(el.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--app-nav-h', `${height}px`);
+    };
+
+    setNavHeightVar();
+
+    const ro = new ResizeObserver(() => setNavHeightVar());
+    ro.observe(el);
+
+    window.addEventListener('resize', setNavHeightVar);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', setNavHeightVar);
+    };
+  }, []);
+
+  return (
+    <motion.nav
+      ref={navRef}
+      data-app-navbar
+      style={{ boxShadow: navbarShadow }}
+      className="sticky top-0 z-40 border-b border-border/30 backdrop-blur-xl bg-background/50"
+    >
+      <div className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <motion.img
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+              src={theme === 'light'
+                ? "https://harmless-tapir-303.convex.cloud/api/storage/0fa135bb-61af-462c-bdbb-705fa1931cff"
+                : "https://harmless-tapir-303.convex.cloud/api/storage/ad0ffa05-6096-4828-a7ce-c0fbbef0f2cc"
+              }
+              alt="Zyren Logo"
+              className="h-8 w-8 transition-all"
+              loading="eager"
+            />
+            <span className="text-xl font-semibold tracking-tight group-hover:text-primary transition-colors duration-200">
+              Zyren
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <motion.div whileHover={{ scale: 1.05, rotate: 5 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="ghost" size="sm" onClick={toggleTheme} className="rounded-full w-9 h-9 p-0 transition-all duration-200" aria-label="Toggle theme">
+                {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              </Button>
+            </motion.div>
+            {!token && (
+              <Link to="/login">
+                <Button variant="outline" size="sm" className="rounded-full">Sign Up</Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.nav>
+  );
+}
+
+export const Navbar = FullNavbar;

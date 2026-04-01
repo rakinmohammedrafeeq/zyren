@@ -1,17 +1,14 @@
 import { Outlet, useLocation } from 'react-router';
-import { FullNavbar, MinimalNavbar } from '@/components/Navbar';
+import { FullNavbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
-export function AppLayout() {
+export function MainLayout() {
   const location = useLocation();
   const hideFooter = location.pathname === '/reset-password';
-  const useMinimalNavbar =
-    /^\/public\/.+/.test(location.pathname) ||
-    ['/login', '/register', '/forgot-password', '/reset-password', '/oauth-success'].includes(location.pathname);
 
   return (
     <div className="min-h-screen flex flex-col">
-      {useMinimalNavbar ? <MinimalNavbar /> : <FullNavbar />}
+      <FullNavbar />
       <main className="flex-1 min-w-0">
         <Outlet />
       </main>
@@ -19,3 +16,4 @@ export function AppLayout() {
     </div>
   );
 }
+

@@ -24,7 +24,8 @@ import AdminUserPastes from "./pages/AdminUserPastes";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import OAuthSuccess from "./pages/OAuthSuccess";
-import { AppLayout } from "./components/AppLayout";
+import { MainLayout } from "./components/MainLayout";
+import { PublicLayout } from "./components/PublicLayout";
 
 function RouteSyncer() {
   const location = useLocation();
@@ -64,15 +65,18 @@ function RouteSyncer() {
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
+      <Route element={<PublicLayout />}>
+        <Route path="/public" element={<PublicAccessPage />} />
+        <Route path="/public/:code" element={<PublicPaste />} />
+      </Route>
+
+      <Route element={<MainLayout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
-        <Route path="/public" element={<PublicAccessPage />} />
-        <Route path="/public/:code" element={<PublicPaste />} />
         <Route
           path="/create-paste"
           element={
@@ -115,8 +119,9 @@ function AppRoutes() {
         />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
-        <Route path="*" element={<NotFound />} />
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
