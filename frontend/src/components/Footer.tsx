@@ -82,13 +82,16 @@ export function Footer() {
           >
             <Link to="/" onClick={handleBrandClick} className="flex items-center gap-2.5 w-fit">
               <img 
-                src={theme === 'light'
-                  ? "https://harmless-tapir-303.convex.cloud/api/storage/0fa135bb-61af-462c-bdbb-705fa1931cff"
-                  : "https://harmless-tapir-303.convex.cloud/api/storage/ad0ffa05-6096-4828-a7ce-c0fbbef0f2cc"
-                }
-                alt="Zyren Logo" 
-                className="h-7 w-7 transition-all" 
+                  src={theme === 'light' ? '/logo.svg' : '/logo.svg'}
+                alt="Zyren Logo"
+                className="h-7 w-7 transition-all"
                 loading="lazy"
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  if (img.src !== '/logo.svg') {
+                    img.src = '/logo.svg';
+                  }
+                }}
               />
               <h3 className="text-lg font-semibold tracking-tight">Zyren</h3>
             </Link>

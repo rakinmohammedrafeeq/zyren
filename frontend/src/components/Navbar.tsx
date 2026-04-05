@@ -180,13 +180,16 @@ export function FullNavbar() {
               <motion.img 
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
-                src={theme === 'light' 
-                  ? "https://harmless-tapir-303.convex.cloud/api/storage/0fa135bb-61af-462c-bdbb-705fa1931cff"
-                  : "https://harmless-tapir-303.convex.cloud/api/storage/ad0ffa05-6096-4828-a7ce-c0fbbef0f2cc"
-                }
-                alt="Zyren Logo" 
+                src={theme === 'light' ? '/logo.svg' : '/logo.svg'}
+                alt="Zyren Logo"
                 className="h-8 w-8 transition-all"
                 loading="eager"
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  if (img.src !== '/logo.svg') {
+                    img.src = '/logo.svg';
+                  }
+                }}
               />
               <span className="text-xl font-semibold tracking-tight group-hover:text-primary transition-colors duration-200">
                 Zyren
@@ -534,8 +537,8 @@ export function MinimalNavbar() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
               src={theme === 'light'
-                ? "https://harmless-tapir-303.convex.cloud/api/storage/0fa135bb-61af-462c-bdbb-705fa1931cff"
-                : "https://harmless-tapir-303.convex.cloud/api/storage/ad0ffa05-6096-4828-a7ce-c0fbbef0f2cc"
+                ? '/logo.svg'
+                : '/logo.svg'
               }
               alt="Zyren Logo"
               className="h-8 w-8 transition-all"
