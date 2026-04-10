@@ -1,3 +1,7 @@
+<p>
+  <img src="frontend/public/logo.svg" alt="Zyren Logo" width="140"/>
+</p>
+
 # Zyren – Secure Paste Sharing Platform
 
 Zyren is a full-stack paste-sharing platform that allows users to create, manage, and share text/code snippets with optional expiration, public access via unique codes, and authentication with role-based access control (including an admin panel).  
