@@ -8,6 +8,9 @@ import { toast } from 'sonner';
 import { Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { validatePassword } from '@/lib/passwordValidation';
 import api from '@/lib/api';
+import googleIcon from '@/assets/google-icon.svg';
+
+const GOOGLE_ICON_URL = googleIcon;
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -204,6 +207,22 @@ export default function Register() {
                   ) : (
                     'Register'
                   )}
+                </button>
+                <div className="flex items-center gap-2 my-4">
+                  <div className="flex-1 h-px bg-gray-300 dark:bg-neutral-700" />
+                  <span className="text-sm text-gray-500">OR</span>
+                  <div className="flex-1 h-px bg-gray-300 dark:bg-neutral-700" />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    // window.location.href = "http://localhost:8080/oauth2/authorization/google";
+                    window.location.href = "https://zyren-backend.onrender.com/oauth2/authorization/google";
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border bg-white text-black border-gray-300 hover:bg-gray-100 dark:bg-neutral-800 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 transition"
+                >
+                  <img src={GOOGLE_ICON_URL} alt="Google" className="w-5 h-5" />
+                  Continue with Google
                 </button>
                 <div className="text-sm text-center">
                   Already have an account?{' '}
