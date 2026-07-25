@@ -2,9 +2,14 @@
 
 ## Supported Versions
 
-| Version | Supported |
-|---------|-----------|
-| 1.0.x   | ✅ |
+Current actively supported version of Zyren:
+
+| Version | Supported | Release Date |
+|---------|-----------|--------------|
+| 1.2.x (with AI) | ✅ | 2025-01 |
+| 1.1.x | ✅ | 2024-12 |
+| 1.0.x | ⚠️ Limited | 2024-11 |
+| < 1.0 | ❌ | - |
 
 ## Reporting a Vulnerability
 
@@ -19,6 +24,9 @@ If you discover a security vulnerability in Zyren, especially involving:
 - Cross-site scripting, CSRF, or public page injection risks
 - React/Frontend handling of user input or code pastes
 - API rate-limiting or brute-force login concerns
+- AI API key exposure or unauthorized AI service access
+- Media upload vulnerabilities or unauthorized media access
+- AI prompt injection or malicious content processing
 
 Please do not open a public issue.
 
@@ -48,5 +56,19 @@ Providing the following helps speed up resolution:
 - Use strong passwords and update them regularly.
 - Log out when using shared or public systems.
 - Keep your browser and operating system updated.
+- Be aware that AI features analyze paste content - avoid sharing confidential information.
+- Uploaded media files are processed by AI vision models for analysis.
+
+## Security Measures in Place
+
+- JWT-based authentication with secure token handling
+- Password strength validation with server-side enforcement
+- Role-based access control (USER and ADMIN roles)
+- Environment variable-based configuration for secrets
+- Secure media upload with type and size validation
+- AI API rate limiting and quota management
+- Automatic paste expiration and cleanup
+- CORS configuration for frontend-backend communication
+- Input validation and sanitization on all endpoints
 
 Thank you for helping keep Zyren secure.

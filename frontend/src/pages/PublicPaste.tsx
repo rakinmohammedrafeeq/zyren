@@ -8,6 +8,7 @@ import { useAuthContext } from '@/contexts/AuthContext';
 import api from '@/lib/api';
 import { MediaPreview } from '@/components/MediaPreview';
 import Linkify from "linkify-react";
+import AIChatPanel from '@/components/AIChatPanel';
 
 interface Paste {
   id: number;
@@ -167,6 +168,19 @@ const PublicPaste = () => {
               </div>
             </div>
           </motion.div>
+
+          {/* AI Chat Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <AIChatPanel 
+              content={paste.content} 
+              mediaUrl={paste.mediaUrl}
+            />
+          </motion.div>
+
           {!token && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

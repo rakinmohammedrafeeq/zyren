@@ -94,8 +94,8 @@ export default function Register() {
         <div className="max-w-md w-full mx-auto mt-10">
           <Card className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4">
             <CardHeader>
-              <CardTitle className="text-xl font-semibold text-black dark:text-white">Register</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">Create a new account to start sharing pastes</CardDescription>
+              <CardTitle className="text-xl font-semibold text-black dark:text-white">Join Zyren</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">Create your account and start using AI-powered paste management</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -216,8 +216,8 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={() => {
-                    // window.location.href = "http://localhost:8080/oauth2/authorization/google";
-                    window.location.href = "https://zyren-backend.onrender.com/oauth2/authorization/google";
+                    const backendUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:8080';
+                    window.location.href = `${backendUrl}/oauth2/authorization/google`;
                   }}
                   className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border bg-white text-black border-gray-300 hover:bg-gray-100 dark:bg-neutral-800 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 transition"
                 >

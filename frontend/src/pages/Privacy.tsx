@@ -36,10 +36,10 @@ export default function Privacy() {
               </h2>
               <div className="space-y-2 pl-6">
                 <p className="leading-relaxed">
-                  At Zyren, we take your privacy seriously. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our platform for storing, managing, and sharing text snippets, notes, and code.
+                  At Zyren, we take your privacy seriously. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our AI-powered platform for storing, managing, and sharing text snippets, notes, code, and media.
                 </p>
                 <p className="leading-relaxed">
-                  By using Zyren, you consent to the data practices described in this policy. We are committed to transparency and protecting your data in accordance with applicable privacy laws.
+                  By using Zyren, including its AI features, you consent to the data practices described in this policy. We are committed to transparency and protecting your data in accordance with applicable privacy laws.
                 </p>
               </div>
             </section>
@@ -71,6 +71,14 @@ export default function Privacy() {
                   <li className="flex gap-2">
                     <span className="text-primary">→</span>
                     <span><strong>Cookies:</strong> Small data files stored on your device to enhance user experience and analytics</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span><strong>AI Processing Data:</strong> Content you submit to AI features (titles, summaries, vision analysis, chat) is processed by our AI providers</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span><strong>Media Files:</strong> Images, PDFs, and videos uploaded for AI vision analysis</span>
                   </li>
                 </ul>
               </div>
@@ -116,6 +124,18 @@ export default function Privacy() {
                     <span className="text-primary">→</span>
                     <span>Comply with legal obligations and enforce our Terms & Conditions</span>
                   </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Process your content through AI models (Groq, Google Gemini) to provide intelligent features</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Generate titles, summaries, and answers using AI based on your paste content</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Analyze images, PDFs, and videos when you use vision analysis features</span>
+                  </li>
                 </ul>
               </div>
             </section>
@@ -148,10 +168,67 @@ export default function Privacy() {
                     <span className="text-primary">→</span>
                     <span><strong>With Your Consent:</strong> When you explicitly authorize us to share your information</span>
                   </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span><strong>AI Service Providers:</strong> Content submitted to AI features is processed by Groq and Google Gemini APIs according to their respective privacy policies</span>
+                  </li>
                 </ul>
                 <p className="leading-relaxed mt-3">
-                  We do not sell your personal information to third parties for marketing purposes.
+                  We do not sell your personal information to third parties for marketing purposes. AI providers process content only to provide the requested service and do not use it for training models without consent.
                 </p>
+              </div>
+            </section>
+            {/* AI Features Privacy */}
+            <section className="space-y-3">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground flex items-center gap-2">
+                <span className="text-primary">•</span>
+                <span>AI Features & Third-Party Processing</span>
+              </h2>
+              <div className="space-y-2 pl-6">
+                <p className="leading-relaxed">When you use AI-powered features:</p>
+                <ul className="space-y-1.5">
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Your content is sent to AI providers (Groq, Google Gemini) for processing</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>AI providers process content only to generate responses and do not store it permanently</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Vision analysis sends images/PDFs to AI providers for multimodal processing</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>AI-generated content (titles, summaries, answers) is stored with your paste metadata</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>You can choose not to use AI features if you prefer not to share content with AI providers</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>We implement fallback systems (Groq → Gemini) to ensure service reliability</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Do not use AI features for highly sensitive, confidential, or regulated data</span>
+                  </li>
+                </ul>
+                <p className="leading-relaxed mt-3">
+                  <strong>AI Provider Privacy Policies:</strong>
+                </p>
+                <ul className="space-y-1.5">
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Groq: <a href="https://groq.com/privacy-policy/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">groq.com/privacy-policy</a></span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Google Gemini: <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ai.google.dev/gemini-api/terms</a></span>
+                  </li>
+                </ul>
               </div>
             </section>
             {}

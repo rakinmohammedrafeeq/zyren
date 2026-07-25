@@ -12,6 +12,18 @@ build/
 # Env & secrets
 .env
 *.env.*
+application-local.yaml
+application-local.yml
+application-local.properties
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+credentials.json
+secrets.json
+secrets.yaml
+service-account*.json
 
 # Logs
 *.log

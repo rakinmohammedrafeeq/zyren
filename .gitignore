@@ -17,10 +17,19 @@ pnpm-lock.yaml
 yarn.lock
 package-lock.json
 
-# Environment
+# Environment & Secrets
 .env
 .env.*
 !*.env.example
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+credentials.json
+secrets.json
+secrets.yaml
+service-account*.json
 
 # Logs
 logs/

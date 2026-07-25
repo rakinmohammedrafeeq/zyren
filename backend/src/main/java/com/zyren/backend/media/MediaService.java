@@ -47,11 +47,21 @@ public class MediaService {
 
         String contentType = file.getContentType();
         Map<String, Object> uploadParams = new HashMap<>();
+        String resourceType;
+        
         if ("application/pdf".equals(contentType)) {
-            uploadParams.put("resource_type", "raw");
+            resourceType = "image"; // Upload PDF as image to generate preview
+            uploadParams.put("resource_type", "image");
+            uploadParams.put("format", "jpg"); // Convert first page to JPG preview
+            uploadParams.put("page", 1); // Use first page for preview
+        } else if (contentType != null && contentType.startsWith("video")) {
+            resourceType = "video";
+            uploadParams.put("resource_type", "video");
         } else {
+            resourceType = "image";
             uploadParams.put("resource_type", "image");
         }
+        
         uploadParams.put("folder", "zyren/pastes");
         uploadParams.put("use_filename", true);
         uploadParams.put("unique_filename", true);
@@ -62,7 +72,7 @@ public class MediaService {
         String secureUrl = (String) uploadResult.get("secure_url");
         String publicId = (String) uploadResult.get("public_id");
 
-        return new MediaUploadResponse(secureUrl, publicId, (String) uploadParams.get("resource_type"));
+        return new MediaUploadResponse(secureUrl, publicId, resourceType);
     }
 
     public void delete(Long pasteId, String publicId) throws IOException {
@@ -80,7 +90,16 @@ public class MediaService {
             throw new RuntimeException("Media does not belong to paste");
         }
 
-        String resourceType = paste.getMediaType() == null ? "image" : paste.getMediaType();
+        // Determine correct resource type for deletion
+        String resourceType = "image"; // Default
+        if (paste.getMediaType() != null) {
+            if (paste.getMediaType().equals("video")) {
+                resourceType = "video";
+            } else if (paste.getMediaType().equals("raw")) {
+                resourceType = "raw";
+            }
+        }
+        
         cloudinary.uploader().destroy(publicId, ObjectUtils.asMap(
                 "resource_type", resourceType,
                 "invalidate", true

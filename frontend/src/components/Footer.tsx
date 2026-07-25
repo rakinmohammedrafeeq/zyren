@@ -96,8 +96,9 @@ export function Footer() {
               <h3 className="text-lg font-semibold tracking-tight">Zyren</h3>
             </Link>
             <p className="text-sm text-foreground/70 leading-relaxed">
-              A secure, full-stack platform for storing, managing, and sharing text, code, and media — privately or publicly — with instant access through shareable codes and robust security.
+              AI-powered paste sharing platform. Store, manage, and share code with intelligent features — secure, fast, and modern.
             </p>
+            <p className="text-xs text-foreground/60 mt-2">Version 1.2.0 • Powered by AI</p>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setLinkedInModalOpen(true)}
@@ -193,7 +194,7 @@ export function Footer() {
         {}
         <div className="pt-8 border-t border-border/30">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-            <p className="text-xs text-foreground/60">© 2026 Zyren. Powerful, simple, secure text & code sharing.</p>
+            <p className="text-xs text-foreground/60">© 2025 Zyren v1.2.0 • AI-powered secure paste sharing platform</p>
             <div className="flex gap-6">
               <Link to="/privacy" className="text-foreground/60 hover:text-primary transition-colors duration-200">Privacy</Link>
               <Link to="/terms" className="text-foreground/60 hover:text-primary transition-colors duration-200">Terms</Link>

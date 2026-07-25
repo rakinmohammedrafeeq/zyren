@@ -58,10 +58,10 @@ export default function Login() {
           <Card className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-black dark:text-white">
-                Login
+                Welcome Back to Zyren
               </CardTitle>
               <CardDescription className="text-gray-600 dark:text-gray-400">
-                Enter your credentials to access your account
+                Sign in to access your pastes and AI-powered features
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -113,8 +113,8 @@ export default function Login() {
                 <button
                   type="button"
                   onClick={() => {
-                    // window.location.href = "http://localhost:8080/oauth2/authorization/google";
-                    window.location.href = "https://zyren-backend.onrender.com/oauth2/authorization/google";
+                    const backendUrl = import.meta.env.VITE_API_BASE_URL?.replace('/api', '') || 'http://localhost:8080';
+                    window.location.href = `${backendUrl}/oauth2/authorization/google`;
                   }}
                   className="w-full flex items-center justify-center gap-2 py-2 rounded-lg border bg-white text-black border-gray-300 hover:bg-gray-100 dark:bg-neutral-800 dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 transition"
                 >

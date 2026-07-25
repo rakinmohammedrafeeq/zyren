@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { MediaPreview } from '@/components/MediaPreview';
+import AITitleGenerator from '@/components/AITitleGenerator';
 
 interface Paste { id: number; title: string; content: string; mediaUrl?: string; mediaPublicId?: string; mediaType?: string; }
 
@@ -72,7 +73,8 @@ export default function EditPaste() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:8080/api/media/upload', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+      const response = await fetch(`${apiBaseUrl}/media/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -133,6 +135,12 @@ export default function EditPaste() {
         params.set('mediaType', '');
       }
       await api.put(`/paste/${id}`, params, { suppressErrorToast: true });
+      
+      // Clear cached summary so it regenerates with new content
+      if (id) {
+        localStorage.removeItem(`summary_${id}`);
+      }
+      
       toast.success('Paste updated successfully!');
       navigate('/my-pastes');
     } catch (error) {
@@ -167,9 +175,15 @@ export default function EditPaste() {
               <p className="text-xs text-muted-foreground">* indicates required fields</p>
 
               <div className="space-y-2">
-                <Label htmlFor="title">
-                  Title <span className="text-red-500">*</span>
-                </Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="title">
+                    Title <span className="text-red-500">*</span>
+                  </Label>
+                  <AITitleGenerator 
+                    content={content} 
+                    onTitleGenerated={(generatedTitle) => setTitle(generatedTitle)} 
+                  />
+                </div>
                 <Input
                   id="title"
                   value={title}

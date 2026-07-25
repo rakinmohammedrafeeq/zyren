@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Loader2, Trash2, Edit, ExternalLink, Copy } from 'lucide-react';
 import { MediaPreview } from '@/components/MediaPreview';
 import Linkify from "linkify-react";
+import AISummaryCard from '@/components/AISummaryCard';
 
 interface Paste {
   id: number;
@@ -31,7 +32,11 @@ export default function MyPastes() {
     const fetchPastes = async () => {
       try {
         const response = await api.get('/paste/me', { suppressErrorToast: true });
-        setPastes(response.data);
+        // Sort pastes by createdAt in descending order (latest first)
+        const sortedPastes = (response.data as Paste[]).sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setPastes(sortedPastes);
       } catch (error) {
         type Err = { response?: { data?: { message?: string } } };
         const err = error as Err;
@@ -145,15 +150,23 @@ export default function MyPastes() {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {/* AI Summary Card */}
+                  <AISummaryCard 
+                    content={paste.content} 
+                    pasteId={paste.id.toString()} 
+                    mediaUrl={paste.mediaUrl}
+                    mediaType={paste.mediaType}
+                  />
+
                   {paste.mediaUrl && paste.mediaPublicId && paste.mediaType && (
-                    <div className="mb-4">
+                    <div className="mb-4 mt-4">
                       <MediaPreview
                         media={{ secureUrl: paste.mediaUrl, publicId: paste.mediaPublicId, resourceType: paste.mediaType }}
                         isPublicView={false}
                       />
                     </div>
                   )}
-                  <div className="whitespace-pre-wrap break-words text-black dark:text-white">
+                  <div className="whitespace-pre-wrap break-words text-black dark:text-white mt-4">
                     <Linkify
                       options={{
                         target: "_blank",

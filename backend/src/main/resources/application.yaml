@@ -83,6 +83,30 @@ cloudinary:
   api-key: ${CLOUDINARY_API_KEY}
   api-secret: ${CLOUDINARY_API_SECRET}
 
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+  vision:
+    # Models that support VISION + TEXT (for image/PDF analysis)
+    primary: ${GEMINI_VISION_PRIMARY:gemini-3.6-flash}
+    fallback1: ${GEMINI_VISION_FALLBACK1:gemini-3.5-flash}
+    fallback2: ${GEMINI_VISION_FALLBACK2:gemini-3-flash}
+    fallback3: ${GEMINI_VISION_FALLBACK3:gemini-2.5-flash}
+  text:
+    # Models that support TEXT ONLY (for titles, summaries without media)
+    primary: ${GEMINI_TEXT_PRIMARY:gemini-3.5-flash-lite}
+    fallback1: ${GEMINI_TEXT_FALLBACK1:gemini-3.1-flash-lite}
+    fallback2: ${GEMINI_TEXT_FALLBACK2:gemini-3.6-flash}
+    fallback3: ${GEMINI_TEXT_FALLBACK3:gemini-2.5-flash-lite}
+
+groq:
+  api:
+    key: ${GROQ_API_KEY}
+  text:
+    model: ${GROQ_TEXT_MODEL:llama-3.3-70b-versatile}
+  vision:
+    model: ${GROQ_VISION_MODEL:meta-llama/llama-4-maverick-17b-128e-instruct}
+
 server:
   port: ${PORT:8080}
   address: 0.0.0.0
@@ -102,6 +126,10 @@ zyren:
   mail:
 #    from: ${MAIL_FROM}
     to: ${MAIL_TO}
+
+app:
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:5173}
 
 management:
   server:

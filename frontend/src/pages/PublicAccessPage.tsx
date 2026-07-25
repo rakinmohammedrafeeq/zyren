@@ -25,8 +25,14 @@ export default function PublicAccessPage() {
           className="w-full max-w-md space-y-8"
         >
           <div className="text-center space-y-3">
-            <p className="text-foreground text-xl font-medium">
-              Enter a paste code to view its content
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Access Public Paste
+            </h1>
+            <p className="text-foreground/80 text-base md:text-lg">
+              Enter a paste code to view its content instantly
+            </p>
+            <p className="text-xs text-foreground/60">
+              Pastes may include AI-generated summaries and vision analysis
             </p>
           </div>
           <motion.div

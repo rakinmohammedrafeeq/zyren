@@ -36,10 +36,10 @@ export default function Terms() {
               </h2>
               <div className="space-y-2 pl-6">
                 <p className="leading-relaxed">
-                  Welcome to Zyren. By accessing or using our platform, you agree to be bound by these Terms & Conditions. Zyren provides a secure platform for storing, managing, and sharing text snippets, notes, and code — privately or publicly — through shareable paste links.
+                  Welcome to Zyren. By accessing or using our platform, you agree to be bound by these Terms & Conditions. Zyren provides an AI-powered secure platform for storing, managing, and sharing text snippets, notes, code, and media — privately or publicly — with intelligent features including title generation, content summarization, vision analysis, and interactive chat assistance.
                 </p>
                 <p className="leading-relaxed">
-                  These terms govern your use of our services. If you do not agree with any part of these terms, please do not use Zyren.
+                  These terms govern your use of our services, including AI-powered features. If you do not agree with any part of these terms, please do not use Zyren.
                 </p>
               </div>
             </section>
@@ -140,6 +140,14 @@ export default function Terms() {
                     <span className="text-primary">→</span>
                     <span>Impersonate any person or entity or misrepresent your affiliation</span>
                   </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Abuse AI features by attempting prompt injection, generating harmful content, or circumventing rate limits</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Use AI features to process confidential, sensitive, or personally identifiable information without proper authorization</span>
+                  </li>
                 </ul>
               </div>
             </section>
@@ -175,7 +183,47 @@ export default function Terms() {
                 </ul>
               </div>
             </section>
-            {}
+            {/* AI Features Usage */}
+            <section className="space-y-3">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground flex items-center gap-2">
+                <span className="text-primary">•</span>
+                <span>AI Features Usage</span>
+              </h2>
+              <div className="space-y-2 pl-6">
+                <p className="leading-relaxed">Regarding AI-powered features:</p>
+                <ul className="space-y-1.5">
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>AI features include title generation, content summarization, vision analysis, and interactive chat</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Your content may be processed by third-party AI providers (Groq, Google Gemini) when using AI features</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>AI-generated content is provided "as is" and may not always be accurate or complete</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>You are responsible for verifying AI-generated content before use</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>We reserve the right to implement rate limits on AI feature usage</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>Do not use AI features to process highly sensitive or confidential information</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className="text-primary">→</span>
+                    <span>AI models may change or be updated without prior notice to improve performance</span>
+                  </li>
+                </ul>
+              </div>
+            </section>
+            {/* Security & Abuse */}
             <section className="space-y-3">
               <h2 className="text-xl sm:text-2xl font-semibold text-foreground flex items-center gap-2">
                 <span className="text-primary">•</span>

@@ -13,8 +13,9 @@
 
     <groupId>com.zyren.backend</groupId>
     <artifactId>zyren</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Zyren</name>
+    <version>1.2.0</version>
+    <name>Zyren Backend</name>
+    <description>AI-Powered Paste Sharing - Spring Boot 3.5.7 with Groq and Gemini AI</description>
 
     <properties>
         <java.version>21</java.version>
@@ -124,6 +125,13 @@
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http44</artifactId>
             <version>1.37.0</version>
+        </dependency>
+
+        <!-- OkHttp for API calls -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
         </dependency>
     </dependencies>
 

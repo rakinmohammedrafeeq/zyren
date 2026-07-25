@@ -49,9 +49,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                   onClick={() => navigate("/")}
                 />
               </div>
-              <CardTitle className="text-xl">Get Started</CardTitle>
+              <CardTitle className="text-xl">Get Started with Zyren</CardTitle>
               <CardDescription>
-                Enter your email to log in or sign up
+                Create an account to unlock AI-powered paste management
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleEmailSubmit}>

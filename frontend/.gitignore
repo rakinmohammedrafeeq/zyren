@@ -19,10 +19,18 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 
-# Environment
+# Environment & Secrets
 .env
 .env.*
 !.env.example
+.env.local
+.env.production.local
+.env.development.local
+*.pem
+*.key
+credentials.json
+secrets.json
+service-account*.json
 
 # IDE / Editor
 .idea/

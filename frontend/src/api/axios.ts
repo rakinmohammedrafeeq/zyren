@@ -13,14 +13,17 @@ declare module 'axios' {
 const isFormData = (value: unknown): value is FormData =>
   typeof FormData !== 'undefined' && value instanceof FormData;
 
+const isURLSearchParams = (value: unknown): value is URLSearchParams =>
+  typeof URLSearchParams !== 'undefined' && value instanceof URLSearchParams;
+
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     Accept: 'application/json',
   },
   timeout: 30000,
-  // Keep axios from trying to serialize FormData; pass through untouched.
   transformRequest: [(data, headers) => {
+    // Handle FormData (file uploads)
     if (isFormData(data)) {
       if (headers) {
         delete (headers as Record<string, unknown>)['Content-Type'];
@@ -28,6 +31,21 @@ const api: AxiosInstance = axios.create({
       }
       return data;
     }
+    
+    // Handle URLSearchParams (form data)
+    if (isURLSearchParams(data)) {
+      if (headers) {
+        (headers as Record<string, string>)['Content-Type'] = 'application/x-www-form-urlencoded';
+      }
+      return data.toString();
+    }
+    
+    // Handle JSON objects
+    if (data && typeof data === 'object' && headers) {
+      (headers as Record<string, string>)['Content-Type'] = 'application/json';
+      return JSON.stringify(data);
+    }
+    
     return data;
   }],
 });
@@ -102,8 +120,16 @@ api.interceptors.response.use(
         case 409:
           toast.error(serverMessage || 'Conflict.');
           break;
+        case 413:
+          // Payload too large - provide user-friendly message
+          toast.error('Your content is too large. Please try with shorter content or smaller files.');
+          break;
         case 422:
           toast.error(serverMessage || 'Validation error.');
+          break;
+        case 429:
+          // Rate limiting
+          toast.error('Too many requests. Please wait a moment and try again.');
           break;
         case 500:
           toast.error(serverMessage || 'Server error. Please try again later.');

@@ -198,7 +198,7 @@ export default function Landing() {
             <h1 className="text-6xl md:text-7xl font-bold tracking-tight leading-tight">
               Store. Share.{" "}
               <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
-                Secure.
+                Smarter.
               </span>
             </h1>
             <motion.div className="text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed space-y-2">
@@ -206,7 +206,7 @@ export default function Landing() {
                 Stop losing snippets or sharing things the messy way.
               </p>
               <p>
-                Zyren lets you save your code, notes, and files in one place — keep them private, set expiry when needed, or share instantly with a simple code.
+                Save your code, notes, and files in one place. AI writes titles, summarizes content, and reads images. Keep it private or share instantly with a code.
               </p>
             </motion.div>
           </motion.div>
@@ -289,13 +289,13 @@ export default function Landing() {
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight transition-colors duration-200 hover:text-primary mb-8 md:mb-10">About Zyren</h2>
               <div className="space-y-4 text-lg text-foreground/90 leading-relaxed">
                 <p>
-                  Zyren is a modern, full-stack platform built to make sharing text, code, and media simple, secure, and efficient.
+                  Zyren is a modern platform built to make sharing text, code, and media simple, secure, and intelligent.
                 </p>
                 <p>
-                  Whether you're a developer saving reusable code, a student organizing notes, or someone sharing quick snippets — Zyren provides a clean interface, JWT-based security, expiring links, and seamless public sharing through unique codes.
+                  Whether you're a developer saving reusable code, a student organizing notes, or someone sharing quick snippets — Zyren helps you work faster with AI that generates titles, creates summaries, and analyzes your images and documents.
                 </p>
                 <p>
-                  Designed for performance, privacy, and scalability, Zyren ensures your content is always accessible, manageable, and protected.
+                  Clean interface, JWT security, expiring links, and seamless public sharing through unique codes. Your content is always accessible, manageable, and protected.
                 </p>
               </div>
             </div>
@@ -317,9 +317,9 @@ export default function Landing() {
             <div className="grid md:grid-cols-2 gap-8">
               {[
                 { step: "1", title: "Create a paste with title, content, and optional media" },
-                { step: "2", title: "Choose privacy settings (private or public access)" },
-                { step: "3", title: "Zyren securely stores data with authentication and ownership checks" },
-                { step: "4", title: "Share using a unique public code — accessible instantly anywhere" },
+                { step: "2", title: "Use AI to generate titles, get summaries, or analyze attached media" },
+                { step: "3", title: "Choose privacy settings and set optional expiration time" },
+                { step: "4", title: "Share using a unique code — accessible instantly anywhere, or keep it private" },
               ].map((item, index) => (
                 <motion.div
                   key={item.step}
@@ -356,7 +356,7 @@ export default function Landing() {
             className=""
           >
             <h2 className="mb-2 text-3xl md:text-4xl font-bold tracking-tight text-center transition-colors duration-200 hover:text-primary">Features</h2>
-            <p className="text-base md:text-lg text-foreground/90 text-center mb-12">Built with modern technologies like Spring Boot, React, JWT, and Cloudinary for a fast and secure experience.</p>
+            <p className="text-base md:text-lg text-foreground/90 text-center mb-12">Built with modern technologies and powered by Groq & Google Gemini AI for intelligent content management.</p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
@@ -376,8 +376,8 @@ export default function Landing() {
                 },
                 {
                   icon: FileText,
-                  title: "Media Support",
-                  description: "Attach images, PDFs, and files via Cloudinary with secure access and deletion control.",
+                  title: "AI-Powered Features",
+                  description: "Intelligent title generation, content summaries, vision analysis, and interactive chat powered by Groq & Gemini AI.",
                 },
               ].map((feature, index) => (
                 <motion.div
@@ -431,7 +431,7 @@ export default function Landing() {
               {[
                 {
                   question: "Is Zyren free to use?",
-                  answer: "Yes, Zyren is free to use for creating, managing, and sharing pastes. Future enhancements may introduce additional features.",
+                  answer: "Yes, Zyren is free to use for creating, managing, and sharing pastes. All features including AI-powered capabilities are currently free during our beta phase.",
                 },
                 {
                   question: "Can I create private pastes?",
@@ -451,7 +451,23 @@ export default function Landing() {
                 },
                 {
                   question: "What types of content can I share?",
-                  answer: "You can share text, code snippets, and optional media files such as images or documents.",
+                  answer: "You can share text, code snippets, and optional media files such as images, PDFs, and videos. AI features can analyze all content types.",
+                },
+                {
+                  question: "What are AI features and how do they work?",
+                  answer: "Zyren uses Groq and Google Gemini AI to provide intelligent features: automatic title generation, content summarization, vision analysis for images/PDFs, and an interactive chat assistant to answer questions about your pastes.",
+                },
+                {
+                  question: "Is my data safe when using AI features?",
+                  answer: "Your content is processed by trusted AI providers (Groq, Google Gemini) only when you actively use AI features. Content is not stored permanently by AI providers and is processed securely. However, avoid using AI on highly sensitive or confidential information.",
+                },
+                {
+                  question: "Can AI analyze images and documents?",
+                  answer: "Yes! Our AI vision analysis can describe what's in your images, read text from PDFs, and analyze video thumbnails. This works with the chat feature too, so you can ask questions about your media content.",
+                },
+                {
+                  question: "Are there limits on AI usage?",
+                  answer: "During beta, AI features are free with reasonable usage limits. We use multiple AI providers with automatic fallback to ensure high availability and reliability.",
                 },
                 {
                   question: "Is my data secure?",
@@ -467,7 +483,7 @@ export default function Landing() {
                 },
                 {
                   question: "Can I upload files or media?",
-                  answer: "Yes. Zyren supports media uploads such as images and files using secure cloud storage integration.",
+                  answer: "Yes. Zyren supports media uploads such as images, PDFs, and videos (up to 20MB) using secure Cloudinary cloud storage. AI vision analysis can describe what's in your media files.",
                 },
               ].map((faq, index) => (
                 <motion.div
@@ -533,7 +549,7 @@ export default function Landing() {
           >
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-black">Ready to get started?</h2>
             <p className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white dark:text-black mb-10">
-              Start creating, managing, and sharing your content securely with Zyren — fast, reliable, and built for real-world usage.
+              Start creating, managing, and sharing your content securely with Zyren — fast, reliable, and built to make your work easier with intelligent features.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Link to="/login">

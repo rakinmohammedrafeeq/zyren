@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { MediaPreview } from '@/components/MediaPreview';
+import AITitleGenerator from '@/components/AITitleGenerator';
 
 export default function CreatePaste() {
   const [title, setTitle] = useState('');
@@ -42,7 +43,8 @@ export default function CreatePaste() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:8080/api/media/upload', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+      const response = await fetch(`${apiBaseUrl}/media/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -148,9 +150,15 @@ export default function CreatePaste() {
               <p className="text-xs text-muted-foreground">* indicates required fields</p>
 
               <div className="space-y-2">
-                <Label htmlFor="title">
-                  Title <span className="text-red-500">*</span>
-                </Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="title">
+                    Title <span className="text-red-500">*</span>
+                  </Label>
+                  <AITitleGenerator 
+                    content={content} 
+                    onTitleGenerated={(generatedTitle) => setTitle(generatedTitle)} 
+                  />
+                </div>
                 <Input
                   id="title"
                   value={title}
@@ -187,6 +195,9 @@ export default function CreatePaste() {
                   className="cursor-pointer"
                 />
                 <p className="text-xs text-muted-foreground">Supported: JPEG, PNG, WebP, MP4, MOV, PDF (max 15MB)</p>
+                {/*
+                <p className="text-xs text-amber-600 dark:text-amber-500 font-medium">⚠️ Note: Media cannot be changed after paste creation. Choose carefully!</p>
+                */}
                 {renderMediaPreview()}
               </div>
 

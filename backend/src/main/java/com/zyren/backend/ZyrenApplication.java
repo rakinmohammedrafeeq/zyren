@@ -43,10 +43,15 @@ public class ZyrenApplication {
             System.setProperty("cloudinary.api-key", dotenv.get("CLOUDINARY_API_KEY"));
             System.setProperty("cloudinary.api-secret", dotenv.get("CLOUDINARY_API_SECRET"));
 
+            System.setProperty("gemini.api.key", dotenv.get("GEMINI_API_KEY"));
+            System.setProperty("groq.api.key", dotenv.get("GROQ_API_KEY"));
+
             System.setProperty("spring.security.oauth2.client.registration.google.client-id",
                     dotenv.get("GOOGLE_CLIENT_ID"));
             System.setProperty("spring.security.oauth2.client.registration.google.client-secret",
                     dotenv.get("GOOGLE_CLIENT_SECRET"));
+
+            System.setProperty("app.frontend.url", dotenv.get("FRONTEND_URL"));
 
         }
 
