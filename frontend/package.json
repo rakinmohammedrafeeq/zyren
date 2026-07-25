@@ -53,6 +53,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.15.0",
     "input-otp": "^1.4.2",
+    "linkifyjs": "^4.1.4",
     "linkify-react": "^4.3.2",
     "lucide-react": "^0.511.0",
     "next-themes": "^0.4.6",
