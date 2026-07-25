@@ -69,7 +69,7 @@ public class PasteService {
         UserEntity owner = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return pasteRepository.findByOwnerAndExpiredFalse(owner);
+        return pasteRepository.findByOwnerAndExpiredFalseOrderByCreatedAtDesc(owner);
     }
 
     public PasteEntity getByCode(String code) {

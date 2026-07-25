@@ -17,7 +17,7 @@ public interface PasteRepository extends JpaRepository<PasteEntity, Long> {
 
     List<PasteEntity> findByOwner(UserEntity owner);
 
-    List<PasteEntity> findByOwnerAndExpiredFalse(UserEntity owner);
+    List<PasteEntity> findByOwnerAndExpiredFalseOrderByCreatedAtDesc(UserEntity owner);
 
     Optional<PasteEntity> findByMediaPublicId(String mediaPublicId);
 
