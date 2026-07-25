@@ -80,7 +80,7 @@ public class AIService {
             return "No content to summarize.";
         }
 
-        String prompt = "Summarize the following content. Provide a clear, comprehensive summary that captures the key points and main ideas. Use plain text without markdown formatting.\n\n" + content;
+        String prompt = "Summarize the following content. Provide a clear, comprehensive summary that captures the key points and main ideas. Use markdown formatting to enhance readability - feel free to use asterisks (*) for emphasis and bullet points, hashtags (#) for headers, and dashes (--) for lists or separators.\n\n" + content;
 
         return callGroqAPI(prompt);
     }
@@ -100,29 +100,29 @@ public class AIService {
             if ("pdf".equalsIgnoreCase(mediaType)) {
                 prompt = "You are analyzing a PDF document AND separate text content.\n\n" +
                         "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First paragraph: Describe what you see in the PDF document (any text, images, structure, formatting, dates, logos, information visible)\n" +
+                        "1. First section: Describe what you see in the PDF document (any text, images, structure, formatting, dates, logos, information visible)\n" +
                         "2. Add TWO blank lines\n" +
-                        "3. Second paragraph: Provide a summary of the user's text content below\n" +
-                        "4. Use plain text only - NO markdown formatting (* # - _ etc.)\n" +
-                        "5. Each paragraph should be comprehensive and detailed\n\n" +
+                        "3. Second section: Provide a summary of the user's text content below\n" +
+                        "4. Use markdown formatting for better readability - use asterisks (*) for emphasis and lists, hashtags (#) for headers, and dashes (--) for separators\n" +
+                        "5. Each section should be comprehensive and detailed\n\n" +
                         "User's text content:\n" + content;
             } else if ("video".equalsIgnoreCase(mediaType)) {
                 prompt = "You are analyzing a video thumbnail AND separate text content.\n\n" +
                         "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First paragraph: Describe what you see in the video thumbnail (scene, people, objects, text overlays, colors, composition)\n" +
+                        "1. First section: Describe what you see in the video thumbnail (scene, people, objects, text overlays, colors, composition)\n" +
                         "2. Add TWO blank lines\n" +
-                        "3. Second paragraph: Provide a summary of the user's text content below\n" +
-                        "4. Use plain text only - NO markdown formatting (* # - _ etc.)\n" +
-                        "5. Each paragraph should be comprehensive and detailed\n\n" +
+                        "3. Second section: Provide a summary of the user's text content below\n" +
+                        "4. Use markdown formatting for better readability - use asterisks (*) for emphasis and lists, hashtags (#) for headers, and dashes (--) for separators\n" +
+                        "5. Each section should be comprehensive and detailed\n\n" +
                         "User's text content:\n" + content;
             } else {
                 prompt = "You are analyzing an image AND separate text content.\n\n" +
                         "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First paragraph: Describe what you see in the image with all details (objects, people, text, colors, composition, any visible information)\n" +
+                        "1. First section: Describe what you see in the image with all details (objects, people, text, colors, composition, any visible information)\n" +
                         "2. Add TWO blank lines\n" +
-                        "3. Second paragraph: Provide a summary of the user's text content below\n" +
-                        "4. Use plain text only - NO markdown formatting (* # - _ etc.)\n" +
-                        "5. Each paragraph should be comprehensive and detailed\n\n" +
+                        "3. Second section: Provide a summary of the user's text content below\n" +
+                        "4. Use markdown formatting for better readability - use asterisks (*) for emphasis and lists, hashtags (#) for headers, and dashes (--) for separators\n" +
+                        "5. Each section should be comprehensive and detailed\n\n" +
                         "User's text content:\n" + content;
             }
             
@@ -216,9 +216,9 @@ public class AIService {
                 
                 List<Map<String, Object>> parts = new ArrayList<>();
                 
-                // Text part - asking about the image with explicit NO MARKDOWN instruction
+                // Text part - asking about the image with markdown formatting enabled
                 Map<String, Object> textPart = new HashMap<>();
-                textPart.put("text", "Describe what you see in this image in detail. Include any text visible in the image, objects, people, dates, seals, stamps, and any other relevant information. Be specific and thorough. IMPORTANT: Use plain text only. Do NOT use markdown formatting such as asterisks (*), hashtags (#), dashes (---), or any other markdown symbols. Write in clear, simple paragraphs without special formatting.");
+                textPart.put("text", "Describe what you see in this image in detail. Include any text visible in the image, objects, people, dates, seals, stamps, and any other relevant information. Be specific and thorough. IMPORTANT: Use markdown formatting to enhance readability - use asterisks (*) for emphasis and bullet points, hashtags (#) for headers, and dashes (--) for lists or separators to organize your response clearly.");
                 parts.add(textPart);
                 
                 // Image part with inline base64 data
@@ -342,7 +342,7 @@ public class AIService {
                            "INSTRUCTIONS: Answer the question based on BOTH the image/document you can see AND the text content provided. " +
                            "If the question is about what's in the image, describe what you see. " +
                            "If the question is about the content in general, combine information from both sources. " +
-                           "CRITICAL: Use plain text only. Do NOT use markdown formatting such as asterisks (*), hashtags (#), dashes (---), underscores (_), or any other markdown symbols. Write in clear, simple paragraphs.";
+                           "FORMATTING: Use markdown formatting to enhance readability - use asterisks (*) for emphasis and bullet points, hashtags (#) for headers, and dashes (--) for lists or separators to organize your response clearly.";
             
             return callGroqVisionAPI(prompt, mediaUrl);
             

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Send, Loader2, Minimize2, Maximize2, Globe, FileText, Volume2 } from 'lucide-react';
 import { chatWithAI, translateContent, summarizeContent } from '../api/aiApi';
 import { toast } from 'sonner';
+import ReactMarkdown from 'react-markdown';
 
 interface AIChatPanelProps {
   content: string;
@@ -162,7 +163,7 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div className="h-96 overflow-y-auto p-4 space-y-4">
+          <div className="h-96 overflow-y-auto p-6 space-y-5">
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
                 <Sparkles className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -187,13 +188,42 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
+                    className={`max-w-[85%] rounded-xl px-5 py-4 ${
                       msg.role === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    {msg.role === 'ai' ? (
+                      <div className="text-sm prose prose-sm dark:prose-invert max-w-none">
+                        <ReactMarkdown
+                          components={{
+                            h1: ({node, ...props}) => <h1 className="text-lg font-bold mt-3 mb-2" {...props} />,
+                            h2: ({node, ...props}) => <h2 className="text-base font-bold mt-3 mb-2" {...props} />,
+                            h3: ({node, ...props}) => <h3 className="text-sm font-bold mt-2 mb-1" {...props} />,
+                            p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc list-inside mb-3 space-y-1.5" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-3 space-y-1.5" {...props} />,
+                            li: ({node, ...props}) => <li className="mb-1.5 leading-relaxed" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
+                            em: ({node, ...props}) => <em className="italic" {...props} />,
+                            hr: ({node, ...props}) => <hr className="my-4 border-t border-border" {...props} />,
+                            a: ({node, ...props}) => (
+                              <a 
+                                className="text-primary underline hover:text-primary/80 transition-colors cursor-pointer" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                {...props} 
+                              />
+                            ),
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+                    )}
                   </div>
                 </div>
               ))

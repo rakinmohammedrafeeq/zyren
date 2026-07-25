@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Sparkles, Loader2, FileText, Clock } from 'lucide-react';
 import { summarizeContent } from '../api/aiApi';
+import ReactMarkdown from 'react-markdown';
 
 interface AISummaryCardProps {
   content: string;
@@ -44,39 +45,33 @@ export default function AISummaryCard({ content, pasteId, mediaUrl, mediaType }:
     }
   }, [summary]);
 
-  const formatSummary = (text: string): string => {
-    // Clean markdown first
-    let cleaned = text
-      .replace(/\*\*\*(.+?)\*\*\*/g, '$1') // Remove bold+italic ***text***
-      .replace(/\*\*(.+?)\*\*/g, '$1')     // Remove bold **text**
-      .replace(/\*(.+?)\*/g, '$1')         // Remove italic *text*
-      .replace(/#{1,6}\s+(.+)/g, '$1')     // Remove headers ### text
-      .replace(/\[(.+?)\]\(.+?\)/g, '$1')  // Remove links [text](url)
-      .replace(/`(.+?)`/g, '$1');          // Remove inline code `text`
-    
-    // Preserve paragraph breaks by replacing double newlines with a marker
-    cleaned = cleaned.replace(/\n\n/g, '|||PARAGRAPH|||');
-    
-    // Remove single newlines (replace with space)
-    cleaned = cleaned.replace(/\n/g, ' ');
-    
-    // Restore paragraph breaks
-    cleaned = cleaned.replace(/\|\|\|PARAGRAPH\|\|\|/g, '\n\n');
-    
-    return cleaned.trim();
-  };
-
   const renderSummary = (text: string) => {
-    const formatted = formatSummary(text);
-    const paragraphs = formatted.split('\n\n').filter(p => p.trim());
-    
     return (
-      <div className="space-y-3">
-        {paragraphs.map((paragraph, index) => (
-          <p key={index} className="text-sm text-muted-foreground">
-            {paragraph.trim()}
-          </p>
-        ))}
+      <div className="text-sm text-muted-foreground prose prose-sm dark:prose-invert max-w-none">
+        <ReactMarkdown
+          components={{
+            h1: ({node, ...props}) => <h1 className="text-base font-bold mt-2 mb-1 text-foreground" {...props} />,
+            h2: ({node, ...props}) => <h2 className="text-sm font-bold mt-2 mb-1 text-foreground" {...props} />,
+            h3: ({node, ...props}) => <h3 className="text-sm font-semibold mt-1 mb-1 text-foreground" {...props} />,
+            p: ({node, ...props}) => <p className="mb-2 last:mb-0 text-muted-foreground" {...props} />,
+            ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-1" {...props} />,
+            ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-1" {...props} />,
+            li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />,
+            strong: ({node, ...props}) => <strong className="font-bold text-foreground" {...props} />,
+            em: ({node, ...props}) => <em className="italic" {...props} />,
+            hr: ({node, ...props}) => <hr className="my-2 border-t border-border" {...props} />,
+            a: ({node, ...props}) => (
+              <a 
+                className="text-primary underline hover:text-primary/80 transition-colors cursor-pointer" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                {...props} 
+              />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
       </div>
     );
   };
