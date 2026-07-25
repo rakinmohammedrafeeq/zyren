@@ -33,7 +33,7 @@ export default function MyPastes() {
       try {
         const response = await api.get('/paste/me', { suppressErrorToast: true });
         // Sort pastes by createdAt in descending order (latest first)
-        const sortedPastes = (response.data as Paste[]).sort((a, b) => 
+        const sortedPastes = (response.data as Paste[]).sort((a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         setPastes(sortedPastes);
@@ -113,30 +113,29 @@ export default function MyPastes() {
             {pastes.map((paste) => (
               <Card key={paste.id}>
                 <CardHeader>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                    <div className="min-w-0 flex-1">
-                      <CardTitle className="truncate">{paste.title}</CardTitle>
-                      <CardDescription className="mt-1 text-xs sm:text-sm">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle>{paste.title}</CardTitle>
+                      <CardDescription>
                         Code: <span className="font-mono font-semibold">{paste.code}</span> • Created: {new Date(paste.createdAt).toLocaleString()}
                         {paste.expiryAt && ` • Expires: ${new Date(paste.expiryAt).toLocaleString()}`}
                       </CardDescription>
                     </div>
-                    <div className="flex gap-2 flex-shrink-0">
+                    <div className="flex gap-2">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => copyPublicLink(paste.code)}
-                        title="Copy public link"
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
                       <Link to={`/public/${paste.code}`}>
-                        <Button variant="outline" size="sm" title="View public paste">
+                        <Button variant="outline" size="sm">
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                       </Link>
                       <Link to={`/edit-paste/${paste.id}`}>
-                        <Button variant="outline" size="sm" title="Edit paste">
+                        <Button variant="outline" size="sm">
                           <Edit className="h-4 w-4" />
                         </Button>
                       </Link>
@@ -144,7 +143,6 @@ export default function MyPastes() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleDeleteClick(paste.id)}
-                        title="Delete paste"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -153,9 +151,9 @@ export default function MyPastes() {
                 </CardHeader>
                 <CardContent>
                   {/* AI Summary Card */}
-                  <AISummaryCard 
-                    content={paste.content} 
-                    pasteId={paste.id.toString()} 
+                  <AISummaryCard
+                    content={paste.content}
+                    pasteId={paste.id.toString()}
                     mediaUrl={paste.mediaUrl}
                     mediaType={paste.mediaType}
                   />

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -38,6 +39,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+
 :root {
   --radius: 0.625rem;
   --background: oklch(0.99 0.005 25);
@@ -72,6 +74,7 @@
   --sidebar-border: oklch(0.90 0.02 30);
   --sidebar-ring: oklch(0.55 0.22 25);
 }
+
 .dark {
   --background: oklch(0.12 0.015 25);
   --foreground: oklch(0.98 0.005 25);
@@ -105,39 +108,24 @@
   --sidebar-border: oklch(0.25 0.02 30);
   --sidebar-ring: oklch(0.70 0.20 25);
 }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    /* Remove tap highlight on mobile */
-    -webkit-tap-highlight-color: transparent;
   }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: var(--app-nav-h);
-    /* Momentum scrolling on iOS */
-    -webkit-overflow-scrolling: touch;
   }
+
   body {
     @apply bg-background text-foreground;
-    /* Prevent horizontal scroll on mobile */
-    overflow-x: hidden;
   }
+
   button:not([disabled]),
   [role="button"]:not([disabled]) {
     cursor: pointer;
-    /* Ensure minimum touch target */
-    min-height: 44px;
-  }
-  /* Prevent iOS zoom on input focus by ensuring font-size >= 16px */
-  input,
-  textarea,
-  select {
-    font-size: max(16px, 1em);
-  }
-  /* Make images responsive by default */
-  img {
-    max-width: 100%;
-    height: auto;
   }
 
   :root {

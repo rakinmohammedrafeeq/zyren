@@ -90,10 +90,10 @@ export default function AdminUserPastes() {
             {pastes.map((paste) => (
               <Card key={paste.id}>
                 <CardHeader>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                    <div className="min-w-0 flex-1">
-                      <CardTitle className="truncate">{paste.title}</CardTitle>
-                      <CardDescription className="mt-1 text-xs sm:text-sm">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle>{paste.title}</CardTitle>
+                      <CardDescription>
                         Code: <span className="font-mono font-semibold">{paste.code}</span> • Created: {new Date(paste.createdAt).toLocaleString()}
                         {paste.expiryAt && ` • Expires: ${new Date(paste.expiryAt).toLocaleString()}`}
                       </CardDescription>
@@ -101,9 +101,7 @@ export default function AdminUserPastes() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="self-start sm:self-auto flex-shrink-0"
                       onClick={() => handleDeleteClick(paste)}
-                      title="Delete paste"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

@@ -98,14 +98,14 @@ export default function Landing() {
   };
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {}
+      { }
       <motion.section
         id="hero"
         style={{ opacity }}
         className="relative overflow-hidden flex flex-col items-center justify-center px-4 py-12 min-h-[90svh]"
         onClick={handleClick}
       >
-        {}
+        { }
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           {particles.map((p) =>
             p.variant === "dot" ? (
@@ -137,7 +137,7 @@ export default function Landing() {
             )
           )}
         </div>
-        {}
+        { }
         <div
           className="pointer-events-none absolute inset-0 -z-10"
           aria-hidden="true"
@@ -145,7 +145,7 @@ export default function Landing() {
             background: 'radial-gradient(circle at 50% 40%, rgba(239, 68, 68, 0.28) 0%, rgba(239, 68, 68, 0.12) 25%, transparent 60%)'
           }}
         />
-        {}
+        { }
         <div className="pointer-events-none absolute left-0 right-0 bottom-0 -z-20 overflow-hidden h-32 md:h-48" aria-hidden="true">
           <motion.svg
             viewBox="0 0 1440 120"
@@ -154,7 +154,7 @@ export default function Landing() {
             animate={reduceMotion ? { x: "0%" } : { x: ["0%", "-50%"] }}
             transition={reduceMotion ? { duration: 0 } : { duration: 14, repeat: Infinity, ease: "linear" }}
           >
-            {}
+            { }
             <path d="M0,80 C240,140 480,20 720,60 C960,100 1200,60 1440,100 L1440,120 L0,120 Z" />
             <path d="M0,80 C240,140 480,20 720,60 C960,100 1200,60 1440,100 L1440,120 L0,120 Z" transform="translate(1440, 0)" />
           </motion.svg>
@@ -165,7 +165,7 @@ export default function Landing() {
             animate={reduceMotion ? { x: "0%" } : { x: ["0%", "-50%"] }}
             transition={reduceMotion ? { duration: 0 } : { duration: 18, repeat: Infinity, ease: "linear" }}
           >
-            {}
+            { }
             <path d="M0,90 C240,60 480,120 720,80 C960,40 1200,100 1440,60 L1440,120 L0,120 Z" />
             <path d="M0,90 C240,60 480,120 720,80 C960,40 1200,100 1440,60 L1440,120 L0,120 Z" transform="translate(1440, 0)" />
           </motion.svg>
@@ -176,32 +176,32 @@ export default function Landing() {
             animate={reduceMotion ? { x: "0%" } : { x: ["0%", "-50%"] }}
             transition={reduceMotion ? { duration: 0 } : { duration: 24, repeat: Infinity, ease: "linear" }}
           >
-            {}
+            { }
             <path d="M0,100 C240,80 480,100 720,90 C960,80 1200,100 1440,90 L1440,120 L0,120 Z" />
             <path d="M0,100 C240,80 480,100 720,90 C960,80 1200,100 1440,90 L1440,120 L0,120 Z" transform="translate(1440, 0)" />
           </motion.svg>
         </div>
-        {}
+        { }
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 md:h-20 z-0"
         >
           <div className="w-full h-full bg-gradient-to-b from-transparent to-background" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8 md:-mt-24">
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8 -mt-16 md:-mt-24">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="space-y-4"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+            <h1 className="text-6xl md:text-7xl font-bold tracking-tight leading-tight">
               Store. Share.{" "}
               <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
                 Smarter.
               </span>
             </h1>
-            <motion.div className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed space-y-2 px-2">
+            <motion.div className="text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed space-y-2">
               <p>
                 Stop losing snippets or sharing things the messy way.
               </p>
@@ -214,20 +214,20 @@ export default function Landing() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full px-4 sm:px-0"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             {token ? (
               <>
-                <Link to="/my-pastes" className="w-full sm:w-auto">
+                <Link to="/my-pastes">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
+                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200">
                       My Pastes →
                     </Button>
                   </motion.div>
                 </Link>
-                <Link to="/create-paste" className="w-full sm:w-auto">
+                <Link to="/create-paste">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200">
                       Create Paste →
                     </Button>
                   </motion.div>
@@ -235,16 +235,16 @@ export default function Landing() {
               </>
             ) : (
               <>
-                <Link to="/login" className="w-full sm:w-auto">
+                <Link to="/login">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
+                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200">
                       Get Started →
                     </Button>
                   </motion.div>
                 </Link>
-                <Link to="/public" className="w-full sm:w-auto">
+                <Link to="/public">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200">
                       Explore Public Codes →
                     </Button>
                   </motion.div>
@@ -253,7 +253,7 @@ export default function Landing() {
             )}
           </motion.div>
         </div>
-        {}
+        { }
         <div className="pointer-events-none absolute inset-0 z-40">
           {bursts.map((b) => (
             <motion.div
@@ -273,7 +273,7 @@ export default function Landing() {
           ))}
         </div>
       </motion.section>
-      {}
+      { }
       <section id="about" className="py-16 px-4 bg-background transition-colors">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -302,7 +302,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-      {}
+      { }
       <section id="how-it-works" className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -345,7 +345,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-      {}
+      { }
       <section id="features" className="py-16 px-4 bg-background transition-colors">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -408,7 +408,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-      {}
+      { }
       <motion.section
         id="faq"
         className="py-16 px-4"
@@ -537,7 +537,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </motion.section>
-      {}
+      { }
       <section id="impact" className="py-16 px-4 bg-primary">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
@@ -547,21 +547,21 @@ export default function Landing() {
             transition={{ duration: 0.6 }}
             className="space-y-8"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-black">Ready to get started?</h2>
-            <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white dark:text-black mb-10 px-2">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-black">Ready to get started?</h2>
+            <p className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white dark:text-black mb-10">
               Start creating, managing, and sharing your content securely with Zyren — fast, reliable, and built to make your work easier with intelligent features.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4 w-full">
-              <Link to="/login" className="w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+              <Link to="/login">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 bg-white dark:bg-black text-black dark:text-white hover:bg-white/90 dark:hover:bg-black/90 w-full sm:w-auto">
+                  <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 bg-white dark:bg-black text-black dark:text-white hover:bg-white/90 dark:hover:bg-black/90">
                     Get Started →
                   </Button>
                 </motion.div>
               </Link>
-              <Link to="/public" className="w-full sm:w-auto">
+              <Link to="/public">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-white/20 border-white dark:bg-black/20 dark:border-black text-white dark:text-black hover:bg-white hover:text-primary dark:hover:bg-gray-900 dark:hover:text-primary shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-white/20 border-white dark:bg-black/20 dark:border-black text-white dark:text-black hover:bg-white hover:text-primary dark:hover:bg-gray-900 dark:hover:text-primary shadow-md hover:shadow-lg transition-all duration-200">
                     Explore Public Codes →
                   </Button>
                 </motion.div>
@@ -570,7 +570,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-      {}
+      { }
       <section id="contact" className="py-16 px-4">
         <div className="max-w-2xl mx-auto">
           <motion.div
@@ -581,12 +581,12 @@ export default function Landing() {
             className="space-y-8"
           >
             <div className="text-center space-y-3">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight transition-colors duration-200 hover:text-primary">Get In Touch</h2>
-              <p className="text-base sm:text-lg text-foreground/90 leading-relaxed mb-10">
-                Have questions, feedback, or ideas? Reach out — we'd love to hear from you.
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight transition-colors duration-200 hover:text-primary">Get In Touch</h2>
+              <p className="text-lg text-foreground/90 leading-relaxed mb-10">
+                Have questions, feedback, or ideas? Reach out — we’d love to hear from you.
               </p>
             </div>
-            {}
+            { }
             <motion.div
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
@@ -606,8 +606,8 @@ export default function Landing() {
                   const email = (fd.get('email') || '').toString();
                   const message = (fd.get('message') || '').toString();
                   try {
-                      await api.post('/contact', { name, email, message }, { suppressErrorToast: true });
-                      toast.success('Message sent successfully');
+                    await api.post('/contact', { name, email, message }, { suppressErrorToast: true });
+                    toast.success('Message sent successfully');
                     form.reset();
                   } catch (err) {
                     const e2 = err as { response?: { data?: { message?: string } } };
@@ -662,7 +662,7 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-      {}
+      { }
       {showScrollTop && (
         <motion.button
           type="button"

@@ -49,9 +49,9 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
       // Display user-friendly error message
       const errorMessage = error.message || 'Failed to get AI response. Please try again.';
       toast.error(errorMessage);
-      const errorResponse: Message = { 
-        role: 'ai', 
-        content: 'Sorry, I encountered an error. Please try again or try with shorter content.' 
+      const errorResponse: Message = {
+        role: 'ai',
+        content: 'Sorry, I encountered an error. Please try again or try with shorter content.'
       };
       setMessages((prev) => [...prev, errorResponse]);
     } finally {
@@ -71,7 +71,7 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
           detectedMediaType = 'pdf';
         }
       }
-      
+
       const summary = await summarizeContent(content, mediaUrl, detectedMediaType);
       const aiMessage: Message = {
         role: 'ai',
@@ -116,18 +116,18 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
 
   if (!isOpen) {
     return (
-      <div className="flex flex-col sm:flex-row gap-2 mt-4">
+      <div className="flex gap-2 mt-4">
         <button
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
-          <Sparkles className="h-4 w-4 flex-shrink-0" />
+          <Sparkles className="h-4 w-4" />
           Ask AI About This
         </button>
         <button
           onClick={handleSummarize}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border rounded-lg hover:bg-accent transition-colors disabled:opacity-50 text-sm"
+          className="inline-flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-accent transition-colors disabled:opacity-50"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
           Summarize
@@ -188,32 +188,31 @@ export default function AIChatPanel({ content, mediaUrl }: AIChatPanelProps) {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-xl px-5 py-4 ${
-                      msg.role === 'user'
+                    className={`max-w-[85%] rounded-xl px-5 py-4 ${msg.role === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
-                    }`}
+                      }`}
                   >
                     {msg.role === 'ai' ? (
                       <div className="text-sm prose prose-sm dark:prose-invert max-w-none">
                         <ReactMarkdown
                           components={{
-                            h1: ({node, ...props}) => <h1 className="text-lg font-bold mt-3 mb-2" {...props} />,
-                            h2: ({node, ...props}) => <h2 className="text-base font-bold mt-3 mb-2" {...props} />,
-                            h3: ({node, ...props}) => <h3 className="text-sm font-bold mt-2 mb-1" {...props} />,
-                            p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
-                            ul: ({node, ...props}) => <ul className="list-disc list-inside mb-3 space-y-1.5" {...props} />,
-                            ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-3 space-y-1.5" {...props} />,
-                            li: ({node, ...props}) => <li className="mb-1.5 leading-relaxed" {...props} />,
-                            strong: ({node, ...props}) => <strong className="font-bold" {...props} />,
-                            em: ({node, ...props}) => <em className="italic" {...props} />,
-                            hr: ({node, ...props}) => <hr className="my-4 border-t border-border" {...props} />,
-                            a: ({node, ...props}) => (
-                              <a 
-                                className="text-primary underline hover:text-primary/80 transition-colors cursor-pointer" 
-                                target="_blank" 
+                            h1: ({ node, ...props }) => <h1 className="text-lg font-bold mt-3 mb-2" {...props} />,
+                            h2: ({ node, ...props }) => <h2 className="text-base font-bold mt-3 mb-2" {...props} />,
+                            h3: ({ node, ...props }) => <h3 className="text-sm font-bold mt-2 mb-1" {...props} />,
+                            p: ({ node, ...props }) => <p className="mb-3 last:mb-0 leading-relaxed" {...props} />,
+                            ul: ({ node, ...props }) => <ul className="list-disc list-inside mb-3 space-y-1.5" {...props} />,
+                            ol: ({ node, ...props }) => <ol className="list-decimal list-inside mb-3 space-y-1.5" {...props} />,
+                            li: ({ node, ...props }) => <li className="mb-1.5 leading-relaxed" {...props} />,
+                            strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
+                            em: ({ node, ...props }) => <em className="italic" {...props} />,
+                            hr: ({ node, ...props }) => <hr className="my-4 border-t border-border" {...props} />,
+                            a: ({ node, ...props }) => (
+                              <a
+                                className="text-primary underline hover:text-primary/80 transition-colors cursor-pointer"
+                                target="_blank"
                                 rel="noopener noreferrer"
-                                {...props} 
+                                {...props}
                               />
                             ),
                           }}
