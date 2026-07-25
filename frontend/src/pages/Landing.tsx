@@ -188,20 +188,20 @@ export default function Landing() {
         >
           <div className="w-full h-full bg-gradient-to-b from-transparent to-background" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8 -mt-16 md:-mt-24">
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8 md:-mt-24">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="space-y-4"
           >
-            <h1 className="text-6xl md:text-7xl font-bold tracking-tight leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
               Store. Share.{" "}
               <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
                 Smarter.
               </span>
             </h1>
-            <motion.div className="text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed space-y-2">
+            <motion.div className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-2xl mx-auto leading-relaxed space-y-2 px-2">
               <p>
                 Stop losing snippets or sharing things the messy way.
               </p>
@@ -214,20 +214,20 @@ export default function Landing() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full px-4 sm:px-0"
           >
             {token ? (
               <>
-                <Link to="/my-pastes">
+                <Link to="/my-pastes" className="w-full sm:w-auto">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200">
+                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
                       My Pastes →
                     </Button>
                   </motion.div>
                 </Link>
-                <Link to="/create-paste">
+                <Link to="/create-paste" className="w-full sm:w-auto">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200">
+                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
                       Create Paste →
                     </Button>
                   </motion.div>
@@ -235,16 +235,16 @@ export default function Landing() {
               </>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/login" className="w-full sm:w-auto">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200">
+                    <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto">
                       Get Started →
                     </Button>
                   </motion.div>
                 </Link>
-                <Link to="/public">
+                <Link to="/public" className="w-full sm:w-auto">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200">
+                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-background/50 border-border/50 hover:bg-background/80 shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
                       Explore Public Codes →
                     </Button>
                   </motion.div>
@@ -547,21 +547,21 @@ export default function Landing() {
             transition={{ duration: 0.6 }}
             className="space-y-8"
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-black">Ready to get started?</h2>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white dark:text-black mb-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-black">Ready to get started?</h2>
+            <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white dark:text-black mb-10 px-2">
               Start creating, managing, and sharing your content securely with Zyren — fast, reliable, and built to make your work easier with intelligent features.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Link to="/login">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-4 w-full">
+              <Link to="/login" className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 bg-white dark:bg-black text-black dark:text-white hover:bg-white/90 dark:hover:bg-black/90">
+                  <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg hover:shadow-xl transition-all duration-200 bg-white dark:bg-black text-black dark:text-white hover:bg-white/90 dark:hover:bg-black/90 w-full sm:w-auto">
                     Get Started →
                   </Button>
                 </motion.div>
               </Link>
-              <Link to="/public">
+              <Link to="/public" className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-                  <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-white/20 border-white dark:bg-black/20 dark:border-black text-white dark:text-black hover:bg-white hover:text-primary dark:hover:bg-gray-900 dark:hover:text-primary shadow-md hover:shadow-lg transition-all duration-200">
+                  <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base backdrop-blur-sm bg-white/20 border-white dark:bg-black/20 dark:border-black text-white dark:text-black hover:bg-white hover:text-primary dark:hover:bg-gray-900 dark:hover:text-primary shadow-md hover:shadow-lg transition-all duration-200 w-full sm:w-auto">
                     Explore Public Codes →
                   </Button>
                 </motion.div>
@@ -581,9 +581,9 @@ export default function Landing() {
             className="space-y-8"
           >
             <div className="text-center space-y-3">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight transition-colors duration-200 hover:text-primary">Get In Touch</h2>
-              <p className="text-lg text-foreground/90 leading-relaxed mb-10">
-                Have questions, feedback, or ideas? Reach out — we’d love to hear from you.
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight transition-colors duration-200 hover:text-primary">Get In Touch</h2>
+              <p className="text-base sm:text-lg text-foreground/90 leading-relaxed mb-10">
+                Have questions, feedback, or ideas? Reach out — we'd love to hear from you.
               </p>
             </div>
             {}

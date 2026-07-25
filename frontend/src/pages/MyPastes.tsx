@@ -113,29 +113,30 @@ export default function MyPastes() {
             {pastes.map((paste) => (
               <Card key={paste.id}>
                 <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{paste.title}</CardTitle>
-                      <CardDescription>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="truncate">{paste.title}</CardTitle>
+                      <CardDescription className="mt-1 text-xs sm:text-sm">
                         Code: <span className="font-mono font-semibold">{paste.code}</span> • Created: {new Date(paste.createdAt).toLocaleString()}
                         {paste.expiryAt && ` • Expires: ${new Date(paste.expiryAt).toLocaleString()}`}
                       </CardDescription>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-shrink-0">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => copyPublicLink(paste.code)}
+                        title="Copy public link"
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
                       <Link to={`/public/${paste.code}`}>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" title="View public paste">
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                       </Link>
                       <Link to={`/edit-paste/${paste.id}`}>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" title="Edit paste">
                           <Edit className="h-4 w-4" />
                         </Button>
                       </Link>
@@ -143,6 +144,7 @@ export default function MyPastes() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleDeleteClick(paste.id)}
+                        title="Delete paste"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

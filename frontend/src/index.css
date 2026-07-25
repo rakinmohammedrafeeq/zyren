@@ -108,17 +108,36 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* Remove tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
   }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: var(--app-nav-h);
+    /* Momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
   }
   body {
     @apply bg-background text-foreground;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
     cursor: pointer;
+    /* Ensure minimum touch target */
+    min-height: 44px;
+  }
+  /* Prevent iOS zoom on input focus by ensuring font-size >= 16px */
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+  /* Make images responsive by default */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 
   :root {

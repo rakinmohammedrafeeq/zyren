@@ -93,8 +93,8 @@ const PublicPaste = () => {
           className="space-y-8"
         >
           <div className="space-y-3">
-            <h1 className="text-4xl font-bold tracking-tight">{paste.title}</h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">{paste.title}</h1>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
               <span>
                 Created{' '}
                 {new Date(paste.createdAt).toLocaleDateString('en-US', {
@@ -107,7 +107,7 @@ const PublicPaste = () => {
               </span>
               {paste.expiryAt && (
                 <>
-                  <span>•</span>
+                  <span className="hidden sm:inline">•</span>
                   <span>
                     Expires{' '}
                     {new Date(paste.expiryAt).toLocaleDateString('en-US', {
