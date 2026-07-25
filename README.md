@@ -897,7 +897,7 @@ Your support helps:
 Every contribution, big or small, is greatly appreciated! 💙
 
 ---
-
+<!--
 ## Project Stats 📊
 
 ![GitHub stars](https://img.shields.io/github/stars/rakinmohammedrafeeq/zyren?style=social)
@@ -905,7 +905,7 @@ Every contribution, big or small, is greatly appreciated! 💙
 ![GitHub issues](https://img.shields.io/github/issues/rakinmohammedrafeeq/zyren)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/rakinmohammedrafeeq/zyren)
 ![License](https://img.shields.io/github/license/rakinmohammedrafeeq/zyren)
-
+-->
 ### Built With ❤️ by Rakin Mohammed Rafeeq
 
 **Version:** 1.2.0  
