@@ -28,7 +28,7 @@ public class AuthService {
     private final PasswordResetTokenRepository tokenRepo;
     private final MailService mailService;
 
-    @Value("${RESET_BASE_URL}")
+    @Value("${RESET_BASE_URL:http://localhost:5173/reset-password}")
     private String resetBaseUrl;
 
 //    @Value("${zyren.mail.from}")

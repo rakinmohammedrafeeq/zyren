@@ -40,19 +40,28 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        if (userRepository.findByEmail(email).isEmpty()) {
-            UserEntity admin = UserEntity.builder()
-                    .email(email)
-                    .password(passwordEncoder.encode(password))
-                    .role(Role.ADMIN)
-                    .provider("LOCAL")
-                    .displayName(adminName)
-                    .build();
+        userRepository.findByEmail(email).ifPresentOrElse(
+                existing -> {
+                    if (existing.getRole() != Role.ADMIN) {
+                        existing.setRole(Role.ADMIN);
+                        userRepository.save(existing);
+                        System.out.println(String.format("%s (%s) role updated to ADMIN.", adminName, email));
+                    } else {
+                        System.out.println(String.format("%s already exists with email: %s", adminName, email));
+                    }
+                },
+                () -> {
+                    UserEntity admin = UserEntity.builder()
+                            .email(email)
+                            .password(passwordEncoder.encode(password))
+                            .role(Role.ADMIN)
+                            .provider("LOCAL")
+                            .displayName(adminName)
+                            .build();
 
-            userRepository.save(admin);
-            System.out.println(String.format("%s created successfully with email: %s", adminName, email));
-        } else {
-            System.out.println(String.format("%s already exists with email: %s", adminName, email));
-        }
+                    userRepository.save(admin);
+                    System.out.println(String.format("%s created successfully with email: %s", adminName, email));
+                }
+        );
     }
 }

@@ -26,7 +26,7 @@ public class UserEntity {
     private String displayName;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RoleConverter.class)
     private Role role;
 
     @Column

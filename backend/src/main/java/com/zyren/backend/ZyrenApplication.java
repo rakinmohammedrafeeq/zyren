@@ -13,51 +13,67 @@ public class ZyrenApplication {
 
         try {
 
-            Dotenv dotenv = Dotenv.load();
+            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
-            System.setProperty("spring.datasource.url", dotenv.get("SPRING_DATASOURCE_URL"));
-            System.setProperty("spring.datasource.username", dotenv.get("SPRING_DATASOURCE_USERNAME"));
-            System.setProperty("spring.datasource.password", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
+            // Set all dotenv entries into System properties
+            dotenv.entries().forEach(entry -> {
+                if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+                    System.setProperty(entry.getKey(), entry.getValue());
+                }
+            });
 
-            System.setProperty("jwt.secret", dotenv.get("JWT_SECRET"));
-            System.setProperty("jwt.expiration", dotenv.get("JWT_EXPIRATION"));
+            // Map DB credentials (supporting both SPRING_DATASOURCE_* and DB_* aliases)
+            setSystemPropIfNotNull("spring.datasource.url", resolveVal(dotenv, "SPRING_DATASOURCE_URL", "DB_URL"));
+            setSystemPropIfNotNull("spring.datasource.username", resolveVal(dotenv, "SPRING_DATASOURCE_USERNAME", "DB_USERNAME"));
+            setSystemPropIfNotNull("spring.datasource.password", resolveVal(dotenv, "SPRING_DATASOURCE_PASSWORD", "DB_PASSWORD"));
 
-            System.setProperty("zyren.admin.email.1", dotenv.get("ZYREN_ADMIN_EMAIL_1"));
-            System.setProperty("zyren.admin.password.1", dotenv.get("ZYREN_ADMIN_PASSWORD_1"));
-            System.setProperty("zyren.admin.email.2", dotenv.get("ZYREN_ADMIN_EMAIL_2"));
-            System.setProperty("zyren.admin.password.2", dotenv.get("ZYREN_ADMIN_PASSWORD_2"));
+            setSystemPropIfNotNull("jwt.secret", dotenv.get("JWT_SECRET"));
+            setSystemPropIfNotNull("jwt.expiration", dotenv.get("JWT_EXPIRATION"));
 
-//            System.setProperty("zyren.mail.from", dotenv.get("MAIL_FROM"));
-            System.setProperty("zyren.mail.to", dotenv.get("MAIL_TO"));
+            setSystemPropIfNotNull("zyren.admin.email.1", dotenv.get("ZYREN_ADMIN_EMAIL_1"));
+            setSystemPropIfNotNull("zyren.admin.password.1", dotenv.get("ZYREN_ADMIN_PASSWORD_1"));
+            setSystemPropIfNotNull("zyren.admin.email.2", dotenv.get("ZYREN_ADMIN_EMAIL_2"));
+            setSystemPropIfNotNull("zyren.admin.password.2", dotenv.get("ZYREN_ADMIN_PASSWORD_2"));
 
-            System.setProperty("resend.api.key", dotenv.get("RESEND_API_KEY"));
+            setSystemPropIfNotNull("zyren.mail.to", dotenv.get("MAIL_TO"));
+            setSystemPropIfNotNull("resend.api.key", dotenv.get("RESEND_API_KEY"));
+            setSystemPropIfNotNull("RESET_BASE_URL", dotenv.get("RESET_BASE_URL"));
 
-//            System.setProperty("spring.mail.host", dotenv.get("SPRING_MAIL_HOST"));
-//            System.setProperty("spring.mail.port", dotenv.get("SPRING_MAIL_PORT"));
-//            System.setProperty("spring.mail.username", dotenv.get("MAIL_USERNAME"));
-//            System.setProperty("spring.mail.password", dotenv.get("MAIL_PASSWORD"));
+            setSystemPropIfNotNull("cloudinary.cloud-name", dotenv.get("CLOUDINARY_CLOUD_NAME"));
+            setSystemPropIfNotNull("cloudinary.api-key", dotenv.get("CLOUDINARY_API_KEY"));
+            setSystemPropIfNotNull("cloudinary.api-secret", dotenv.get("CLOUDINARY_API_SECRET"));
 
-            System.setProperty("RESET_BASE_URL", dotenv.get("RESET_BASE_URL"));
+            setSystemPropIfNotNull("gemini.api.key", dotenv.get("GEMINI_API_KEY"));
+            setSystemPropIfNotNull("groq.api.key", dotenv.get("GROQ_API_KEY"));
 
-            System.setProperty("cloudinary.cloud-name", dotenv.get("CLOUDINARY_CLOUD_NAME"));
-            System.setProperty("cloudinary.api-key", dotenv.get("CLOUDINARY_API_KEY"));
-            System.setProperty("cloudinary.api-secret", dotenv.get("CLOUDINARY_API_SECRET"));
-
-            System.setProperty("gemini.api.key", dotenv.get("GEMINI_API_KEY"));
-            System.setProperty("groq.api.key", dotenv.get("GROQ_API_KEY"));
-
-            System.setProperty("spring.security.oauth2.client.registration.google.client-id",
+            setSystemPropIfNotNull("spring.security.oauth2.client.registration.google.client-id",
                     dotenv.get("GOOGLE_CLIENT_ID"));
-            System.setProperty("spring.security.oauth2.client.registration.google.client-secret",
+            setSystemPropIfNotNull("spring.security.oauth2.client.registration.google.client-secret",
                     dotenv.get("GOOGLE_CLIENT_SECRET"));
 
-            System.setProperty("app.frontend.url", dotenv.get("FRONTEND_URL"));
+            setSystemPropIfNotNull("app.frontend.url", resolveVal(dotenv, "FRONTEND_URL", "APP_BASE_URL"));
 
+        } catch (Exception e) {
+            System.err.println("Note: Dotenv initialization caught: " + e.getMessage());
         }
-
-        catch (Exception ignored) {}
 
         SpringApplication.run(ZyrenApplication.class, args);
 
+    }
+
+    private static String resolveVal(Dotenv dotenv, String primary, String fallback) {
+        String val = dotenv.get(primary);
+        if (val != null && !val.trim().isEmpty()) return val;
+        val = dotenv.get(fallback);
+        if (val != null && !val.trim().isEmpty()) return val;
+        val = System.getenv(primary);
+        if (val != null && !val.trim().isEmpty()) return val;
+        return System.getenv(fallback);
+    }
+
+    private static void setSystemPropIfNotNull(String key, String value) {
+        if (key != null && value != null && !value.trim().isEmpty()) {
+            System.setProperty(key, value.trim());
+        }
     }
 }
