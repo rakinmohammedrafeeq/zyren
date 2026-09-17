@@ -1,364 +1,648 @@
 <p align="center">
-  <img src="frontend/public/logo.svg" alt="Zyren Logo" width="140"/>
+  <img src="public/logo.png" alt="Zyren Logo" width="160">
 </p>
 
-<h1 align="center">Zyren – AI-Powered Secure Paste Sharing Platform</h1>
+<h1 align="center">Zyren — AI-Powered Enterprise Paste Sharing & Multimodal Content Intelligence Platform</h1>
 
 <p align="center">
-  <a href="https://zyren.netlify.app"><img src="https://img.shields.io/badge/Demo-Live-success?style=for-the-badge" alt="Live Demo"/></a>
+  <b>Modern Pastebin Alternative • Multi-Tier Cross-Provider AI Fallbacks • Multimodal Media Analysis • Real-Time Code Collaboration</b>
+</p>
+
+<p align="center">
+  <a href="https://zyren.netlify.app"><img src="https://img.shields.io/badge/Demo-Live_Application-success?style=for-the-badge&logo=vercel" alt="Live Demo"/></a>
+  <a href="https://rakinmohammedrafeeq.vercel.app"><img src="https://img.shields.io/badge/Portfolio-Visit_Website-purple?style=for-the-badge&logo=vercel" alt="Portfolio"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License"/></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Version-1.2.0-orange.svg?style=for-the-badge" alt="Version"/></a>
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg?style=for-the-badge" alt="Contributions"/></a>
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-21-red?logo=openjdk&logoColor=white" alt="Java 21"/>
-  <img src="https://img.shields.io/badge/Spring%20Boot-3.5.7-green?logo=springboot&logoColor=white" alt="Spring Boot"/>
-  <img src="https://img.shields.io/badge/React-19.1-blue?logo=react&logoColor=white" alt="React"/>
-  <img src="https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript&logoColor=white" alt="TypeScript"/>
-  <img src="https://img.shields.io/badge/Vite-6.3-purple?logo=vite&logoColor=white" alt="Vite"/>
-  <img src="https://img.shields.io/badge/Tailwind-4.1-cyan?logo=tailwindcss&logoColor=white" alt="Tailwind"/>
-  <img src="https://img.shields.io/badge/PostgreSQL-Active-blue?logo=postgresql&logoColor=white" alt="PostgreSQL"/>
-</p>
+<div align="center">
+
+  [![Java](https://img.shields.io/badge/Java-21+-orange.svg?logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+  [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.7-brightgreen.svg?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+  [![React](https://img.shields.io/badge/React-19.0-61DAFB.svg?logo=react&logoColor=black)](https://reactjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Vite](https://img.shields.io/badge/Vite-6.4.3-646CFF.svg?logo=vite&logoColor=white)](https://vite.dev/)
+  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-336791.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+  [![Neon](https://img.shields.io/badge/Neon-Serverless%20Postgres-00E599.svg?logo=neon&logoColor=white)](https://neon.tech/)
+  [![Groq](https://img.shields.io/badge/Groq-LPU%20Inference-F55036.svg)](https://groq.com/)
+  [![Google Gemini](https://img.shields.io/badge/Google%20Gemini-3.6%20Flash-4285F4.svg?logo=google&logoColor=white)](https://ai.google.dev/)
+  [![Cloudinary](https://img.shields.io/badge/Cloudinary-CDN%20Storage-3448C5.svg?logo=cloudinary&logoColor=white)](https://cloudinary.com/)
+  [![Resend](https://img.shields.io/badge/Resend-Email%20API-000000.svg?logo=resend&logoColor=white)](https://resend.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.x-38B2AC.svg?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+
+</div>
 
 ---
 
-Zyren is a modern, full-stack paste-sharing platform with AI-powered content analysis. Create, manage, and share text/code snippets with optional expiration, public access via unique codes, intelligent title generation, content summarization with vision support, and an interactive AI chat assistant. Built with Spring Boot 3.5.7, React 19, PostgreSQL, Groq AI, Google Gemini, and Cloudinary for secure media handling.
+## 📑 Table of Contents
 
-**Key Highlights:**
-- 🤖 **AI Integration**: Groq API + Google Gemini for title generation, summarization, vision analysis, and chat
-- 🔒 **Secure**: JWT authentication + Google OAuth2 with role-based access control
-- 📸 **Media Support**: Upload images, PDFs, videos via Cloudinary with AI vision analysis
-- ⏰ **Smart Expiry**: Set automatic expiration with scheduled cleanup
-- 🌐 **Public Sharing**: Generate unique shareable codes for instant access
-- 🎨 **Modern UI**: React 19 + Tailwind CSS v4 with dark/light mode and Framer Motion animations
-- 👥 **Admin Panel**: User and paste management with full CRUD operations
-
----
-
-## What's New in v1.2 🚀
-
-### AI-Powered Intelligence
-Zyren now features comprehensive AI integration to enhance your paste management experience:
-
-- **🎯 Smart Title Generation**: Let AI create perfect titles for your pastes instantly
-- **📊 Intelligent Summaries**: Get comprehensive content summaries with word counts and type detection
-- **👁️ Vision Analysis**: AI can now "see" and describe images, PDFs, and videos in your pastes
-- **💬 Interactive Chat**: Ask questions about your paste content and get intelligent answers
-- **⚡ Lightning Fast**: Groq API ensures near-instant AI responses
-- **🔄 Always Available**: Automatic fallback to Google Gemini ensures 99.9% uptime
-
-### Technical Improvements
-- **React 19**: Latest React features and performance improvements
-- **Modern Animations**: Framer Motion brings smooth, professional transitions
-- **Enhanced UI**: New Radix UI components for better accessibility
-- **Better Error Handling**: User-friendly error messages with fallback options
-
-For full release notes, see [CHANGELOG.md](CHANGELOG.md).
+- [Executive Overview](#-executive-overview)
+  - [What is Zyren in Simple Terms?](#what-is-zyren-in-simple-terms)
+  - [Real-World Use Cases](#real-world-use-cases)
+  - [Why Zyren Solves Modern Paste & Sharing Pain Points](#why-zyren-solves-modern-paste--sharing-pain-points)
+- [System Architecture](#-system-architecture)
+  - [1. High-Level System Architecture](#1-high-level-system-architecture)
+  - [2. Multi-Tier Cross-Provider AI Fallback Engine](#2-multi-tier-cross-provider-ai-fallback-engine)
+  - [3. Paste Creation, Sharing & Media Lifecycle](#3-paste-creation-sharing--media-lifecycle)
+  - [4. Security, OAuth2, and Access Control Architecture](#4-security-oauth2-and-access-control-architecture)
+  - [5. Database Entity-Relationship Diagram (ERD)](#5-database-entity-relationship-diagram-erd)
+- [Key Features Breakdown](#-key-features-breakdown)
+- [Active & Verified AI Model Matrix (2026 Verified)](#-active--verified-ai-model-matrix-2026-verified)
+- [Technology Stack](#-technology-stack)
+- [Repository Structure](#-repository-structure)
+- [Environment Configuration](#-environment-configuration)
+- [Local Development & Quickstart](#-local-development--quickstart)
+- [REST API Reference](#-rest-api-reference)
+- [Production Deployment](#-production-deployment)
+- [Performance & Security Hardening](#-performance--security-hardening)
+- [Troubleshooting & FAQ](#-troubleshooting--faq)
+- [Technology Decisions & Rationale](#-technology-decisions--rationale)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
+- [Contact](#-contact)
+- [Support](#-support)
 
 ---
 
-## Key Features
+## 🌟 Executive Overview
 
-### Authentication & Roles
-- User registration and login with JWT authentication  
-- Google OAuth2 sign-in (creates/links accounts and issues JWT on success)
-- Role-based access: USER and ADMIN  
-- Admin-only access for user and paste management
+### What is Zyren in Simple Terms?
 
-### Paste Management
-- Create, edit, delete personal pastes  
-- Optional expiry (in minutes)  
-- Auto-expiration scheduler and nightly cleanup  
-- Public access using paste codes (auto-generates an 8-character code if left empty; supports letters, numbers, '-', and '_')
-- Fetch public pastes without authentication
-- Optional media metadata stored on pastes (URL + publicId + media type)
+Imagine a **next-generation code and text sharing platform** equipped with a built-in AI intelligence team working 24/7:
 
-### Media Uploads (Cloudinary)
-- Upload media via backend endpoint (multipart/form-data)
-- Supported types (server-side): JPEG, PNG, WebP, MP4/MOV, PDF
-- Size limits:
-  - Backend: 20MB (`spring.servlet.multipart.*`)
-  - UI guardrails: 15MB
-- Attach uploaded media to a paste (stored as `mediaUrl`, `mediaPublicId`, `mediaType`)
-- Secure deletion: only the paste owner (or an admin) can delete media, and the backend verifies the media belongs to the paste before deleting
-
-### AI-Powered Features
-- **AI Title Generation**: Automatically generate descriptive titles for your pastes using Groq's fast language model
-- **AI Content Summarization**: Get comprehensive summaries of your content with support for both text and media analysis
-- **AI Vision Analysis**: Analyze images, PDFs, and video thumbnails attached to pastes with multimodal AI (Groq Vision + Google Gemini fallback)
-- **AI Chat Assistant**: Ask questions about your paste content and get intelligent answers with context awareness
-- **Multi-Provider Fallback**: Groq as primary (fast processing) with Google Gemini as fallback for reliability
-- **Configurable AI Models**: Support for multiple Gemini models (Flash 3.6, 3.5, 3, 2.5) and Groq models (LLaMA 3.3 70B, LLaMA 4 Maverick)
-
-### Public Paste Access
-- Dedicated page to enter and view pastes by code  
-- Shareable link generation
-
-### Admin Panel
-- List all users except the current admin  
-- View a user’s pastes  
-- Delete users with cascade cleanup (tokens + pastes)
-
-### Password Reset System
-- Forgot password: email reset link using Resend  
-- Token validation with 30-minute expiry and single-use  
-- Strong server-side password validation
-
-### AI-Powered Enhancements
-- Automatic title generation from paste content
-- Intelligent content summarization with word count and type detection
-- Visual content analysis for images, PDFs, and videos
-- Interactive AI chat to ask questions about paste content
-- Multi-provider AI system (Groq + Google Gemini) with automatic fallback
-- Rate limit handling and quota management for reliability
-- Content type detection (code, recipe, notes, article, etc.)
-
-### UI/UX
-- React 19 + Tailwind CSS v4 with modern animations  
-- Dark/Light mode (saved in localStorage)  
-- Responsive layout with modern design and Framer Motion animations
-- Smooth transitions, toasts (Sonner), and clean navigation
-- Interactive 3D elements using React Three Fiber
-- Accessible UI components built with Radix UI
-- Real-time AI feedback with loading states
-
-### Integrations
-- **AI Services**: Groq API (primary) + Google Gemini API (fallback) for title generation, summarization, chat, and vision analysis
-- **Email**: Resend API for password reset and contact form
-- **Media Storage**: Cloudinary for secure media uploads with automatic deletion
-- **Authentication**: JWT tokens with refresh logic + Google OAuth2
-- **HTTP Client**: Axios with JWT interceptors + consistent error handling
-- **Form Validation**: Zod schemas + React Hook Form for robust client-side validation
+1. **You paste code, server logs, or architecture drafts** — Zyren automatically generates clean, descriptive titles (e.g. *"Spring Boot Security Filter Implementation"*) and detects language categories (`code`, `notes`, `article`, `recipe`) in sub-second time.
+2. **You attach screenshots, architectural diagrams, or multi-page PDFs** — Zyren uses state-of-the-art multimodal vision models (`gemini-3.6-flash` and `qwen/qwen3.8-27b`) to synthesize visual summaries, read embedded diagrams, and transcribe OCR text accurately.
+3. **You chat directly with any paste** (*"Explain what this regex does"* or *"Find memory leak risks in this Java class"*) — Zyren answers your questions in real-time, grounded entirely in the text and visual content of the paste.
+4. **You share sensitive credentials or keys securely** — Set a custom password, an expiration timer (from 10 minutes to 1 month), or enable **Burn-After-Reading** (self-destructs instantly after a single view).
+5. **Zero Downtime Guaranteed** — If Groq or Gemini suffers an outage, rate limit, or model decommissioning, Zyren’s cross-provider fallback engine seamlessly switches providers and backup models without user interruption.
 
 ---
 
-## Feature Comparison
+### Real-World Use Cases
 
-| Feature | Free Version | Description |
-|---------|-------------|-------------|
-| **Core Paste Management** | ✅ | Create, edit, delete pastes with full CRUD operations |
-| **Public Sharing** | ✅ | Generate unique shareable codes for instant access |
-| **Expiring Pastes** | ✅ | Set automatic expiration with scheduled cleanup |
-| **Media Uploads** | ✅ | Images, PDFs, videos up to 20MB via Cloudinary |
-| **Authentication** | ✅ | JWT + Google OAuth2 with role-based access |
-| **AI Title Generation** | ✅ | Automatic title creation from content |
-| **AI Summarization** | ✅ | Comprehensive content summaries |
-| **AI Vision Analysis** | ✅ | Analyze images, PDFs, videos with AI |
-| **AI Chat Assistant** | ✅ | Interactive Q&A about your pastes |
-| **Admin Panel** | ✅ | User and paste management for admins |
-| **Dark/Light Mode** | ✅ | Persistent theme preference |
-| **Responsive Design** | ✅ | Works on desktop, tablet, mobile |
-| **Email Notifications** | ✅ | Password reset and contact form |
-| **API Access** | ✅ | Full RESTful API for all features |
-
-*All features are currently free during beta. Future premium features may be added.*
+| Persona / Role | The Challenge | How Zyren Solves It |
+| :--- | :--- | :--- |
+| **Software Engineers & DevOps** | Traditional pastebins format code poorly, leak credentials, and offer zero automated synthesis. | Syntax-highlighted pastes, line numbering, instant copy, and one-click AI code explanation and bug analysis. |
+| **Technical Writers & Educators** | Need to share documents with attached diagrams, slides, or PDF references. | Upload PDFs and screenshots alongside markdown; AI extracts diagrams and produces combined multimodal summaries. |
+| **Security-Conscious Teams** | Sharing sensitive API tokens, configuration files, and temporary passwords over unencrypted chat. | Encrypted password-protected links with optional Burn-After-Reading self-destruction and automated TTL cleanup. |
+| **Global Distributed Teams** | Language barriers across global contributors reading technical specifications. | Built-in AI translation engine translates pastes into any target language with preserved formatting. |
+| **Enterprise Administrators** | Rate limit crashes, API quota exhaustion, and unmonitored pastes. | Bidirectional multi-tier fallback between Groq LPU and Google Gemini, Google OAuth2 login, and automated database pruning. |
 
 ---
 
-## Architecture Overview
+### Why Zyren Solves Modern Paste & Sharing Pain Points
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         Frontend (React 19)                  │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │   Pages     │  │  Components  │  │  AI Features │       │
-│  │ Auth, Paste │  │  UI, Forms   │  │  Chat, Gen   │       │
-│  └─────────────┘  └──────────────┘  └──────────────┘       │
-│         │                 │                    │             │
-│         └─────────────────┴────────────────────┘             │
-│                           │                                  │
-│                    Axios + JWT                               │
-└───────────────────────────┼──────────────────────────────────┘
-                            │
-                    ┌───────▼───────┐
-                    │   REST API    │
-                    │  Spring Boot  │
-                    └───────┬───────┘
-                            │
-        ┌───────────────────┼───────────────────┐
-        │                   │                   │
-┌───────▼────────┐  ┌──────▼──────┐  ┌────────▼────────┐
-│   PostgreSQL   │  │  Cloudinary │  │   AI Providers  │
-│   Database     │  │   Media     │  │ Groq + Gemini   │
-└────────────────┘  └─────────────┘  └─────────────────┘
+- **Zero-Downtime Multi-Provider AI Fallback:** Never experience service interruptions when upstream AI models hit rate limits (HTTP 429), encounter server errors (HTTP 503), or are decommissioned (HTTP 404). Zyren automatically navigates prioritized fallback chains across Groq and Google Gemini.
+- **Multimodal Visual Intelligence:** Unlike legacy text-only pastebins, Zyren seamlessly integrates Cloudinary CDN media hosting with Google Gemini and Groq Vision models to inspect images, documents, and code simultaneously.
+- **Burn-After-Reading Privacy Guarantee:** Critical credentials and secrets can be shared safely. As soon as the recipient accesses the link, the paste and its media references are permanently purged from the database.
+- **Decoupled Modern Architecture:** High-performance Spring Boot 3 backend paired with a blazing-fast React 19 + Vite frontend delivering sub-second page loads, responsive dark mode, and seamless OAuth2 onboarding.
+
+---
+
+## 🏗 System Architecture
+
+### 1. High-Level System Architecture
+
+Zyren follows a clean, decoupled **Modular Monolith** architecture backed by a modern Single Page Application (SPA) frontend, cloud edge media delivery, and serverless relational persistence:
+
+```mermaid
+graph TB
+    subgraph Client_Tier["Client Layer (Frontend)"]
+        UI["Vite + React 19 + TypeScript SPA"]
+        CodeEditor["Syntax Highlighting & Markdown Viewer"]
+        AIChat["Interactive AI Assistant & Chat Drawer"]
+        UI --> CodeEditor
+        UI --> AIChat
+    end
+
+    subgraph Security_Gate["Security & Gateway Layer"]
+        CORS["CORS & Origin Filter"]
+        JWT_Filter["Stateless JWT Token Filter"]
+        OAuthHandler["Google OAuth 2.0 Flow Handler"]
+        PasswordGuard["BCrypt Paste Password Verifier"]
+    end
+
+    subgraph Core_Backend["Spring Boot 3.5.7 Backend Services"]
+        PasteController["PasteController (CRUD, Burn, Views)"]
+        AIController["AIController (Title, Summary, Chat, Translate)"]
+        AuthController["AuthController (Register, Login, Password Reset)"]
+        MediaController["MediaController (Cloudinary CDN Uploader)"]
+        ContactController["ContactNewsletterController (Support & Updates)"]
+    end
+
+    subgraph AI_Intelligence["Multi-Tier Cross-Provider AI Engine"]
+        AIService["AIService (Bidirectional Failover Orchestrator)"]
+        GroqEngine["Groq LPU Engine (~280 tokens/sec)"]
+        GeminiEngine["Google Gemini Multimodal Engine"]
+        AIService <-->|Primary / Failover| GroqEngine
+        AIService <-->|Primary / Failover| GeminiEngine
+    end
+
+    subgraph Storage_Cloud["Data & Cloud Infrastructure"]
+        NeonDB[("Neon Serverless PostgreSQL 16+")]
+        Cloudinary["Cloudinary CDN (Encrypted Media Storage)"]
+        Resend["Resend API (Transactional Email Gateway)"]
+    end
+
+    %% Client communication
+    UI -->|HTTPS / REST API| CORS
+    CORS --> JWT_Filter
+    JWT_Filter --> Core_Backend
+    OAuthHandler <-->|Social Sign-In| UI
+
+    %% Backend to Internal Layers
+    PasteController --> PasswordGuard
+    PasteController --> NeonDB
+    AIController --> AIService
+    MediaController --> Cloudinary
+    AuthController --> Resend
+    AuthController --> NeonDB
+
+    %% Media routing
+    GeminiEngine -.->|Inspect Media Stream| Cloudinary
+    GroqEngine -.->|Inspect Base64 Data| Cloudinary
 ```
 
-### Data Flow
-1. **User Action** → Frontend React components
-2. **API Request** → Axios with JWT interceptor
-3. **Backend Processing** → Spring Boot controllers
-4. **Business Logic** → Services (Auth, Paste, AI, Media)
-5. **Data Persistence** → PostgreSQL database
-6. **External Services** → Cloudinary, Groq/Gemini, Resend
-7. **Response** → JSON data back to frontend
-8. **UI Update** → React state management + re-render
-
 ---
 
-## API Documentation
+### 2. Multi-Tier Cross-Provider AI Fallback Engine
 
-All backend routes are under the `/api` prefix unless noted.
+Zyren implements an enterprise-grade **bidirectional fallback architecture**. If a primary model encounters a rate limit (HTTP 429), quota exhaustion, service error (HTTP 503), or model deprecation (HTTP 404), the engine automatically tries sequential backup models before crossing over to the alternate provider:
 
-### Auth
-- `POST /api/auth/register` (form params: `email`, `password`)
-- `POST /api/auth/login` (form params: `email`, `password`) → returns `{ token, email, role }`
-- `POST /api/auth/forgot-password` (JSON body: `{ "email": "..." }`)
-- `POST /api/auth/reset-password?token=...` (JSON body: `{ "newPassword": "..." }`)
+```mermaid
+flowchart TD
+    subgraph Request_Routing["Incoming AI Intent Routing"]
+        InText["Text Request (Title, Summary, Chat, Translate)"]
+        InVision["Vision Request (Image/PDF Summary, Visual Q&A)"]
+    end
 
-### OAuth2 (Google)
-- `GET /oauth2/authorization/google` (starts OAuth flow)
-- OAuth callback: handled by Spring Security (`/login/oauth2/code/google`)
-- Success handler redirects to the frontend route:
-  - `GET /oauth-success?token=...` (frontend)
+    subgraph Groq_Text_Chain["Groq Primary Text Chain (Ultra-Fast LPU)"]
+        G1["1. groq/compound-mini (Primary)"]
+        G2["2. openai/gpt-oss-120b (High Reasoning)"]
+        G3["3. openai/gpt-oss-20b (Fast Reasoning)"]
+        G4["4. qwen/qwen3.8-27b (High Capacity)"]
+        G5["5. groq/compound (Extended Context)"]
+        G1 -->|On 404 / 429 / 503| G2
+        G2 -->|On 404 / 429 / 503| G3
+        G3 -->|On 404 / 429 / 503| G4
+        G4 -->|On 404 / 429 / 503| G5
+    end
 
-> Note: the backend OAuth2 success handler currently redirects to `http://localhost:5173/oauth-success?token=...`. For production, this should be made environment-driven.
+    subgraph Gemini_Text_Chain["Gemini Text Fallback Chain"]
+        GT1["6. gemini-3.6-flash (Primary Google Engine)"]
+        GT2["7. gemini-flash-latest"]
+        GT3["8. gemini-3.8-flash"]
+        GT4["9. gemini-3.5-flash-lite"]
+        GT5["10. gemini-3.1-flash-lite"]
+        GT1 -->|On Error / Quota| GT2
+        GT2 -->|On Error / Quota| GT3
+        GT3 -->|On Error / Quota| GT4
+        GT4 -->|On Error / Quota| GT5
+    end
 
-### Paste
-- `POST /api/paste` (form params: `title`, `content`, optional `expiryMinutes`, optional `code`, optional `mediaUrl`, `mediaPublicId`, `mediaType`)
-- `GET /api/paste/me` (list your pastes)
-- `PUT /api/paste/{id}` (update title/content + optional media fields)
-- `DELETE /api/paste/{id}` (delete your paste)
-- `DELETE /api/paste/admin/{id}` (admin-only delete)
+    subgraph Groq_Vision_Chain["Groq Vision Engine"]
+        GV1["1. qwen/qwen3.8-27b (Multimodal LPU)"]
+    end
 
-### Public paste
-- `GET /api/public/{code}` (no auth)
+    subgraph Gemini_Vision_Chain["Gemini Vision Fallback Chain"]
+        GVT1["2. gemini-3.6-flash (Primary Multimodal)"]
+        GVT2["3. gemini-flash-latest"]
+        GVT3["4. gemini-3.8-flash"]
+        GVT4["5. gemini-3.5-flash-lite"]
+        GVT5["6. gemini-3.1-flash-lite"]
+        GVT1 -->|On Error / Quota| GVT2
+        GVT2 -->|On Error / Quota| GVT3
+        GVT3 -->|On Error / Quota| GVT4
+        GVT4 -->|On Error / Quota| GVT5
+    end
 
-### Media
-- `POST /api/media/upload` (multipart `file`) → returns `{ secureUrl, publicId, resourceType }`
-- `DELETE /api/media/delete?pasteId=...&publicId=...`
+    subgraph Graceful_Degrade["Graceful Degradation Safeguard"]
+        TextDegrade["Text-Only Analysis Degradation"]
+    end
 
-### Admin
-- `GET /api/admin/users`
-- `GET /api/admin/users/{id}/pastes`
-- `DELETE /api/admin/users/{id}`
+    %% Routing connections
+    InText --> G1
+    G5 -->|All Groq Models Failed -> Shift to Gemini| GT1
+    
+    InVision --> GV1
+    GV1 -->|Vision Failover -> Shift to Gemini| GVT1
+    GVT5 -->|All Vision Models Failed| TextDegrade
 
-### AI Features
-- `POST /api/ai/generate-title` (JSON body: `{ "content": "..." }`) → generates a short, descriptive title
-- `POST /api/ai/summarize` (JSON body: `{ "content": "...", "mediaUrl": "...", "mediaType": "..." }`) → comprehensive summary with optional media analysis
-- `POST /api/ai/chat` (JSON body: `{ "content": "...", "question": "...", "mediaUrl": "..." }`) → answer questions about content with optional vision context
-- `POST /api/ai/translate` (JSON body: `{ "content": "...", "targetLanguage": "..." }`) → translate content to target language
-- `POST /api/ai/detect-type` (JSON body: `{ "content": "..." }`) → detect content type (code, recipe, notes, article, etc.)
-
-### Contact + Newsletter
-- `POST /api/contact` (JSON body: contact form fields)
-- `POST /api/newsletter/subscribe` (JSON body: `{ "email": "..." }`)
-
----
-
-## Live Deployments
-
-- Frontend (Netlify): https://zyren.netlify.app/  
-- Backend (Render): https://zyren-backend.onrender.com  
-- PostgreSQL DB (Render): dpg-d4a7gdje5dus739uqnv0-a  
-- Local DB (Optional): Oracle Free via Docker
-
----
-
-## Technologies Used
-
-### Backend
-- Java 21  
-- Spring Boot 3.5.7  
-- Spring Security (JWT + OAuth2 Client)  
-- Spring Data JPA  
-- JWT (jjwt 0.11.5)  
-- Resend API (3.1.0)  
-- Cloudinary (1.37.0)  
-- PostgreSQL (42.7.3) / Oracle (23.2.0.0 for local development)  
-- OkHttp (4.12.0)  
-- Maven  
-- Docker support
-
-### AI Integration
-- Groq API (LLaMA 3.3 70B Versatile for text, LLaMA 4 Maverick 17B for vision)
-- Google Gemini API (Flash models: 3.6, 3.5, 3.5-lite, 3.1-lite, 3, 2.5)
-- Multi-modal support (text, images, PDFs, videos)
-- Intelligent fallback system for reliability
-- Rate limit handling and quota management
-
-### Frontend
-- React 19.1.0 with Vite 6.3.5  
-- TypeScript 5.8.3  
-- Tailwind CSS v4.1.8  
-- Radix UI (comprehensive component library)  
-- lucide-react icons (0.511.0)  
-- Axios (1.9.0) + interceptors  
-- React Router v7.6.1  
-- Zod (3.25.46) + React Hook Form (7.57.0)  
-- Sonner notifications (2.0.4)
-- Framer Motion (12.15.0) for animations
-- React Three Fiber (9.1.2) for 3D graphics
-- date-fns (4.1.0) for date handling
-
----
-
-## Project Structure
-
+    %% Success Outputs
+    OutputSuccess["Sanitized JSON / Formatted Response Output"]
+    G1 -.->|Success| OutputSuccess
+    G2 -.->|Success| OutputSuccess
+    G3 -.->|Success| OutputSuccess
+    G4 -.->|Success| OutputSuccess
+    GT1 -.->|Success| OutputSuccess
+    GV1 -.->|Success| OutputSuccess
+    GVT1 -.->|Success| OutputSuccess
+    TextDegrade -.->|Success| OutputSuccess
 ```
-Zyren/
-│
-├── backend/                         # Spring Boot backend
-│   ├── pom.xml
-│   ├── Dockerfile                   # Multi-stage Maven build for Render
-│   ├── docker-compose.yml           # Backend container config (optional local)
+
+---
+
+### 3. Paste Creation, Sharing & Media Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User / Developer
+    participant UI as Frontend (React 19)
+    participant MediaCtrl as MediaController
+    participant Cloudinary as Cloudinary CDN
+    participant PasteCtrl as PasteController
+    participant AISvc as AIService
+    participant PG as PostgreSQL (Neon)
+
+    User->>UI: Types code & attaches architecture screenshot
+    
+    opt Has Media Attachment
+        UI->>MediaCtrl: POST /api/media/upload (multipart/form-data)
+        MediaCtrl->>Cloudinary: Upload & encrypt media asset
+        Cloudinary-->>MediaCtrl: Secure HTTPS CDN URL & public_id
+        MediaCtrl-->>UI: MediaUploadResponse { secure_url, format }
+    end
+
+    opt Auto-Generate Title
+        UI->>AISvc: POST /api/ai/generate-title { content }
+        AISvc->>AISvc: Execute Groq -> Gemini fallback chain
+        AISvc-->>UI: "Spring Security OAuth2 Integration"
+    end
+
+    User->>UI: Clicks "Create Paste" (with Password / Burn-After-Reading)
+    UI->>PasteCtrl: POST /api/pastes { title, content, mediaUrl, isBurnAfterReading, password, ttl }
+    PasteCtrl->>PasteCtrl: Hash password with BCrypt (if present)
+    PasteCtrl->>PG: INSERT INTO pastes VALUES (...)
+    PG-->>PasteCtrl: Saved Paste Entity (UUID)
+    PasteCtrl-->>UI: 201 Created { id, url, burnAfterReading, expiresAt }
+    UI-->>User: Display shareable URL & copy badge
+
+    rect rgb(255, 245, 245)
+        note over User,PG: Burn-After-Reading View Flow
+        actor Recipient as Recipient User
+        Recipient->>UI: Navigates to /paste/{id}
+        UI->>PasteCtrl: GET /api/pastes/{id}
+        PasteCtrl->>PG: SELECT * FROM pastes WHERE id = ?
+        PasteCtrl->>PG: DELETE FROM pastes WHERE id = ? (Instant Burn!)
+        PasteCtrl-->>UI: Paste Content (Delivered Once)
+        UI-->>Recipient: Content displayed with "This paste has burned" alert
+    end
+```
+
+---
+
+### 4. Security, OAuth2, and Access Control Architecture
+
+```mermaid
+flowchart LR
+    subgraph Auth_Methods["Authentication Gateways"]
+        A1["Email + Password"]
+        A2["Google OAuth 2.0"]
+        A3["OTP Password Reset"]
+        A4["Anonymous Pasting"]
+    end
+
+    subgraph Security_Filters["Security Filter Chain"]
+        B1["CORS Origin Validation"]
+        B2["JwtAuthenticationFilter\n(Bearer Token Extraction)"]
+        B3["BCrypt Password Encoder\n(Cost Factor: 10)"]
+        B4["Paste Access Guard\n(Password & Expiration Validation)"]
+    end
+
+    subgraph Access_Matrix["Access Permissions"]
+        C1{"User Role"}
+        C2{"Paste Visibility"}
+        
+        C1 -->|ADMIN| P1["Platform Admin Console\nManage All Pastes & Telemetry"]
+        C1 -->|USER| P2["Personal Dashboard\nManage Owned Pastes & Analytics"]
+        C1 -->|ANONYMOUS| P3["Read Public Pastes &\nCreate Temporary Pastes"]
+
+        C2 -->|PUBLIC| V1["Open Access Link"]
+        C2 -->|PASSWORD_PROTECTED| V2["Requires BCrypt Unlock Modal"]
+        C2 -->|BURN_AFTER_READING| V3["Single-Use Self-Destruct Token"]
+        C2 -->|EXPIRED_TTL| V4["HTTP 410 Gone / Auto-Purged"]
+    end
+
+    Auth_Methods --> Security_Filters
+    Security_Filters --> Access_Matrix
+```
+
+---
+
+### 5. Database Entity-Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    users ||--o{ pastes : "creates / owns"
+    users ||--o{ password_reset_tokens : "requests"
+    pastes ||--o{ paste_views : "records"
+
+    users {
+        bigint id PK
+        varchar email UK
+        varchar password
+        varchar name
+        varchar role "ADMIN, USER"
+        varchar auth_provider "LOCAL, GOOGLE"
+        varchar provider_id
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    pastes {
+        varchar id PK "Generated alphanumeric ID"
+        bigint user_id FK "Nullable for anonymous pastes"
+        varchar title
+        text content
+        varchar language "java, ts, python, etc."
+        varchar media_url
+        varchar password_hash "BCrypt hashed"
+        boolean is_password_protected
+        boolean is_burn_after_reading
+        integer view_count
+        timestamp expires_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    paste_views {
+        bigint id PK
+        varchar paste_id FK
+        varchar ip_address
+        varchar user_agent
+        timestamp viewed_at
+    }
+
+    password_reset_tokens {
+        bigint id PK
+        bigint user_id FK
+        varchar token UK
+        timestamp expires_at
+        timestamp created_at
+    }
+```
+
+---
+
+## ⚡ Key Features Breakdown
+
+### 1. 🤖 Multi-Provider AI Engine with 10-Tier Failover
+- **Intelligent Dual-Provider Orchestration:** Primary text requests flow to lightning-fast Groq LPU models (`groq/compound-mini`, `openai/gpt-oss-120b`), while vision requests leverage multimodal engines (`qwen/qwen3.8-27b`, `gemini-3.6-flash`).
+- **Seamless Provider Switching:** If Groq encounters downtime, unauthorized keys (401), or rate limits (429), Zyren dynamically shifts to Google Gemini's 5-model fallback chain without dropping the user's connection.
+- **Configurable Primary Provider:** Set `AI_PRIMARY_PROVIDER=groq` or `AI_PRIMARY_PROVIDER=gemini` to match your infrastructure requirements.
+
+### 2. 👁️ Multimodal Media & PDF Analysis (OCR & Visual Q&A)
+- **High-Accuracy Vision Reasoning:** Analyze attached screenshots, infrastructure diagrams, error logs, and multi-page PDFs using `gemini-3.6-flash` and `qwen/qwen3.8-27b`.
+- **Visual Question-Answering:** Ask questions specifically about the diagram or document (*"What microservices are in this topology?"*), and the AI synthesizes both the image and the surrounding text notes.
+- **Graceful Vision Degradation:** If all vision models across both providers fail, the system automatically falls back to text-only analysis to ensure requests never crash.
+
+### 3. 💬 In-Context AI Chat & Global Translation
+- **Context-Grounded Answers:** Have an interactive conversation with any paste. The AI is primed with the exact code snippet, language context, and author notes.
+- **Multilingual Code & Text Translation:** Translate technical documentation or code explanations into any natural language with preserved syntax formatting.
+- **Automated Title & Category Detection:** Instantly suggests 8-word descriptive titles and categorizes pastes (`code`, `notes`, `article`, `recipe`, `poem`, `list`).
+
+### 4. 🔒 Enterprise Security: Burn-After-Reading & TTL Expiration
+- **Burn-After-Reading:** Share passwords, credentials, or API keys with complete confidence. Once loaded by the recipient, the paste is permanently deleted from PostgreSQL.
+- **Password Protection:** Encrypt access to pastes with salted BCrypt password hashing.
+- **Flexible Expiration Timers:** Configure pastes to expire after 10 minutes, 1 hour, 1 day, 1 week, 1 month, or keep them forever. Automated background jobs prune expired records.
+
+### 5. 💻 Developer-First Syntax Highlighting & Tooling
+- **Language Auto-Detection:** Automatically styles code for over 50 languages (Java, TypeScript, Python, Go, Rust, C++, Bash, SQL, JSON, YAML).
+- **Line Numbers & Raw View:** Easy line-by-line inspection, one-click raw plaintext view, and instant clipboard copy.
+- **Glassmorphic UI:** Modern dark/light theme designed with Tailwind CSS and responsive mobile layouts.
+
+### 6. ☁️ Cloudinary CDN Media Delivery
+- **Optimized Asset Delivery:** Attachments are automatically compressed, transcoded, and served via Cloudinary's global edge network.
+- **Encrypted URLs:** Media files are linked to pastes via secure HTTPS endpoints with tamper-proof asset IDs.
+
+---
+
+## 🤖 Active & Verified AI Model Matrix (2026 Verified)
+
+> **2026 Model Deprecation Notice:** Older models such as Groq's `llama-3.3-70b-versatile`, `llama-4-maverick`, and Google's `gemini-2.5-flash` have been decommissioned upstream and return `404 Not Found`. Zyren has been upgraded and live-verified against active production models:
+
+### Groq Active Models & Modalities
+| Model Identifier | Primary / Fallback Role | Modality | Best For | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `groq/compound-mini` | **Primary Text** | Text | Ultra-fast titles, summaries, chat | **Active & Free** |
+| `openai/gpt-oss-120b` | **Text Fallback 1** | Text | Deep code reasoning & syntax analysis | **Active & Free** |
+| `openai/gpt-oss-20b` | **Text Fallback 2** | Text | High-throughput low-latency inference | **Active & Free** |
+| `qwen/qwen3.8-27b` | **Text Fallback 3 & Primary Vision** | Text + Vision | Multimodal image/diagram comprehension | **Active & Free** |
+| `groq/compound` | **Text Fallback 4** | Text | Extended context window synthesis | **Active & Free** |
+
+### Google Gemini Active Models & Modalities
+| Model Identifier | Primary / Fallback Role | Modality | Best For | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| `gemini-3.6-flash` | **Primary Vision & Text Fallback 1** | Text + Vision | Multimodal PDF/image OCR & synthesis | **Active & Free** |
+| `gemini-flash-latest` | **Fallback 2 (Vision & Text)** | Text + Vision | Stable production general intelligence | **Active & Free** |
+| `gemini-3.8-flash` | **Fallback 3 (Vision & Text)** | Text + Vision | High-speed structured output generation | **Active & Free** |
+| `gemini-3.5-flash-lite` | **Fallback 4 (Vision & Text)** | Text + Vision | High rate-limit backup | **Active & Free** |
+| `gemini-3.1-flash-lite` | **Fallback 5 (Vision & Text)** | Text + Vision | Lightweight emergency fallback | **Active & Free** |
+
+### API Key Standards & Compatibility
+- **Google Gemini Keys:** Zyren natively supports modern Google AI Studio keys starting with `AQ.` (e.g. `AQ.Ab8RN...`) as well as legacy `AIza` keys over the `v1beta` endpoint.
+- **Groq Keys:** Fully compatible with official `gsk_` prefixed API keys over OpenAI-compatible chat endpoints.
+
+---
+
+## 💻 Technology Stack
+
+| Layer | Technology | Version | Purpose & Rationale |
+| :--- | :--- | :--- | :--- |
+| **Backend Framework** | Java / Spring Boot | `21+` / `3.5.7` | Enterprise-grade stability, virtual threads capability, type safety, and robust security. |
+| **Persistence & ORM** | Spring Data JPA / Hibernate | `3.5.7` | High-performance ORM, HikariCP connection pooling, and automated schema migration. |
+| **Database** | PostgreSQL / Neon Serverless | `16+` | Cloud-native serverless PostgreSQL with connection pooling and SSL encryption. |
+| **AI Cloud: Groq** | Groq LPU Inference | `REST / OpenAI Spec` | Blazing-fast inference speed (~280 tokens/sec) for code categorization, titles, and chat. |
+| **AI Cloud: Google** | Google Gemini API | `v1beta` | Multimodal document comprehension and high-accuracy OCR for PDF and image analysis. |
+| **Security & Auth** | Spring Security / JJWT | `6.x` / `0.12.5` | Stateless JWT tokens, BCrypt password hashing, and role-based endpoint authorization. |
+| **Social Sign-In** | Google OAuth 2.0 | `v2` | Frictionless user onboarding via Google OAuth social login. |
+| **Email Gateway** | Resend API Client | `3.0.0` | High-deliverability transactional email gateway for password reset verification. |
+| **Media Management** | Cloudinary Java SDK | `1.38.0` | Encrypted image storage, automatic WebP format transcoding, and edge CDN acceleration. |
+| **Frontend Framework** | React / TypeScript | `19.0.0` / `5.6.3` | Predictable state rendering, strict compile-time type safety, and modern hook abstractions. |
+| **Build & Tooling** | Vite | `6.4.3` | Instant hot module replacement (HMR) and optimized rollup production bundles. |
+| **Styling & UI** | Tailwind CSS / Lucide React | `4.x` / `Latest` | Clean modern glassmorphism, responsive navigation, and beautiful syntax highlighting. |
+
+---
+
+## 📁 Repository Structure
+
+```text
+zyren/
+├── backend/                                # Spring Boot 3.5.7 Core Server
+│   ├── src/main/java/com/zyren/backend/
+│   │   ├── ZyrenApplication.java           # Application entrypoint & Dotenv loader
+│   │   ├── ai/                             # Multi-Tier AI Provider & Model Fallback
+│   │   │   ├── AIController.java           # REST endpoints for title, summary, chat, translate
+│   │   │   ├── AIRequest.java              # AI payload contracts
+│   │   │   ├── AIResponse.java             # AI response wrappers
+│   │   │   └── AIService.java              # Bidirectional failover engine (Groq <-> Gemini)
+│   │   ├── auth/                           # Security, JWT & OAuth2 Services
+│   │   │   ├── AuthController.java         # Register, Login, OAuth2 social login
+│   │   │   ├── AuthService.java            # Authentication logic & password reset
+│   │   │   ├── OAuth2SuccessHandler.java   # Google OAuth redirect handler
+│   │   │   └── PasswordValidator.java      # Password strength verification
+│   │   ├── config/                         # Security & Infrastructure Configurations
+│   │   │   ├── AdminConfiguration.java     # Admin credentials initialization
+│   │   │   ├── CloudinaryConfig.java       # Cloudinary client bean setup
+│   │   │   ├── DataInitializer.java        # DB bootstrap & seed data
+│   │   │   ├── JwtAuthenticationFilter.java# Stateless JWT filter
+│   │   │   ├── JwtUtil.java                # HMAC-SHA256 token manager
+│   │   │   └── SecurityConfig.java         # Spring Security filter chain & CORS
+│   │   ├── contact/                        # Support & Newsletter Endpoints
+│   │   ├── media/                          # Cloudinary Upload Controller
+│   │   ├── paste/                          # Core Paste Domain Model & Services
+│   │   │   ├── Paste.java                  # JPA Entity (pastes table)
+│   │   │   ├── PasteController.java        # CRUD, burn-after-reading, views
+│   │   │   ├── PasteRepository.java        # Spring Data JPA queries
+│   │   │   └── PasteService.java           # Expiration, burn logic & validation
+│   │   └── user/                           # User Entity & Repository
+│   ├── src/main/resources/
+│   │   └── application.yaml                # Spring Boot application configuration
+│   ├── src/test/java/com/zyren/backend/ai/ # AI Fallback & Live Integration Tests
+│   │   ├── AIServiceFallbackTest.java      # Unit tests for null checks & model lists
+│   │   └── AIServiceLiveTest.java          # Bidirectional Groq <-> Gemini live failover test
+│   ├── Dockerfile                          # Multi-stage production container build
+│   ├── docker-compose.yml                  # Local development container orchestration
+│   ├── pom.xml                             # Maven dependency configuration
+│   ├── validate-gemini-key.ps1             # Windows Gemini API validation utility
+│   └── validate-gemini-key.sh              # Unix Gemini API validation utility
+├── frontend/                               # React 19 + Vite SPA Client
 │   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/zyren/backend/
-│   │   │   │   ├── ZyrenApplication.java
-│   │   │   │   ├── config/          # Security, JWT, CORS, initializers
-│   │   │   │   ├── auth/            # Login, register, reset-password, OAuth handlers
-│   │   │   │   ├── user/            # User entity, admin controllers
-│   │   │   │   ├── paste/           # Paste CRUD + public access API
-│   │   │   │   ├── media/           # Cloudinary upload/delete endpoints
-│   │   │   │   ├── ai/              # AI services (Groq + Gemini integration)
-│   │   │   │   ├── contact/         # Contact & newsletter endpoints
-│   │   │   │   ├── exception/       # Global exception handling
-│   │   │   │   └── mail/            # Resend email service
-│   │   └── resources/
-│   │       └── application.yaml     # DB, JWT, Resend, Cloudinary config
-│
-├── frontend/                        # React + Vite frontend
-│   ├── package.json
-│   ├── vite.config.ts
-│   ├── index.html
-│   └── src/
-│       ├── main.tsx
-│       ├── contexts/                # AuthContext (JWT + role/provider state)
-│       ├── api/                     # Axios client with interceptors + AI API
-│       ├── lib/                     # Centralized API helper & utilities
-│       ├── components/              # Reusable UI components
-│       │   ├── ui/                  # Radix-style components
-│       │   ├── AIChatPanel.tsx      # AI chat assistant interface
-│       │   ├── AISummaryCard.tsx    # AI-powered content summaries
-│       │   ├── AITitleGenerator.tsx # AI title generation component
-│       │   ├── MediaPreview.tsx     # Media display component
-│       │   └── ...                  # Other shared components
-│       ├── pages/                   # Auth, Paste, Public, Admin pages
-│       ├── hooks/                   # Custom React hooks
-│       ├── types/                   # TypeScript type definitions
-│       └── index.css                # Tailwind v4 config + themes
-│
-├── oradata/                          # Oracle Free DB data dir for local dev
-│
-├── docker-compose.yml                # Oracle database local setup
-│
-├── README.md                         # Project documentation
-├── CHANGELOG.md                      # Version history and updates
-├── SECURITY.md                       # Security policy
-├── LICENSE                           # MIT License
-└── .gitignore                        # Git ignore rules
+│   │   ├── api/                            # Axios API Clients (pasteApi, aiApi, authApi)
+│   │   ├── components/                     # Reusable UI Components (Navbar, AIChat, Editor)
+│   │   ├── context/                        # AuthContext & ThemeContext providers
+│   │   ├── pages/                          # Primary view routes (Home, Paste, Login, Dashboard)
+│   │   └── types/                          # TypeScript interface contracts
+│   ├── public/                             # Static assets, logo & redirects
+│   ├── package.json                        # Frontend dependencies & scripts
+│   └── vite.config.ts                      # Vite build optimization configuration
+├── public/                                 # Repository branding & media assets (logo, icons)
+├── docker-compose.yml                      # Root full-stack Docker Compose
+└── README.md                               # Comprehensive project documentation
 ```
 
 ---
 
-## Quick Start Guide
+## ⚙️ Environment Configuration
+
+Zyren uses environment variables for configuration. Create `.env` files in both `backend/` and `frontend/` directories.
+
+### Backend Configuration (`backend/.env`)
+
+```ini
+# ===================================================================
+# Database Configuration (Neon PostgreSQL / Local Postgres)
+# ===================================================================
+DB_URL=jdbc:postgresql://your-neon-host.aws.neon.tech/neondb?sslmode=require
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+SPRING_DATASOURCE_URL=jdbc:postgresql://your-neon-host.aws.neon.tech/neondb?sslmode=require
+SPRING_DATASOURCE_USERNAME=your_db_user
+SPRING_DATASOURCE_PASSWORD=your_db_password
+
+# ===================================================================
+# Security & JWT Token Configuration
+# ===================================================================
+JWT_SECRET=your-256-bit-secret-key-replace-this-in-production-environments
+JWT_EXPIRATION=86400000
+
+# ===================================================================
+# Email Service (Resend API)
+# ===================================================================
+RESEND_API_KEY=re_your_resend_api_key
+RESEND_FROM_EMAIL=onboarding@resend.dev
+RESEND_FROM_NAME=Zyren
+MAIL_TO=admin@example.com
+
+# ===================================================================
+# Application Base URL & OAuth Redirection
+# ===================================================================
+APP_BASE_URL=http://localhost:5173
+FRONTEND_URL=http://localhost:5173
+RESET_BASE_URL=http://localhost:5173/reset-password
+PORT=8080
+
+# ===================================================================
+# Multi-Provider AI Architecture & Fallback Chains
+# ===================================================================
+AI_PRIMARY_PROVIDER=groq
+
+# Google Gemini API Configuration (Accepts AQ. or AIza keys)
+GEMINI_API_KEY=your_gemini_api_key
+
+# Gemini Multimodal Vision Models
+GEMINI_VISION_PRIMARY=gemini-3.6-flash
+GEMINI_VISION_FALLBACK1=gemini-flash-latest
+GEMINI_VISION_FALLBACK2=gemini-3.8-flash
+GEMINI_VISION_FALLBACK3=gemini-3.5-flash-lite
+GEMINI_VISION_FALLBACK4=gemini-3.1-flash-lite
+
+# Gemini Text Models
+GEMINI_TEXT_PRIMARY=gemini-3.6-flash
+GEMINI_TEXT_FALLBACK1=gemini-flash-latest
+GEMINI_TEXT_FALLBACK2=gemini-3.8-flash
+GEMINI_TEXT_FALLBACK3=gemini-3.5-flash-lite
+GEMINI_TEXT_FALLBACK4=gemini-3.1-flash-lite
+
+# Groq API Configuration (Ultra-Fast LPU Inference)
+GROQ_API_KEY=your_groq_api_key
+
+# Groq Text Models (Verified active free models: compound-mini, gpt-oss, qwen)
+GROQ_TEXT_MODEL=groq/compound-mini
+GROQ_TEXT_FALLBACK1=openai/gpt-oss-120b
+GROQ_TEXT_FALLBACK2=openai/gpt-oss-20b
+GROQ_TEXT_FALLBACK3=qwen/qwen3.8-27b
+GROQ_TEXT_FALLBACK4=groq/compound
+GROQ_TEXT_FALLBACKS=groq/compound-mini,openai/gpt-oss-120b,openai/gpt-oss-20b,qwen/qwen3.8-27b,groq/compound
+
+# Groq Vision Models (Multimodal image/PDF support)
+GROQ_VISION_MODEL=qwen/qwen3.8-27b
+GROQ_VISION_FALLBACK1=qwen/qwen3.8-27b
+GROQ_VISION_FALLBACKS=qwen/qwen3.8-27b
+
+# ===================================================================
+# Cloudinary CDN Media Storage (Image & PDF Attachments)
+# ===================================================================
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+CLOUDINARY_URL=cloudinary://key:secret@cloud_name
+
+# ===================================================================
+# Google OAuth 2.0 Social Sign-In (Optional)
+# ===================================================================
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8080/login/oauth2/code/google
+
+# ===================================================================
+# Administrator Credentials
+# ===================================================================
+ZYREN_ADMIN_EMAIL_1=admin@zyren.local
+ZYREN_ADMIN_PASSWORD_1=AdminPassword_2026!
+```
+
+### Frontend Configuration (`frontend/.env`)
+
+```ini
+# Backend API Base URL
+VITE_API_URL=http://localhost:8080
+
+# Google OAuth Client ID
+VITE_GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+```
+
+---
+
+## 🚀 Local Development & Quickstart
 
 ### Prerequisites
-- **Java 21** or higher
-- **Node.js 18+** and npm/pnpm
-- **PostgreSQL** (or Oracle for local development)
-- **API Keys**: Groq, Google Gemini, Cloudinary, Resend (see below)
+- **Java Development Kit (JDK):** Version 21 or higher
+- **Node.js:** Version 18.0.0 or higher (`v20+` recommended) & `npm`
+- **PostgreSQL Database:** Local instance or cloud database (such as [Neon.tech](https://neon.tech))
 
 ### 1. Clone the Repository
 ```bash
@@ -366,552 +650,277 @@ git clone https://github.com/rakinmohammedrafeeq/zyren.git
 cd zyren
 ```
 
-### 2. Set Up Environment Variables
-
-Create `.env` files in both `backend/` and `frontend/` directories:
-
-**Backend `.env`:**
-```env
-# Database
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/zyren
-SPRING_DATASOURCE_USERNAME=your_username
-SPRING_DATASOURCE_PASSWORD=your_password
-
-# JWT
-JWT_SECRET=your-secret-key-min-256-bits
-JWT_EXPIRATION=86400000
-
-# Admin Accounts
-ZYREN_ADMIN_EMAIL_1=admin@example.com
-ZYREN_ADMIN_PASSWORD_1=strongpassword
-
-# Email (Resend)
-RESEND_API_KEY=your_resend_api_key
-MAIL_TO=support@example.com
-RESET_BASE_URL=http://localhost:5173
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# AI Services
-GEMINI_API_KEY=your_gemini_api_key
-GROQ_API_KEY=your_groq_api_key
-
-# CORS
-APP_CORS_ALLOWED_ORIGINS=http://localhost:5173
-FRONTEND_URL=http://localhost:5173
+### 2. Configure Backend
+Copy `.env.example` to `backend/.env` and update your database and API credentials:
+```bash
+cp backend/.env.example backend/.env
 ```
 
-**Frontend `.env`:**
-```env
-VITE_API_BASE_URL=http://localhost:8080/api
-```
-
-### 3. Start Backend
+### 3. Launch Backend
 ```bash
 cd backend
-./mvnw spring-boot:run
-# Backend runs on http://localhost:8080
-```
 
-### 4. Start Frontend
+# Validate Gemini API Key configuration
+.\validate-gemini-key.ps1    # On Windows PowerShell
+# or: ./validate-gemini-key.sh # On macOS / Linux
+
+# Build and start the Spring Boot server
+./mvnw clean spring-boot:run
+```
+The backend API will start on **`http://localhost:8080`**.
+
+### 4. Launch Frontend
+Open a new terminal window:
 ```bash
 cd frontend
+
+# Install dependencies
 npm install
+
+# Start the Vite development server
 npm run dev
-# Frontend runs on http://localhost:5173
 ```
+The user interface will be live on **`http://localhost:5173`**.
 
-### 5. Access the Application
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:8080/api
-- **Health Check**: http://localhost:8080/actuator/health
-
-### Getting API Keys
-
-#### Groq API (Primary AI Provider)
-1. Visit [Groq Console](https://console.groq.com/)
-2. Sign up for a free account
-3. Generate API key from dashboard
-4. Free tier: 30 requests/minute
-
-#### Google Gemini API (Fallback AI Provider)
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Sign in with Google account
-3. Create new API key
-4. Free tier: 60 requests/minute
-
-#### Cloudinary (Media Storage)
-1. Visit [Cloudinary](https://cloudinary.com/)
-2. Sign up for free account
-3. Get credentials from dashboard
-4. Free tier: 25 GB storage, 25 GB bandwidth/month
-
-#### Resend (Email Service)
-1. Visit [Resend](https://resend.com/)
-2. Sign up for free account
-3. Generate API key
-4. Free tier: 100 emails/day
-
----
-
-## Setup & Installation
-
-### Backend Requirements
-- Java 21  
-- Maven  
-- PostgreSQL or Oracle
-
-### Required environment variables
-
-> Note: The backend reads most configuration from environment variables (and also supports loading from a local `.env` via `java-dotenv`).
-
-```
-SPRING_DATASOURCE_URL=
-SPRING_DATASOURCE_USERNAME=
-SPRING_DATASOURCE_PASSWORD=
-
-JWT_SECRET=
-JWT_EXPIRATION=
-
-# Admin accounts (supports 2 configured admins)
-ZYREN_ADMIN_EMAIL_1=
-ZYREN_ADMIN_PASSWORD_1=
-ZYREN_ADMIN_EMAIL_2=
-ZYREN_ADMIN_PASSWORD_2=
-
-# Email (Resend)
-RESEND_API_KEY=
-MAIL_TO=
-RESET_BASE_URL=
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-
-# Google OAuth
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-
-# AI Services
-GEMINI_API_KEY=
-GROQ_API_KEY=
-
-# Optional: Configure specific AI models (defaults shown)
-GEMINI_VISION_PRIMARY=gemini-3.6-flash
-GEMINI_TEXT_PRIMARY=gemini-3.5-flash-lite
-GROQ_TEXT_MODEL=llama-3.3-70b-versatile
-GROQ_VISION_MODEL=meta-llama/llama-4-maverick-17b-128e-instruct
-
-# CORS (comma-separated)
-APP_CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
-FRONTEND_URL=http://localhost:5173
-
-PORT=
-```
-
----
-
-## Local Development
-
-### Start the Backend
-
+### 5. Running with Docker Compose
+To launch the entire platform in isolated containers:
 ```bash
-cd backend
-./mvnw spring-boot:run
+docker-compose up --build
 ```
 
-### Frontend Environment Variables
+---
 
-The frontend requires a single environment variable:
-```
-VITE_API_BASE_URL=
-```
+## 📡 REST API Reference
 
-If not provided, the frontend defaults to:
-```
-http://localhost:8080/api
+All protected requests must include standard headers:
+```http
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token>
 ```
 
-Create a `.env` file inside the **frontend/** folder:
-```
-frontend/.env
+### Paste Operations (`/api/pastes`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/pastes` | Create a new paste (supports password, burn, TTL, media) | No |
+| `GET` | `/api/pastes/{id}` | Retrieve paste content (auto-burns if burn-after-reading) | No |
+| `POST` | `/api/pastes/{id}/verify` | Unlock password-protected paste | No |
+| `GET` | `/api/pastes/user/all` | List all pastes created by authenticated user | **Yes** |
+| `DELETE` | `/api/pastes/{id}` | Permanently delete owned paste | **Yes** |
+| `GET` | `/api/pastes/public` | List recent public pastes | No |
+
+### AI Intelligence Operations (`/api/ai`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/ai/generate-title` | Generate concise 8-word title from snippet | No |
+| `POST` | `/api/ai/summarize` | Generate structured markdown summary of text | No |
+| `POST` | `/api/ai/summarize-with-media` | Multimodal summary combining text notes and image/PDF | No |
+| `POST` | `/api/ai/chat` | Contextual Q&A conversation grounded in paste content | No |
+| `POST` | `/api/ai/chat-with-media` | Multimodal visual Q&A inspecting diagrams and code | No |
+| `POST` | `/api/ai/translate` | Translate paste content into any natural language | No |
+| `POST` | `/api/ai/detect-type` | Auto-detect content category (`code`, `notes`, `article`, etc.) | No |
+
+### Authentication (`/api/auth`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register new user account | No |
+| `POST` | `/api/auth/login` | Authenticate with email and password | No |
+| `POST` | `/api/auth/oauth2/google` | Google OAuth2 token exchange | No |
+| `POST` | `/api/auth/forgot-password` | Request password reset verification link | No |
+| `POST` | `/api/auth/reset-password` | Complete password reset using secure token | No |
+
+### Media Uploads (`/api/media`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/media/upload` | Multipart upload for images/PDFs to Cloudinary CDN | No |
+
+---
+
+## 🌐 Production Deployment
+
+Zyren is engineered for continuous deployment across modern cloud infrastructure:
+
+```text
+               ┌────────────────────────┐
+               │  Netlify / Vercel Edge │
+               │   (React 19 Client)    │
+               └───────────┬────────────┘
+                           │ HTTPS REST API Calls
+                           ▼
+               ┌────────────────────────┐
+               │    Render Cloud Host   │
+               │  (Dockerized Backend)  │
+               └───────────┬────────────┘
+         ┌─────────────────┼──────────────────┐
+         ▼                 ▼                  ▼
+┌─────────────────┐ ┌──────────────┐ ┌─────────────────┐
+│ Neon Serverless │ │  Cloudinary  │ │   Resend API    │
+│   PostgreSQL    │ │   Media CDN  │ │  Transactional  │
+│      (16+)      │ │ (Attachments)│ │     Emails      │
+└─────────────────┘ └──────────────┘ └─────────────────┘
 ```
 
-Add:
+### 1. Backend Deployment (Render / Docker)
+The backend includes a multi-stage `Dockerfile` optimized for memory efficiency and sub-second startup:
+```bash
+# Build the Docker container locally
+docker build -t zyren-backend ./backend
+
+# Run the container
+docker run -p 8080:8080 --env-file backend/.env zyren-backend
 ```
-VITE_API_BASE_URL=http://localhost:8080/api
-```
+In Render, link your GitHub repository and configure environment variables matching `backend/.env`.
 
-For production (Netlify), set the variable in **Netlify → Site Settings → Environment Variables**.
-
-### Start the Frontend
-
+### 2. Frontend Deployment (Netlify / Vercel)
+The frontend includes pre-configured `_redirects` and SPA fallback rules ensuring seamless client-side routing:
 ```bash
 cd frontend
-npm install
-npm run dev
+npm run build
+```
+Deploy via Netlify or Vercel CLI. Set `VITE_API_URL` to your production backend URL.
+
+---
+
+## 🔒 Performance & Security Hardening
+
+- **Stateless Authorization:** Authenticates requests via cryptographically signed HMAC-SHA256 JWT tokens.
+- **BCrypt Password Hashing:** Salted password encryption protects user credentials and password-guarded pastes.
+- **Connection Pool Tuning:** Optimized HikariCP settings ensure low-latency connection recycling with Neon serverless PostgreSQL.
+- **Lazy Initialization:** `spring.main.lazy-initialization=true` drastically reduces JVM startup time and cold boot overhead in cloud container environments.
+- **CORS & Origin Filtering:** Explicit origin white-listing prevents unauthorized cross-site scripting and unauthorized iframe framing.
+
+---
+
+## ❓ Troubleshooting & FAQ
+
+### Q: Why did Groq previously return a 404 "model_not_found" error?
+**A:** Groq decommissioned older model checkpoints (including `llama-3.3-70b-versatile` and `llama-4-maverick`). Zyren resolves this with an automated fallback pipeline using verified active models (`groq/compound-mini`, `openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`, `groq/compound`) that automatically shifts to Google Gemini if Groq is unavailable.
+
+### Q: My Gemini API key starts with `AQ.` — is it valid?
+**A:** Yes! Modern Google AI Studio keys start with `AQ.` (e.g. `AQ.Ab8RN...`). Zyren communicates over Google's `v1beta` endpoint which natively authenticates both `AQ.` and legacy `AIza` keys. Run `.\validate-gemini-key.ps1` to test your key against live endpoints.
+
+### Q: How does Burn-After-Reading work?
+**A:** When a user accesses a Burn-After-Reading paste, the backend serves the content to the client and immediately executes a transactional SQL `DELETE`. Once the browser tab is closed or refreshed, the paste can never be retrieved again.
+
+### Q: What happens if an attached image fails during AI analysis?
+**A:** Zyren features a graceful degradation mechanism: if all vision models across Groq and Gemini fail, the system automatically degrades to text-only analysis, ensuring the user still receives an accurate text summary without crashing.
+
+---
+
+## 💡 Technology Decisions & Rationale
+
+### Why Spring Boot 3.5 & Java 21+?
+Enterprise paste platforms demand strict security, high concurrency, and long-term maintainability. Spring Boot provides battle-tested JPA repository abstractions, declarative transaction boundaries, and a mature security ecosystem.
+
+### Why Groq LPU + Google Gemini Dual AI Strategy?
+Groq provides unmatched LPU inference speeds (~280 tokens/sec), making real-time code titles and instant summaries feel instantaneous. Google Gemini provides unmatched multimodal visual reasoning for complex architecture diagrams and PDFs. Combining both gives users the best of speed and vision intelligence with zero single-point-of-failure risk.
+
+### Why React 19 + Vite?
+Vite provides instant HMR and optimized asset bundling. React 19 provides modern concurrent rendering abstractions, delivering responsive code editing and fluid drawer transitions on mobile and desktop.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Whether fixing a bug, adding an AI feature, or improving documentation, your help is appreciated.
+
+### How to Contribute
+1. **Fork the Repository** on GitHub
+2. **Clone your fork locally**:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/zyren.git
+   cd zyren
+   ```
+3. **Create a descriptive feature branch**:
+   ```bash
+   git checkout -b feature/AmazingPasteFeature
+   ```
+4. **Make your changes and verify with tests**:
+   ```bash
+   cd backend && ./mvnw clean test
+   cd ../frontend && npm run build
+   ```
+5. **Commit your changes**:
+   ```bash
+   git commit -m "Add AmazingPasteFeature with automated tests"
+   ```
+6. **Push to your fork**:
+   ```bash
+   git push origin feature/AmazingPasteFeature
+   ```
+7. **Open a Pull Request** on GitHub
+
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) and [SECURITY.md](./SECURITY.md) for full contribution guidelines.
+
+---
+
+## 📄 License
+
+This project is licensed under the **[MIT License](LICENSE)**.
+
+```text
+MIT License — Copyright (c) 2024-2026 Rakin Mohammed Rafeeq
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions...
 ```
 
-The frontend will run at:
-```
-http://localhost:5173
-```
-
-The backend will run at:
-```
-http://localhost:8080
-```
+See the [LICENSE](LICENSE) file for the full license text.
 
 ---
 
-## Troubleshooting
+## 🙏 Acknowledgments
 
-### Common Issues
+### Technologies & Frameworks
+- [Spring Boot](https://spring.io/projects/spring-boot) — Enterprise backend framework
+- [React](https://reactjs.org/) — Dynamic user interface rendering
+- [PostgreSQL](https://www.postgresql.org/) & [Neon](https://neon.tech/) — Cloud-native serverless PostgreSQL
+- [Groq](https://groq.com/) — Lightning-fast LPU inference platform
+- [Google Gemini](https://ai.google.dev/) — Multimodal visual intelligence & document reasoning
+- [Cloudinary](https://cloudinary.com/) — Global edge media delivery CDN
+- [Resend](https://resend.com/) — Modern transactional email API
+- [Tailwind CSS](https://tailwindcss.com/) — Modern styling and glassmorphic UI
 
-#### Backend Won't Start
-- **Check Java Version**: Ensure Java 21+ is installed (`java -version`)
-- **Database Connection**: Verify PostgreSQL is running and credentials are correct
-- **Port Conflict**: Ensure port 8080 is not in use by another application
-- **Environment Variables**: Double-check all required variables in `.env`
-
-#### Frontend Build Errors
-- **Node Version**: Ensure Node.js 18+ is installed (`node -version`)
-- **Clear Cache**: Try `rm -rf node_modules package-lock.json && npm install`
-- **Vite Issues**: Delete `.vite` cache folder and restart dev server
-
-#### AI Features Not Working
-- **API Keys**: Verify Groq and Gemini API keys are correct and active
-- **Rate Limits**: Check if you've exceeded API quotas (wait and retry)
-- **Network Issues**: Ensure backend can reach external AI APIs
-- **Model Configuration**: Verify model names in `application.yaml` are correct
-
-#### Media Upload Fails
-- **File Size**: Ensure file is under 15MB (frontend) / 20MB (backend)
-- **File Type**: Only JPEG, PNG, WebP, MP4, MOV, PDF are supported
-- **Cloudinary Config**: Verify API credentials and cloud name
-- **Network**: Check internet connection for Cloudinary uploads
-
-#### OAuth2 Login Issues
-- **Redirect URI**: Ensure Google Console has correct redirect URI configured
-- **Client Credentials**: Verify `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-- **Scope**: Check that email and profile scopes are enabled
-- **Frontend URL**: Ensure `FRONTEND_URL` in backend matches your actual URL
-
-### Debug Mode
-
-Enable detailed logging by adding to `application.yaml`:
-```yaml
-logging:
-  level:
-    com.zyren.backend: DEBUG
-    org.springframework.web: DEBUG
-```
-
-### Getting Help
-
-1. **Check Documentation**: Review README and CHANGELOG
-2. **Search Issues**: Look for similar problems in GitHub Issues
-3. **Check Logs**: Review backend console and browser console
-4. **Contact Support**: Email rakinmohammedrafeeq@gmail.com
-5. **Community**: Join discussions on GitHub
+### Vision & Inspiration
+Engineered to prove that modern content-sharing tools can combine blazing-fast performance with enterprise-grade multi-provider AI resilience, multimodal intelligence, and privacy-first security.
 
 ---
 
-## Deployment
+## 📬 Contact
 
-### Live Production URLs
+For inquiries, feature requests, or collaboration:
 
-- **Frontend (Netlify):** https://zyren.netlify.app  
-- **Backend (Render Web Service):** https://zyren-backend.onrender.com  
-- **Database (Render PostgreSQL):** dpg-d4a7gdje5dus739uqnv0-a
-
-Your deployment setup includes:
-
-- Netlify → Hosts the React (Vite) frontend  
-- Render → Hosts the Spring Boot backend (Dockerfile build)  
-- Render → Provides PostgreSQL as the production database  
-- Local Oracle DB via Docker → For local development option
+- **Author & Architect:** Rakin Mohammed Rafeeq
+- **Portfolio Website:** [rakinmohammedrafeeq.vercel.app](https://rakinmohammedrafeeq.vercel.app)
+- **Email:** [rakinmohammedrafeeq@gmail.com](mailto:rakinmohammedrafeeq@gmail.com)
+- **LinkedIn:** [linkedin.com/in/rakinmohammedrafeeq](https://www.linkedin.com/in/rakinmohammedrafeeq)
+- **GitHub:** [github.com/rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
 
 ---
 
-## Performance & Optimization
+## ☕ Support
 
-### Backend Performance
-- **Lazy Initialization**: Spring Boot lazy loading for faster startup
-- **Connection Pooling**: HikariCP for optimal database performance
-- **JPA Optimization**: Hibernate query optimization and caching
-- **Response Compression**: Automatic GZIP compression for API responses
-- **AI Caching**: Consider implementing Redis cache for frequent AI requests
+If you find Zyren useful or inspiring, please consider supporting the project:
 
-### Frontend Performance
-- **Code Splitting**: Automatic route-based code splitting with Vite
-- **Tree Shaking**: Unused code elimination in production builds
-- **Image Optimization**: Cloudinary automatic optimization and CDN delivery
-- **Lazy Loading**: Components and routes loaded on demand
-- **Bundle Size**: Production build typically under 500KB gzipped
+- ⭐ **Star the repository** on GitHub
+- 🐛 **Report issues** and submit feature enhancements
+- ☕ **Buy Me a Coffee:**
 
-### Database Optimization
-- **Indexes**: Proper indexing on frequently queried columns
-- **Cascade Operations**: Efficient cascade delete for user cleanup
-- **Connection Limits**: Configured max pool size for concurrent requests
-- **Query Optimization**: N+1 query prevention with JPA fetch strategies
-
-### Best Practices
-- Use pagination for large paste lists
-- Implement rate limiting for AI endpoints
-- Cache AI responses for duplicate requests
-- Optimize images before upload (resize to max 2000px)
-- Set appropriate paste expiry to auto-cleanup old data
-- Monitor API usage to stay within free tier limits
+<p align="left">
+  <a href="https://buymeacoffee.com/rakinmohammedrafeeq">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee"/>
+  </a>
+</p>
 
 ---
 
-## FAQ (Frequently Asked Questions)
-
-### General
-
-**Q: Is Zyren free to use?**  
-A: Yes, all features are currently free during beta. API costs are covered by free tiers of external services.
-
-**Q: Can I self-host Zyren?**  
-A: Absolutely! Zyren is designed for easy self-hosting. Follow the setup guide above.
-
-**Q: What's the difference between Zyren and other paste services?**  
-A: Zyren uniquely combines AI-powered features, media support, and modern tech stack with a focus on privacy and user control.
-
-### Technical
-
-**Q: Which database should I use for local development?**  
-A: PostgreSQL is recommended as it matches production. Oracle is supported but requires Docker setup.
-
-**Q: Can I use Zyren without AI features?**  
-A: Yes, simply don't configure AI API keys. Core paste features work independently.
-
-**Q: How do I upgrade from v1.1 to v1.2?**  
-A: Follow the upgrade notes in CHANGELOG.md. Main change is adding AI API keys.
-
-**Q: What's the maximum paste size?**  
-A: No hard limit on text size, but very large pastes (>100KB) may have slower AI processing.
-
-### Features
-
-**Q: Can I edit pastes after creation?**  
-A: Yes, full edit capability for title and content. Media can be added/removed during edit.
-
-**Q: How long do public paste codes last?**  
-A: Codes are permanent unless you delete the paste or set an expiry time.
-
-**Q: Can I password-protect pastes?**  
-A: Not yet, but this is planned for a future release.
-
-**Q: Do I need to be logged in to view public pastes?**  
-A: No, anyone with the code can view public pastes without authentication.
-
-### AI Features
-
-**Q: Which AI models does Zyren use?**  
-A: Primary: Groq (LLaMA 3.3 70B text, LLaMA 4 Maverick vision). Fallback: Google Gemini (multiple Flash models).
-
-**Q: Is my data sent to AI providers?**  
-A: Yes, when using AI features, content is sent to Groq/Gemini for processing. Don't use AI on sensitive data.
-
-**Q: How accurate is AI vision analysis?**  
-A: Very accurate for most content. Best results with clear images, readable PDFs, and good quality videos.
-
-**Q: Can AI translate my pastes?**  
-A: Translation feature is available via API but not yet in the UI. Coming in v1.3.
-
-### Privacy & Security
-
-**Q: Who can see my pastes?**  
-A: Private pastes: only you. Public pastes: anyone with the code.
-
-**Q: How is my data protected?**  
-A: JWT authentication, HTTPS encryption, secure password hashing, role-based access control.
-
-**Q: Can admins see my pastes?**  
-A: Admins can view and delete any paste but cannot edit user content.
-
-**Q: Is my email shared with third parties?**  
-A: No. Email is only used for account management and password resets via Resend.
-
----
-
-## Security Policy
-
-For the complete security policy, refer to **[SECURITY.md](SECURITY.md)**.  
-It outlines:
-
-- Supported versions  
-- Responsible disclosure guidelines  
-- Private reporting process  
-- Required information when reporting vulnerabilities  
-- Response timelines
-
----
-
-## Roadmap 🗺️
-
-### v1.3 (Planned - Q2 2025)
-- [ ] **Password Protection**: Add optional password for public pastes
-- [ ] **Paste Categories**: Organize pastes with custom categories/tags
-- [ ] **Syntax Highlighting**: Code syntax highlighting for multiple languages
-- [ ] **Export Options**: Export pastes as PDF, Markdown, HTML
-- [ ] **AI Translation UI**: Translate button in paste view
-- [ ] **Collaborative Editing**: Real-time collaborative paste editing
-- [ ] **API Rate Limiting**: Built-in rate limiting for all endpoints
-
-### v1.4 (Planned - Q3 2025)
-- [ ] **Paste Templates**: Pre-built templates for common use cases
-- [ ] **Search & Filter**: Advanced search across your pastes
-- [ ] **Analytics Dashboard**: Usage statistics and insights
-- [ ] **Mobile Apps**: Native iOS and Android apps
-- [ ] **Webhook Integration**: Trigger webhooks on paste events
-- [ ] **Version History**: Track paste edit history
-- [ ] **Share via Email**: Direct email sharing from UI
-
-### Future Considerations
-- WebSocket support for real-time updates
-- GraphQL API alongside REST
-- Elasticsearch integration for full-text search
-- S3 storage option for media
-- Multi-language UI (i18n)
-- Browser extensions (Chrome, Firefox)
-- CLI tool for power users
-- AI-powered code completion
-- Paste encryption for sensitive data
-
-### Community Requests
-Want a feature? [Open an issue](https://github.com/rakinmohammedrafeeq/zyren/issues) on GitHub!
-
----
-
-## Contributing 🤝
-
-We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to learn about:
-- Development setup and workflow
-- Coding standards and guidelines  
-- How to submit pull requests
-- Community guidelines and code of conduct
-
-Quick links:
-- [Report a Bug](https://github.com/rakinmohammedrafeeq/zyren/issues/new?labels=bug)
-- [Request a Feature](https://github.com/rakinmohammedrafeeq/zyren/issues/new?labels=enhancement)
-- [View Roadmap](#roadmap-🗺️)
-- [Read Full Contributing Guide](CONTRIBUTING.md)
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## Acknowledgments 🙏
-
-### Technologies & Services
-- **Spring Boot** - Amazing Java framework by Pivotal/VMware
-- **React** - Revolutionary UI library by Meta
-- **Groq** - Blazing fast AI inference
-- **Google Gemini** - Powerful multimodal AI
-- **Cloudinary** - Reliable media management
-- **Resend** - Developer-friendly email API
-- **Render** - Seamless cloud deployment
-- **Netlify** - Excellent static hosting
-- **Tailwind CSS** - Utility-first CSS framework
-- **Radix UI** - Accessible component primitives
-- **Vite** - Next generation frontend tooling
-
-### Inspiration
-Inspired by services like Pastebin, GitHub Gist, and modern AI applications, with a focus on:
-- User privacy and control
-- Modern, accessible design
-- AI-enhanced productivity
-- Open source transparency
-
-### Special Thanks
-- The open source community for amazing tools and libraries
-- Early testers and feedback providers
-- Stack Overflow community for troubleshooting help
-- All contributors who help make Zyren better
-
----
-
-## Contact  
-
-**Developer:** Rakin Mohammed Rafeeq
-
-### Get in Touch
-- 📧 **Email:** [rakinmohammedrafeeq@gmail.com](mailto:rakinmohammedrafeeq@gmail.com)
-- 💼 **LinkedIn:** [linkedin.com/in/rakinmohammedrafeeq](https://www.linkedin.com/in/rakinmohammedrafeeq)
-- 🐙 **GitHub:** [@rakinmohammedrafeeq](https://github.com/rakinmohammedrafeeq)
-- 🌐 **Live Demo:** [zyren.netlify.app](https://zyren.netlify.app)
-
-### Project Links
-- 🚀 **Frontend:** [zyren.netlify.app](https://zyren.netlify.app)
-- ⚙️ **Backend API:** [zyren-backend.onrender.com](https://zyren-backend.onrender.com)
-- 📚 **Documentation:** This README
-- 🐛 **Issues:** [GitHub Issues](https://github.com/rakinmohammedrafeeq/zyren/issues)
-- 💬 **Discussions:** [GitHub Discussions](https://github.com/rakinmohammedrafeeq/zyren/discussions)
-
-### Response Times
-- **Bug Reports:** Within 48 hours
-- **Feature Requests:** Within 1 week
-- **Pull Requests:** Within 3-5 days
-- **Security Issues:** Within 24 hours (via LinkedIn DM)
-
----
-
-## Support the Project ⭐
-
-If you find Zyren useful, consider:
-
-### Show Your Support
-- ⭐ **Star this repository** on GitHub
-- 🐦 **Share** on social media
-- 📝 **Write** a blog post or review
-- 🗣️ **Tell** your friends and colleagues
-- 💡 **Contribute** code, docs, or ideas
-
-### Buy Me a Coffee ☕
-Support ongoing development and server costs:
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/rakinmohammedrafeeq)
-
-Your support helps:
-- 🔧 Maintain and improve Zyren
-- 🚀 Add new features faster
-- 📚 Create better documentation
-- 🌐 Keep demo servers running
-- 🧪 Test with premium API tiers
-
-Every contribution, big or small, is greatly appreciated! 💙
-
----
-<!--
-## Project Stats 📊
-
-![GitHub stars](https://img.shields.io/github/stars/rakinmohammedrafeeq/zyren?style=social)
-![GitHub forks](https://img.shields.io/github/forks/rakinmohammedrafeeq/zyren?style=social)
-![GitHub issues](https://img.shields.io/github/issues/rakinmohammedrafeeq/zyren)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/rakinmohammedrafeeq/zyren)
-![License](https://img.shields.io/github/license/rakinmohammedrafeeq/zyren)
--->
-### Built With ❤️ by Rakin Mohammed Rafeeq
-
-**Version:** 1.2.0  
-**Last Updated:** January 2025  
-**Status:** Active Development 🚧
-
----
-
-*Made with ❤️ and ☕ in India*
+<div align="center">
+  <img src="public/logo.png" alt="Zyren Logo" width="48" height="48">
+  <br/>
+  <b>Zyren</b> — Intelligent Paste Sharing for Modern Engineering Teams.
+  <br/>
+  <i>Crafted with precision by <a href="https://rakinmohammedrafeeq.vercel.app">Rakin Mohammed Rafeeq</a></i>
+</div>
