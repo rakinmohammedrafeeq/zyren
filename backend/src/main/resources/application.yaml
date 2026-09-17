@@ -39,7 +39,7 @@ spring:
             user-name-attribute: sub
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
+    url: ${SPRING_DATASOURCE_URL:${DB_URL:}}
 
     ### Use this block when running Oracle locally with Docker ###
 #    driver-class-name: oracle.jdbc.OracleDriver
@@ -47,8 +47,8 @@ spring:
     ### Use this block for Render (PostgreSQL) ###
     driver-class-name: org.postgresql.Driver
 
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:}}
 
   jpa:
     hibernate:
@@ -88,29 +88,42 @@ cloudinary:
   api-key: ${CLOUDINARY_API_KEY}
   api-secret: ${CLOUDINARY_API_SECRET}
 
+ai:
+  primary:
+    provider: ${AI_PRIMARY_PROVIDER:groq}
+
 gemini:
   api:
-    key: ${GEMINI_API_KEY}
+    key: ${GEMINI_API_KEY:}
   vision:
     # Models that support VISION + TEXT (for image/PDF analysis)
     primary: ${GEMINI_VISION_PRIMARY:gemini-3.6-flash}
-    fallback1: ${GEMINI_VISION_FALLBACK1:gemini-3.5-flash}
-    fallback2: ${GEMINI_VISION_FALLBACK2:gemini-3-flash}
-    fallback3: ${GEMINI_VISION_FALLBACK3:gemini-2.5-flash}
+    fallback1: ${GEMINI_VISION_FALLBACK1:gemini-flash-latest}
+    fallback2: ${GEMINI_VISION_FALLBACK2:gemini-3.8-flash}
+    fallback3: ${GEMINI_VISION_FALLBACK3:gemini-3.5-flash-lite}
+    fallback4: ${GEMINI_VISION_FALLBACK4:gemini-3.1-flash-lite}
   text:
-    # Models that support TEXT ONLY (for titles, summaries without media)
-    primary: ${GEMINI_TEXT_PRIMARY:gemini-3.5-flash-lite}
-    fallback1: ${GEMINI_TEXT_FALLBACK1:gemini-3.1-flash-lite}
-    fallback2: ${GEMINI_TEXT_FALLBACK2:gemini-3.6-flash}
-    fallback3: ${GEMINI_TEXT_FALLBACK3:gemini-2.5-flash-lite}
+    # Models that support TEXT ONLY (for titles, summaries, chat, translation)
+    primary: ${GEMINI_TEXT_PRIMARY:gemini-3.6-flash}
+    fallback1: ${GEMINI_TEXT_FALLBACK1:gemini-flash-latest}
+    fallback2: ${GEMINI_TEXT_FALLBACK2:gemini-3.8-flash}
+    fallback3: ${GEMINI_TEXT_FALLBACK3:gemini-3.5-flash-lite}
+    fallback4: ${GEMINI_TEXT_FALLBACK4:gemini-3.1-flash-lite}
 
 groq:
   api:
-    key: ${GROQ_API_KEY}
+    key: ${GROQ_API_KEY:}
   text:
-    model: ${GROQ_TEXT_MODEL:llama-3.3-70b-versatile}
+    model: ${GROQ_TEXT_MODEL:groq/compound-mini}
+    fallback1: ${GROQ_TEXT_FALLBACK1:openai/gpt-oss-120b}
+    fallback2: ${GROQ_TEXT_FALLBACK2:openai/gpt-oss-20b}
+    fallback3: ${GROQ_TEXT_FALLBACK3:qwen/qwen3.8-27b}
+    fallback4: ${GROQ_TEXT_FALLBACK4:groq/compound}
+    fallbacks: ${GROQ_TEXT_FALLBACKS:}
   vision:
-    model: ${GROQ_VISION_MODEL:meta-llama/llama-4-maverick-17b-128e-instruct}
+    model: ${GROQ_VISION_MODEL:qwen/qwen3.8-27b}
+    fallback1: ${GROQ_VISION_FALLBACK1:qwen/qwen3.8-27b}
+    fallbacks: ${GROQ_VISION_FALLBACKS:}
 
 server:
   port: ${PORT:8080}
@@ -134,7 +147,7 @@ zyren:
 
 app:
   frontend:
-    url: ${FRONTEND_URL:http://localhost:5173}
+    url: ${FRONTEND_URL:${APP_BASE_URL:http://localhost:5173}}
 
 management:
   server:

@@ -14,6 +14,13 @@ spring:
   mail:
     host: localhost
     port: 2525
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-google-id
+            client-secret: test-google-secret
 
 jwt:
   secret: test-test-test-test-test-test-test-test
@@ -22,12 +29,35 @@ jwt:
 app:
   reset:
     base-url: http://localhost/reset
+  frontend:
+    url: http://localhost:5173
+
+RESET_BASE_URL: http://localhost/reset
 
 zyren:
   admin:
     email: admin@test.local
     password: password123
+  mail:
+    to: test@example.com
 
 resend:
   api:
     key: test-api-key
+
+ai:
+  primary:
+    provider: groq
+
+gemini:
+  api:
+    key: test-gemini-key
+
+groq:
+  api:
+    key: test-groq-key
+
+cloudinary:
+  cloud-name: test-cloud
+  api-key: test-key
+  api-secret: test-secret

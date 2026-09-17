@@ -8,319 +8,182 @@ import org.springframework.http.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+/**
+ * Enterprise-grade multi-tier AI Service supporting automatic provider and model fallback.
+ * Primary and fallback roles can be toggled between Groq (ultra-fast inference) and
+ * Google Gemini (advanced multimodal reasoning). Each provider maintains its own ordered
+ * chain of verified non-decommissioned text and vision models.
+ */
 @Service
 public class AIService {
+
+    @Value("${ai.primary.provider:groq}")
+    private String aiPrimaryProvider;
 
     @Value("${gemini.api.key:}")
     private String geminiApiKey;
 
     @Value("${groq.api.key:}")
     private String groqApiKey;
-    
-    // Vision models (support images/PDFs/video)
-    @Value("${gemini.vision.primary:gemini-3.6-flash}")
-    private String geminiVisionPrimary;
-    
-    @Value("${gemini.vision.fallback1:gemini-3.5-flash}")
-    private String geminiVisionFallback1;
-    
-    @Value("${gemini.vision.fallback2:gemini-3-flash}")
-    private String geminiVisionFallback2;
-    
-    @Value("${gemini.vision.fallback3:gemini-2.5-flash}")
-    private String geminiVisionFallback3;
-    
-    // Text-only models (best limits for text processing)
-    @Value("${gemini.text.primary:gemini-3.5-flash-lite}")
-    private String geminiTextPrimary;
-    
-    @Value("${gemini.text.fallback1:gemini-3.1-flash-lite}")
-    private String geminiTextFallback1;
-    
-    @Value("${gemini.text.fallback2:gemini-3.6-flash}")
-    private String geminiTextFallback2;
-    
-    @Value("${gemini.text.fallback3:gemini-2.5-flash-lite}")
-    private String geminiTextFallback3;
-    
-    @Value("${groq.text.model:llama-3.3-70b-versatile}")
+
+    // --- Groq Models ---
+    @Value("${groq.text.model:groq/compound-mini}")
     private String groqTextModel;
-    
-    @Value("${groq.vision.model:meta-llama/llama-4-maverick-17b-128e-instruct}")
+
+    @Value("${groq.text.fallback1:openai/gpt-oss-120b}")
+    private String groqTextFallback1;
+
+    @Value("${groq.text.fallback2:openai/gpt-oss-20b}")
+    private String groqTextFallback2;
+
+    @Value("${groq.text.fallback3:qwen/qwen3.8-27b}")
+    private String groqTextFallback3;
+
+    @Value("${groq.text.fallback4:groq/compound}")
+    private String groqTextFallback4;
+
+    @Value("${groq.text.fallbacks:}")
+    private String groqTextFallbacks;
+
+    @Value("${groq.vision.model:qwen/qwen3.8-27b}")
     private String groqVisionModel;
 
+    @Value("${groq.vision.fallback1:qwen/qwen3.8-27b}")
+    private String groqVisionFallback1;
+
+    @Value("${groq.vision.fallbacks:}")
+    private String groqVisionFallbacks;
+
+    // --- Gemini Vision Models ---
+    @Value("${gemini.vision.primary:gemini-3.6-flash}")
+    private String geminiVisionPrimary;
+
+    @Value("${gemini.vision.fallback1:gemini-flash-latest}")
+    private String geminiVisionFallback1;
+
+    @Value("${gemini.vision.fallback2:gemini-3.8-flash}")
+    private String geminiVisionFallback2;
+
+    @Value("${gemini.vision.fallback3:gemini-3.5-flash-lite}")
+    private String geminiVisionFallback3;
+
+    @Value("${gemini.vision.fallback4:gemini-3.1-flash-lite}")
+    private String geminiVisionFallback4;
+
+    // --- Gemini Text Models ---
+    @Value("${gemini.text.primary:gemini-3.6-flash}")
+    private String geminiTextPrimary;
+
+    @Value("${gemini.text.fallback1:gemini-flash-latest}")
+    private String geminiTextFallback1;
+
+    @Value("${gemini.text.fallback2:gemini-3.8-flash}")
+    private String geminiTextFallback2;
+
+    @Value("${gemini.text.fallback3:gemini-3.5-flash-lite}")
+    private String geminiTextFallback3;
+
+    @Value("${gemini.text.fallback4:gemini-3.1-flash-lite}")
+    private String geminiTextFallback4;
+
     private static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+    private static final String GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta/models/";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    // ==========================================
+    // Public API Methods
+    // ==========================================
+
     /**
-     * Generate a title from content (uses Groq for speed)
+     * Generate a short, descriptive title from content.
+     * Uses full multi-provider and multi-model fallback chain.
      */
     public String generateTitle(String content) {
         if (content == null || content.trim().isEmpty()) {
             return "Untitled Paste";
         }
 
-        String prompt = "Generate a short, descriptive title (maximum 8 words) for this content. Return ONLY the title, nothing else:\n\n" + content.substring(0, Math.min(content.length(), 1000));
+        String prompt = "Generate a short, descriptive title (maximum 8 words) for this content. Return ONLY the title, nothing else:\n\n"
+                + content.substring(0, Math.min(content.length(), 1000));
 
-        return callGroqAPI(prompt);
+        String rawTitle = executeTextWithFallback(prompt);
+        if (rawTitle == null || rawTitle.trim().isEmpty()) {
+            return "Untitled Paste";
+        }
+
+        // Clean up title (remove wrapping quotes or prefixes if present)
+        String cleaned = rawTitle.trim().replaceAll("^[\"']|[\"']$", "").replaceAll("^(Title:|Subject:)\\s*", "");
+        return cleaned.isEmpty() ? "Untitled Paste" : cleaned;
     }
 
     /**
-     * Summarize content (uses Groq for text)
-     * Provides a comprehensive summary
+     * Summarize text content.
+     * Uses full multi-provider and multi-model fallback chain.
      */
     public String summarize(String content) {
         if (content == null || content.trim().isEmpty()) {
             return "No content to summarize.";
         }
 
-        String prompt = "Summarize the following content. Provide a clear, comprehensive summary that captures the key points and main ideas. Use markdown formatting with asterisks (*) for emphasis and bullet points.\n\n" + content;
+        String prompt = "Summarize the following content. Provide a clear, comprehensive summary that captures the key points and main ideas. Use markdown formatting with asterisks (*) for emphasis and bullet points.\n\n"
+                + content;
 
-        try {
-            return callGroqAPI(prompt);
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq failed for summarize, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            
-            try {
-                return callGeminiTextAPI(prompt);
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                throw new RuntimeException("AI service temporarily unavailable. Please try again later.");
-            }
-        }
+        return executeTextWithFallback(prompt);
     }
 
     /**
-     * Summarize content with media (uses Groq vision model for image analysis)
-     * Returns detailed analysis with image and text separated by new line
+     * Summarize content with media attachment (Image, PDF, Video thumbnail).
+     * Uses multimodal vision models with provider/model fallback and graceful text-only fallback.
      */
     public String summarizeWithMedia(String content, String mediaUrl, String mediaType) {
         if (mediaUrl == null || mediaUrl.trim().isEmpty()) {
             return summarize(content);
         }
 
-        // Try Groq first
-        try {
-            String prompt;
-            if ("pdf".equalsIgnoreCase(mediaType)) {
-                prompt = "You are analyzing a PDF document AND separate text content.\n\n" +
-                        "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First section: Describe what you see in the PDF document (any text, images, structure, formatting, dates, logos, information visible)\n" +
-                        "2. Add TWO blank lines\n" +
-                        "3. Second section: Provide a summary of the user's text content below\n" +
-                        "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
-                        "5. Each section should be comprehensive and detailed\n\n" +
-                        "User's text content:\n" + content;
-            } else if ("video".equalsIgnoreCase(mediaType)) {
-                prompt = "You are analyzing a video thumbnail AND separate text content.\n\n" +
-                        "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First section: Describe what you see in the video thumbnail (scene, people, objects, text overlays, colors, composition)\n" +
-                        "2. Add TWO blank lines\n" +
-                        "3. Second section: Provide a summary of the user's text content below\n" +
-                        "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
-                        "5. Each section should be comprehensive and detailed\n\n" +
-                        "User's text content:\n" + content;
-            } else {
-                prompt = "You are analyzing an image AND separate text content.\n\n" +
-                        "CRITICAL INSTRUCTIONS:\n" +
-                        "1. First section: Describe what you see in the image with all details (objects, people, text, colors, composition, any visible information)\n" +
-                        "2. Add TWO blank lines\n" +
-                        "3. Second section: Provide a summary of the user's text content below\n" +
-                        "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
-                        "5. Each section should be comprehensive and detailed\n\n" +
-                        "User's text content:\n" + content;
-            }
-            
-            return callGroqVisionAPI(prompt, mediaUrl);
-            
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq Vision failed, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            
-            // Try Gemini as fallback
-            try {
-                String imageAnalysis = analyzeImageWithGemini(mediaUrl);
-                String textSummary = summarize(content);
-                
-                // Ensure proper separation between image and text summaries
-                return imageAnalysis.trim() + "\n\n" + textSummary.trim();
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                System.err.println("   Falling back to text-only\n");
-                
-                return summarize(content);
-            }
+        String prompt;
+        if ("pdf".equalsIgnoreCase(mediaType)) {
+            prompt = "You are analyzing a PDF document AND separate text content.\n\n" +
+                    "CRITICAL INSTRUCTIONS:\n" +
+                    "1. First section: Describe what you see in the PDF document (any text, images, structure, formatting, dates, logos, information visible)\n" +
+                    "2. Add TWO blank lines\n" +
+                    "3. Second section: Provide a summary of the user's text content below\n" +
+                    "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
+                    "5. Each section should be comprehensive and detailed\n\n" +
+                    "User's text content:\n" + (content != null ? content : "");
+        } else if ("video".equalsIgnoreCase(mediaType)) {
+            prompt = "You are analyzing a video thumbnail AND separate text content.\n\n" +
+                    "CRITICAL INSTRUCTIONS:\n" +
+                    "1. First section: Describe what you see in the video thumbnail (scene, people, objects, text overlays, colors, composition)\n" +
+                    "2. Add TWO blank lines\n" +
+                    "3. Second section: Provide a summary of the user's text content below\n" +
+                    "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
+                    "5. Each section should be comprehensive and detailed\n\n" +
+                    "User's text content:\n" + (content != null ? content : "");
+        } else {
+            prompt = "You are analyzing an image AND separate text content.\n\n" +
+                    "CRITICAL INSTRUCTIONS:\n" +
+                    "1. First section: Describe what you see in the image with all details (objects, people, text, colors, composition, any visible information)\n" +
+                    "2. Add TWO blank lines\n" +
+                    "3. Second section: Provide a summary of the user's text content below\n" +
+                    "4. Use markdown formatting with asterisks (*) for emphasis and lists\n" +
+                    "5. Each section should be comprehensive and detailed\n\n" +
+                    "User's text content:\n" + (content != null ? content : "");
         }
+
+        return executeVisionWithFallback(prompt, mediaUrl, content);
     }
 
     /**
-     * Download image from URL and convert to base64
-     */
-    private String downloadImageAsBase64(String imageUrl) throws IOException {
-        try {
-            URL url = new URL(imageUrl);
-            byte[] imageBytes = url.openStream().readAllBytes();
-            return Base64.getEncoder().encodeToString(imageBytes);
-        } catch (IOException e) {
-            System.err.println("❌ Failed to download image from: " + imageUrl);
-            throw e;
-        }
-    }
-    
-    /**
-     * Get MIME type from image URL
-     */
-    private String getMimeTypeFromUrl(String imageUrl) {
-        String lowerUrl = imageUrl.toLowerCase();
-        if (lowerUrl.contains(".png")) return "image/png";
-        if (lowerUrl.contains(".gif")) return "image/gif";
-        if (lowerUrl.contains(".webp")) return "image/webp";
-        return "image/jpeg"; // default
-    }
-
-    /**
-     * Analyze image using Gemini with base64 encoding
-     * Uses VISION models (support multi-modal: images, PDFs, video)
-     */
-    private String analyzeImageWithGemini(String mediaUrl) {
-        if (geminiApiKey == null || geminiApiKey.isEmpty()) {
-            throw new RuntimeException("Gemini API key not configured");
-        }
-
-        // VISION models only (Flash models support images/PDFs/video)
-        String[] models = {
-            geminiVisionPrimary,    // gemini-3.6-flash (5 RPM, 20 RPD)
-            geminiVisionFallback1,  // gemini-3.5-flash (5 RPM, 20 RPD)
-            geminiVisionFallback2,  // gemini-3-flash (5 RPM, 20 RPD)
-            geminiVisionFallback3   // gemini-2.5-flash (5 RPM, 20 RPD)
-        };
-
-        Exception lastError = null;
-        
-        // Try each model until one succeeds
-        for (int i = 0; i < models.length; i++) {
-            String model = models[i];
-            try {
-                System.out.println("\n=== Gemini Vision API Debug ===");
-                System.out.println("Trying model " + (i + 1) + "/" + models.length + ": " + model);
-                System.out.println("Downloading image from: " + mediaUrl);
-                
-                // Download and encode image
-                String base64Image = downloadImageAsBase64(mediaUrl);
-                String mimeType = getMimeTypeFromUrl(mediaUrl);
-                
-                System.out.println("Image downloaded successfully, size: " + base64Image.length() + " chars (base64)");
-                System.out.println("MIME type: " + mimeType);
-                
-                String url = "https://generativelanguage.googleapis.com/v1/models/" + model + ":generateContent?key=" + geminiApiKey;
-
-                Map<String, Object> requestBody = new HashMap<>();
-                
-                List<Map<String, Object>> contents = new ArrayList<>();
-                Map<String, Object> content = new HashMap<>();
-                
-                List<Map<String, Object>> parts = new ArrayList<>();
-                
-                // Text part - asking about the image with markdown formatting enabled
-                Map<String, Object> textPart = new HashMap<>();
-                textPart.put("text", "Describe what you see in this image in detail. Include any text visible in the image, objects, people, dates, seals, stamps, and any other relevant information. Be specific and thorough. IMPORTANT: Use markdown formatting with asterisks (*) for emphasis and bullet points to organize your response clearly.");
-                parts.add(textPart);
-                
-                // Image part with inline base64 data
-                Map<String, Object> imagePart = new HashMap<>();
-                Map<String, String> inlineData = new HashMap<>();
-                inlineData.put("mimeType", mimeType);
-                inlineData.put("data", base64Image);
-                imagePart.put("inlineData", inlineData);
-                parts.add(imagePart);
-                
-                content.put("parts", parts);
-                contents.add(content);
-                requestBody.put("contents", contents);
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-                
-                System.out.println("Sending request to Gemini...");
-
-                ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
-
-                if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                    String result = parseGeminiResponse(response.getBody());
-                    System.out.println("✅ Gemini Vision Success with model: " + model);
-                    System.out.println("   Response length: " + result.length() + " chars");
-                    System.out.println("===============================\n");
-                    return result;
-                }
-
-            } catch (IOException e) {
-                System.err.println("❌ Failed to download image: " + e.getMessage());
-                lastError = new RuntimeException("Cannot download image from URL: " + e.getMessage());
-                break; // Don't retry other models if image download fails
-                
-            } catch (org.springframework.web.client.HttpClientErrorException e) {
-                String responseBody = e.getResponseBodyAsString();
-                System.err.println("❌ Gemini Vision API error with model " + model + ": " + e.getStatusCode());
-                System.err.println("   Response: " + responseBody);
-                
-                // Check if it's a quota/rate limit error - try next model
-                if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS || 
-                    responseBody.contains("quota") || 
-                    responseBody.contains("rate_limit") ||
-                    responseBody.contains("RESOURCE_EXHAUSTED")) {
-                    
-                    System.err.println("   Rate limit reached, trying next model...");
-                    lastError = e;
-                    continue; // Try next model
-                }
-                
-                // Check if it's an auth error - don't retry
-                if (e.getStatusCode() == HttpStatus.FORBIDDEN || 
-                    e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                    System.err.println("===============================\n");
-                    throw new RuntimeException("Gemini API key invalid or expired");
-                }
-                
-                // For other errors, try next model
-                lastError = e;
-                continue;
-                
-            } catch (Exception e) {
-                System.err.println("❌ Unexpected error with model " + model + ": " + e.getMessage());
-                lastError = e;
-                continue; // Try next model
-            }
-        }
-
-        // All models failed
-        System.err.println("❌ All Gemini models exhausted");
-        System.err.println("===============================\n");
-        
-        if (lastError != null) {
-            if (lastError instanceof org.springframework.web.client.HttpClientErrorException) {
-                org.springframework.web.client.HttpClientErrorException httpError = 
-                    (org.springframework.web.client.HttpClientErrorException) lastError;
-                if (httpError.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS) {
-                    throw new RuntimeException("All Gemini models quota exceeded. Please try again later.");
-                }
-            }
-            throw new RuntimeException("Gemini image analysis failed: " + lastError.getMessage());
-        }
-        
-        throw new RuntimeException("Unable to analyze image with Gemini");
-    }
-
-    /**
-     * Chat/Answer questions about content (uses Groq)
+     * Chat/Answer questions about content.
      */
     public String chat(String content, String question) {
         if (content == null || content.trim().isEmpty()) {
@@ -332,66 +195,38 @@ public class AIService {
         }
 
         String prompt = "Based on this content:\n\n" + content + "\n\nAnswer this question concisely: " + question;
-
-        try {
-            return callGroqAPI(prompt);
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq failed for chat, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            
-            try {
-                return callGeminiTextAPI(prompt);
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                throw new RuntimeException("AI service temporarily unavailable. Please try again later.");
-            }
-        }
+        return executeTextWithFallback(prompt);
     }
 
     /**
-     * Chat with media context (uses Groq vision model)
+     * Chat with media context.
      */
     public String chatWithMedia(String content, String question, String mediaUrl) {
         if (mediaUrl == null || mediaUrl.trim().isEmpty()) {
             return chat(content, question);
         }
 
-        // Try Groq first
+        String prompt = "IMPORTANT: This paste contains BOTH an image/document AND text content.\n\n" +
+                "IMAGE/DOCUMENT: You are viewing an image or document (such as a PDF, photo, or screenshot). " +
+                "Please carefully examine what is shown in this image/document.\n\n" +
+                "TEXT CONTENT:\n" + (content != null ? content : "") + "\n\n" +
+                "USER QUESTION: " + question + "\n\n" +
+                "INSTRUCTIONS: Answer the question based on BOTH the image/document you can see AND the text content provided. " +
+                "If the question is about what's in the image, describe what you see. " +
+                "If the question is about the content in general, combine information from both sources. " +
+                "FORMATTING: Use markdown formatting with asterisks (*) for emphasis and bullet points to organize your response clearly.";
+
         try {
-            String prompt = "IMPORTANT: This paste contains BOTH an image/document AND text content.\n\n" +
-                           "IMAGE/DOCUMENT: You are viewing an image or document (like a PDF, photo, screenshot, etc.). " +
-                           "Please carefully examine what is shown in this image/document.\n\n" +
-                           "TEXT CONTENT:\n" + content + "\n\n" +
-                           "USER QUESTION: " + question + "\n\n" +
-                           "INSTRUCTIONS: Answer the question based on BOTH the image/document you can see AND the text content provided. " +
-                           "If the question is about what's in the image, describe what you see. " +
-                           "If the question is about the content in general, combine information from both sources. " +
-                           "FORMATTING: Use markdown formatting with asterisks (*) for emphasis and bullet points to organize your response clearly.";
-            
-            return callGroqVisionAPI(prompt, mediaUrl);
-            
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq Vision failed, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            System.err.println("   Question: " + question);
-            
-            // Try Gemini as fallback
-            try {
-                String imageAnalysis = analyzeImageWithGemini(mediaUrl);
-                String textAnswer = chat(content, question);
-                return imageAnalysis + "\n\n" + textAnswer;
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                System.err.println("   Falling back to text-only\n");
-                
-                String textAnswer = chat(content, question);
-                return textAnswer + "\n\n⚠️ Note: This paste contains an image/document, but vision analysis is currently unavailable.";
-            }
+            return executeVisionWithFallback(prompt, mediaUrl, content);
+        } catch (Exception e) {
+            System.err.println("⚠️ Vision chat failed across providers, falling back to text chat: " + e.getMessage());
+            String textAnswer = chat(content, question);
+            return textAnswer + "\n\n*(Note: Vision analysis was temporarily unavailable; answer derived from text content).*";
         }
     }
 
     /**
-     * Translate content (uses Groq)
+     * Translate content into a target language.
      */
     public String translate(String content, String targetLanguage) {
         if (content == null || content.trim().isEmpty()) {
@@ -399,24 +234,11 @@ public class AIService {
         }
 
         String prompt = "Translate the following content to " + targetLanguage + ":\n\n" + content;
-
-        try {
-            return callGroqAPI(prompt);
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq failed for translate, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            
-            try {
-                return callGeminiTextAPI(prompt);
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                throw new RuntimeException("AI service temporarily unavailable. Please try again later.");
-            }
-        }
+        return executeTextWithFallback(prompt);
     }
 
     /**
-     * Detect content type (uses Groq for speed)
+     * Detect content category.
      */
     public String detectContentType(String content) {
         if (content == null || content.trim().isEmpty()) {
@@ -427,450 +249,456 @@ public class AIService {
                 "Only return the category name:\n\n" + content.substring(0, Math.min(content.length(), 500));
 
         try {
-            String result = callGroqAPI(prompt);
-            return result.toLowerCase().trim();
-        } catch (Exception groqError) {
-            System.err.println("\n⚠️ Groq failed for detectContentType, trying Gemini as fallback...");
-            System.err.println("   Groq error: " + groqError.getMessage());
-            
-            try {
-                String result = callGeminiTextAPI(prompt);
-                return result.toLowerCase().trim();
-            } catch (Exception geminiError) {
-                System.err.println("   Gemini also failed: " + geminiError.getMessage());
-                return "unknown";
+            String result = executeTextWithFallback(prompt);
+            if (result != null) {
+                String cleaned = result.toLowerCase().trim();
+                List<String> validTypes = Arrays.asList("code", "recipe", "notes", "article", "poem", "list", "other");
+                for (String vt : validTypes) {
+                    if (cleaned.contains(vt)) {
+                        return vt;
+                    }
+                }
+                return cleaned;
             }
+        } catch (Exception e) {
+            System.err.println("⚠️ detectContentType failed across all providers: " + e.getMessage());
         }
+        return "unknown";
+    }
+
+    // ==========================================
+    // Core Orchestration & Fallback Pipelines
+    // ==========================================
+
+    /**
+     * Orchestrates text execution with dual-provider and multi-model fallback.
+     * Respects aiPrimaryProvider ('groq' or 'gemini').
+     */
+    private String executeTextWithFallback(String prompt) {
+        boolean isGeminiPrimary = "gemini".equalsIgnoreCase(aiPrimaryProvider);
+
+        if (isGeminiPrimary) {
+            // Flow: Gemini text models -> Groq text models
+            String geminiResult = tryGeminiTextModels(prompt);
+            if (geminiResult != null) return geminiResult;
+
+            System.out.println("🔄 Primary provider (Gemini) exhausted all text models. Falling over to Groq...");
+            String groqResult = tryGroqTextModels(prompt);
+            if (groqResult != null) return groqResult;
+        } else {
+            // Flow: Groq text models -> Gemini text models
+            String groqResult = tryGroqTextModels(prompt);
+            if (groqResult != null) return groqResult;
+
+            System.out.println("🔄 Primary provider (Groq) exhausted all text models. Falling over to Gemini...");
+            String geminiResult = tryGeminiTextModels(prompt);
+            if (geminiResult != null) return geminiResult;
+        }
+
+        throw new RuntimeException("AI service temporarily unavailable across all providers and models. Please try again later.");
     }
 
     /**
-     * Call Groq API (fast text processing)
+     * Orchestrates vision execution with dual-provider and multi-model fallback.
+     * Falls back gracefully to text-only if all vision models are exhausted.
      */
-    private String callGroqAPI(String prompt) {
-        if (groqApiKey == null || groqApiKey.isEmpty()) {
-            throw new RuntimeException("AI service not configured. Please contact support.");
+    private String executeVisionWithFallback(String prompt, String mediaUrl, String fallbackContent) {
+        boolean isGeminiPrimary = "gemini".equalsIgnoreCase(aiPrimaryProvider);
+
+        if (isGeminiPrimary) {
+            // Flow: Gemini Vision models -> Groq Vision models -> Text-only fallback
+            String geminiResult = tryGeminiVisionModels(mediaUrl, prompt);
+            if (geminiResult != null) return geminiResult;
+
+            System.out.println("🔄 Primary vision provider (Gemini) exhausted. Falling over to Groq Vision...");
+            String groqResult = tryGroqVisionModels(prompt, mediaUrl);
+            if (groqResult != null) return groqResult;
+        } else {
+            // Flow: Groq Vision models -> Gemini Vision models -> Text-only fallback
+            String groqResult = tryGroqVisionModels(prompt, mediaUrl);
+            if (groqResult != null) return groqResult;
+
+            System.out.println("🔄 Primary vision provider (Groq) exhausted. Falling over to Gemini Vision...");
+            String geminiResult = tryGeminiVisionModels(mediaUrl, prompt);
+            if (geminiResult != null) return geminiResult;
         }
 
-        System.out.println("\n=== Groq API Call Debug ===");
-        System.out.println("Model: " + groqTextModel);
-        System.out.println("Prompt length: " + prompt.length() + " characters");
-        System.out.println("API Key present: " + (groqApiKey != null && !groqApiKey.isEmpty()));
-        System.out.println("API Key starts with: " + (groqApiKey != null ? groqApiKey.substring(0, Math.min(10, groqApiKey.length())) : "null"));
+        // Both vision systems failed, gracefully fallback to text-only processing
+        System.err.println("⚠️ All vision models across both Groq and Gemini failed. Falling back to text-only summary...");
+        return summarize(fallbackContent);
+    }
 
-        try {
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", groqTextModel);
-            
-            Map<String, String> message = new HashMap<>();
-            message.put("role", "user");
-            message.put("content", prompt);
-            requestBody.put("messages", List.of(message));
-            
-            requestBody.put("temperature", 0.7);
-            requestBody.put("max_tokens", 1024);
+    // ==========================================
+    // Groq Execution Engine
+    // ==========================================
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(groqApiKey);
+    private String tryGroqTextModels(String prompt) {
+        if (groqApiKey == null || groqApiKey.trim().isEmpty()) {
+            System.err.println("⚠️ Groq API key is not configured, skipping Groq text models.");
+            return null;
+        }
 
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-
-            System.out.println("Sending request to Groq API...");
-            ResponseEntity<Map> response = restTemplate.exchange(GROQ_API_URL, HttpMethod.POST, entity, Map.class);
-
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-                if (choices != null && !choices.isEmpty()) {
-                    Map<String, Object> message1 = (Map<String, Object>) choices.get(0).get("message");
-                    String result = (String) message1.get("content");
-                    System.out.println("✅ Success! Response length: " + result.length() + " characters");
-                    System.out.println("===========================\n");
+        List<String> models = getGroqTextModels();
+        for (int i = 0; i < models.size(); i++) {
+            String model = models.get(i);
+            try {
+                System.out.printf("🤖 [Groq Text] Attempting model %d/%d: %s%n", (i + 1), models.size(), model);
+                String result = callSingleGroqTextModel(model, prompt);
+                if (result != null && !result.trim().isEmpty()) {
+                    System.out.printf("✅ [Groq Text] Success with model: %s (%d chars)%n", model, result.length());
                     return result;
                 }
-            }
-
-            throw new RuntimeException("Unable to generate AI response");
-
-        } catch (org.springframework.web.client.HttpClientErrorException e) {
-            String responseBody = e.getResponseBodyAsString();
-            
-            System.err.println("\n=== Groq API Error ===");
-            System.err.println("Status: " + e.getStatusCode());
-            System.err.println("Response: " + responseBody);
-            System.err.println("=====================\n");
-            
-            // Check if the response contains rate_limit_exceeded or tokens error
-            if (responseBody.contains("rate_limit_exceeded") || 
-                responseBody.contains("tokens per minute") ||
-                responseBody.contains("Request too large for model")) {
-                throw new RuntimeException("Your content is too large for AI processing. Please try with shorter content.");
-            }
-            
-            // Check HTTP status codes
-            if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS || 
-                e.getStatusCode() == HttpStatus.PAYMENT_REQUIRED) {
-                throw new RuntimeException("AI service limit reached. Please try again later.");
-            }
-            
-            if (e.getStatusCode() == HttpStatus.PAYLOAD_TOO_LARGE) {
-                throw new RuntimeException("Your content is too large. Please try with shorter content.");
-            }
-            
-            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED || 
-                e.getStatusCode() == HttpStatus.FORBIDDEN) {
-                throw new RuntimeException("AI service authentication failed. Please check API configuration.");
-            }
-            
-            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
-                // Log the actual error for debugging
-                System.err.println("Bad Request Error: " + responseBody);
-                throw new RuntimeException("AI service error. Please try again or contact support.");
-            }
-            
-            // Generic error with status code for debugging
-            throw new RuntimeException("AI service error (" + e.getStatusCode() + "). Please try again.");
-        } catch (org.springframework.web.client.ResourceAccessException e) {
-            System.err.println("\n=== Network Error ===");
-            System.err.println("Error: " + e.getMessage());
-            System.err.println("=====================\n");
-            throw new RuntimeException("Cannot connect to AI service. Please try again later.");
-        } catch (RuntimeException e) {
-            // Re-throw our custom RuntimeExceptions
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("AI service temporarily unavailable");
-        }
-    }
-
-    /**
-     * Call Groq Vision API (for image analysis with vision model)
-     */
-    private String callGroqVisionAPI(String prompt, String imageUrl) {
-        if (groqApiKey == null || groqApiKey.isEmpty()) {
-            throw new RuntimeException("AI service not configured. Please contact support.");
-        }
-
-        try {
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", groqVisionModel);
-            
-            // Create message with text and image content
-            Map<String, Object> message = new HashMap<>();
-            message.put("role", "user");
-            
-            // Content is an array with text and image_url parts
-            List<Map<String, Object>> contentParts = new ArrayList<>();
-            
-            // Text part - MUST come first
-            Map<String, Object> textPart = new HashMap<>();
-            textPart.put("type", "text");
-            textPart.put("text", prompt);
-            contentParts.add(textPart);
-            
-            // Image part - Groq vision requires specific format
-            Map<String, Object> imagePart = new HashMap<>();
-            imagePart.put("type", "image_url");
-            Map<String, Object> imageUrlObj = new HashMap<>();
-            
-            // Ensure URL is properly formatted - Groq vision needs the full URL
-            String processedUrl = imageUrl;
-            if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
-                processedUrl = "https://" + imageUrl;
-            }
-            
-            imageUrlObj.put("url", processedUrl);
-            imagePart.put("image_url", imageUrlObj);
-            contentParts.add(imagePart);
-            
-            message.put("content", contentParts);
-            requestBody.put("messages", List.of(message));
-            
-            requestBody.put("temperature", 0.7);
-            requestBody.put("max_tokens", 2048); // Increased for better responses
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(groqApiKey);
-
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-            
-            System.out.println("\n=== Groq Vision API Debug ===");
-            System.out.println("Model: " + groqVisionModel);
-            System.out.println("Image URL: " + processedUrl);
-            System.out.println("Prompt length: " + prompt.length() + " chars");
-            System.out.println("Full prompt: " + (prompt.length() > 200 ? prompt.substring(0, 200) + "..." : prompt));
-            System.out.println("============================\n");
-
-            ResponseEntity<Map> response = restTemplate.exchange(GROQ_API_URL, HttpMethod.POST, entity, Map.class);
-
-            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-                if (choices != null && !choices.isEmpty()) {
-                    Map<String, Object> message1 = (Map<String, Object>) choices.get(0).get("message");
-                    String result = (String) message1.get("content");
-                    System.out.println("\n✅ Vision API Success! Response length: " + result.length() + " chars\n");
-                    return result;
-                }
-            }
-
-            throw new RuntimeException("Unable to generate AI response");
-
-        } catch (org.springframework.web.client.HttpClientErrorException e) {
-            String responseBody = e.getResponseBodyAsString();
-            System.err.println("\n❌ Groq Vision API HTTP Error: " + e.getStatusCode());
-            System.err.println("Response body: " + responseBody);
-            System.err.println("Image URL: " + imageUrl + "\n");
-            
-            // Check if vision model is not available or not supported
-            if (responseBody.contains("model") && 
-                (responseBody.contains("not found") || 
-                 responseBody.contains("not available") || 
-                 responseBody.contains("does not support") ||
-                 responseBody.contains("multimodal"))) {
-                throw new RuntimeException("Vision model not available. The AI cannot analyze images at this time.");
-            }
-            
-            // Check if image URL is invalid or not accessible
-            if (responseBody.contains("image") && 
-                (responseBody.contains("invalid") || 
-                 responseBody.contains("not found") || 
-                 responseBody.contains("cannot access") ||
-                 responseBody.contains("failed to fetch") ||
-                 responseBody.contains("unsupported") ||
-                 responseBody.contains("download"))) {
-                throw new RuntimeException("Cannot access the image. The image may be private or the URL may be invalid.");
-            }
-            
-            // Parse error message from Groq API response
-            try {
-                // Check if the response contains rate_limit_exceeded or tokens error
-                if (responseBody.contains("rate_limit_exceeded") || 
-                    responseBody.contains("tokens per minute") ||
-                    responseBody.contains("Request too large for model")) {
-                    throw new RuntimeException("Content is too large for AI processing. Try with shorter content or smaller images.");
-                }
-            } catch (RuntimeException re) {
-                throw re; // Re-throw our custom message
-            } catch (Exception parseError) {
-                // Continue to other checks if JSON parsing fails
-            }
-            
-            // Check HTTP status codes
-            if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS || 
-                e.getStatusCode() == HttpStatus.PAYMENT_REQUIRED) {
-                throw new RuntimeException("AI service limit reached. Please try again in a few minutes.");
-            }
-            
-            if (e.getStatusCode() == HttpStatus.PAYLOAD_TOO_LARGE) {
-                throw new RuntimeException("Content or image is too large. Try with shorter content or smaller images.");
-            }
-            
-            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED || 
-                e.getStatusCode() == HttpStatus.FORBIDDEN) {
-                throw new RuntimeException("AI service authentication failed. Please contact support.");
-            }
-            
-            // Generic error - this will trigger fallback
-            throw new RuntimeException("Vision processing failed: " + e.getStatusCode() + ". Falling back to text-only analysis.");
-            
-        } catch (org.springframework.web.client.HttpServerErrorException e) {
-            String responseBody = e.getResponseBodyAsString();
-            System.err.println("\n❌ Groq Vision API Server Error: " + e.getStatusCode());
-            System.err.println("Response body: " + responseBody);
-            System.err.println("This is likely a temporary issue with the Groq API service.\n");
-            throw new RuntimeException("AI service is temporarily unavailable. Please try again in a few moments.");
-            
-        } catch (org.springframework.web.client.ResourceAccessException e) {
-            System.err.println("\n❌ Cannot connect to Groq API: " + e.getMessage() + "\n");
-            throw new RuntimeException("Cannot connect to AI service. Please check your internet connection and try again.");
-            
-        } catch (RuntimeException e) {
-            // Re-throw our custom RuntimeExceptions
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("\n❌ Vision API unexpected error: " + e.getClass().getName() + " - " + e.getMessage() + "\n");
-            throw new RuntimeException("Vision processing encountered an unexpected error. Falling back to text-only analysis.");
-        }
-    }
-
-    /**
-     * Call Gemini API (text-only with multi-model fallback)
-     * Uses TEXT models (best limits for text processing)
-     */
-    private String callGeminiAPI(String prompt) {
-        if (geminiApiKey == null || geminiApiKey.isEmpty()) {
-            return "AI service not configured. Please add GEMINI_API_KEY to environment variables.";
-        }
-
-        // TEXT models (better limits for text-only processing)
-        String[] models = {
-            geminiTextPrimary,    // gemini-3.5-flash-lite (15 RPM, 500 RPD)
-            geminiTextFallback1,  // gemini-3.1-flash-lite (15 RPM, 500 RPD)
-            geminiTextFallback2,  // gemini-3.6-flash (5 RPM, 20 RPD)
-            geminiTextFallback3   // gemini-2.5-flash-lite (10 RPM, 20 RPD)
-        };
-
-        for (int i = 0; i < models.length; i++) {
-            String model = models[i];
-            try {
-                String url = "https://generativelanguage.googleapis.com/v1/models/" + model + ":generateContent?key=" + geminiApiKey;
-
-                Map<String, Object> requestBody = new HashMap<>();
-                Map<String, Object> content = new HashMap<>();
-                Map<String, String> part = new HashMap<>();
-                part.put("text", prompt);
-                content.put("parts", List.of(part));
-                requestBody.put("contents", List.of(content));
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-
-                ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
-
-                if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                    return parseGeminiResponse(response.getBody());
-                }
-
-            } catch (org.springframework.web.client.HttpClientErrorException e) {
-                String responseBody = e.getResponseBodyAsString();
-                
-                // Check for rate limit - try next model
-                if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS ||
-                    responseBody.contains("rate_limit") ||
-                    responseBody.contains("quota") ||
-                    responseBody.contains("RESOURCE_EXHAUSTED")) {
-                    System.err.println("Gemini model " + model + " quota reached, trying next model...");
-                    continue;
-                }
-                
-                // Check for authentication/authorization errors - don't retry
-                if (e.getStatusCode() == HttpStatus.FORBIDDEN || 
-                    e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                    System.err.println("Gemini API authentication error: " + responseBody);
-                    return "AI service unavailable (Invalid API key)";
-                }
-                
-                // For other errors, try next model
-                continue;
-                
             } catch (Exception e) {
-                // Try next model
-                continue;
+                System.err.printf("⚠️ [Groq Text] Model %s failed: %s%n", model, e.getMessage());
             }
         }
-        
-        // All models failed
-        return "AI service limit reached. Please try again later.";
+        return null;
     }
 
-    /**
-     * Parse Gemini response
-     */
+    private String tryGroqVisionModels(String prompt, String mediaUrl) {
+        if (groqApiKey == null || groqApiKey.trim().isEmpty()) {
+            System.err.println("⚠️ Groq API key is not configured, skipping Groq vision models.");
+            return null;
+        }
+
+        List<String> models = getGroqVisionModels();
+        for (int i = 0; i < models.size(); i++) {
+            String model = models.get(i);
+            try {
+                System.out.printf("👁️ [Groq Vision] Attempting model %d/%d: %s%n", (i + 1), models.size(), model);
+                String result = callSingleGroqVisionModel(model, prompt, mediaUrl);
+                if (result != null && !result.trim().isEmpty()) {
+                    System.out.printf("✅ [Groq Vision] Success with model: %s (%d chars)%n", model, result.length());
+                    return result;
+                }
+            } catch (Exception e) {
+                System.err.printf("⚠️ [Groq Vision] Model %s failed: %s%n", model, e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    private String callSingleGroqTextModel(String model, String prompt) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", model);
+
+        Map<String, String> message = new HashMap<>();
+        message.put("role", "user");
+        message.put("content", prompt);
+        requestBody.put("messages", List.of(message));
+        requestBody.put("temperature", 0.7);
+        requestBody.put("max_tokens", 1024);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(groqApiKey.trim());
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Map> response = restTemplate.exchange(GROQ_API_URL, HttpMethod.POST, entity, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
+            if (choices != null && !choices.isEmpty()) {
+                Map<String, Object> msg = (Map<String, Object>) choices.get(0).get("message");
+                if (msg != null && msg.containsKey("content")) {
+                    return (String) msg.get("content");
+                }
+            }
+        }
+        return null;
+    }
+
+    private String callSingleGroqVisionModel(String model, String prompt, String imageUrl) {
+        String processedUrl = imageUrl != null ? imageUrl.trim() : "";
+        if (!processedUrl.startsWith("http://") && !processedUrl.startsWith("https://") && !processedUrl.startsWith("data:")) {
+            processedUrl = "https://" + processedUrl;
+        }
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", model);
+
+        List<Map<String, Object>> contentParts = new ArrayList<>();
+
+        Map<String, Object> textPart = new HashMap<>();
+        textPart.put("type", "text");
+        textPart.put("text", prompt);
+        contentParts.add(textPart);
+
+        Map<String, Object> imagePart = new HashMap<>();
+        imagePart.put("type", "image_url");
+        Map<String, Object> imageUrlObj = new HashMap<>();
+        imageUrlObj.put("url", processedUrl);
+        imagePart.put("image_url", imageUrlObj);
+        contentParts.add(imagePart);
+
+        Map<String, Object> message = new HashMap<>();
+        message.put("role", "user");
+        message.put("content", contentParts);
+
+        requestBody.put("messages", List.of(message));
+        requestBody.put("temperature", 0.7);
+        requestBody.put("max_tokens", 2048);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(groqApiKey.trim());
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Map> response = restTemplate.exchange(GROQ_API_URL, HttpMethod.POST, entity, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
+            if (choices != null && !choices.isEmpty()) {
+                Map<String, Object> msg = (Map<String, Object>) choices.get(0).get("message");
+                if (msg != null && msg.containsKey("content")) {
+                    return (String) msg.get("content");
+                }
+            }
+        }
+        return null;
+    }
+
+    // ==========================================
+    // Gemini Execution Engine
+    // ==========================================
+
+    private String tryGeminiTextModels(String prompt) {
+        if (geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+            System.err.println("⚠️ Gemini API key is not configured, skipping Gemini text models.");
+            return null;
+        }
+
+        List<String> models = getGeminiTextModels();
+        for (int i = 0; i < models.size(); i++) {
+            String model = models.get(i);
+            try {
+                System.out.printf("🤖 [Gemini Text] Attempting model %d/%d: %s%n", (i + 1), models.size(), model);
+                String result = callSingleGeminiTextModel(model, prompt);
+                if (result != null && !result.trim().isEmpty()) {
+                    System.out.printf("✅ [Gemini Text] Success with model: %s (%d chars)%n", model, result.length());
+                    return result;
+                }
+            } catch (Exception e) {
+                System.err.printf("⚠️ [Gemini Text] Model %s failed: %s%n", model, e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    private String tryGeminiVisionModels(String mediaUrl, String textPrompt) {
+        if (geminiApiKey == null || geminiApiKey.trim().isEmpty()) {
+            System.err.println("⚠️ Gemini API key is not configured, skipping Gemini vision models.");
+            return null;
+        }
+
+        // Download image/media once for all model attempts
+        String base64Image;
+        String mimeType;
+        try {
+            base64Image = downloadImageAsBase64(mediaUrl);
+            mimeType = getMimeTypeFromUrl(mediaUrl);
+        } catch (IOException e) {
+            System.err.println("❌ Failed to download media for Gemini Vision: " + e.getMessage());
+            return null;
+        }
+
+        List<String> models = getGeminiVisionModels();
+        for (int i = 0; i < models.size(); i++) {
+            String model = models.get(i);
+            try {
+                System.out.printf("👁️ [Gemini Vision] Attempting model %d/%d: %s%n", (i + 1), models.size(), model);
+                String result = callSingleGeminiVisionModel(model, base64Image, mimeType, textPrompt);
+                if (result != null && !result.trim().isEmpty()) {
+                    System.out.printf("✅ [Gemini Vision] Success with model: %s (%d chars)%n", model, result.length());
+                    return result;
+                }
+            } catch (Exception e) {
+                System.err.printf("⚠️ [Gemini Vision] Model %s failed: %s%n", model, e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    private String callSingleGeminiTextModel(String model, String prompt) {
+        String url = GEMINI_API_BASE + model + ":generateContent?key=" + geminiApiKey.trim();
+
+        Map<String, Object> requestBody = new HashMap<>();
+        Map<String, Object> content = new HashMap<>();
+        Map<String, String> part = new HashMap<>();
+        part.put("text", prompt);
+        content.put("parts", List.of(part));
+        requestBody.put("contents", List.of(content));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            return parseGeminiResponse(response.getBody());
+        }
+        return null;
+    }
+
+    private String callSingleGeminiVisionModel(String model, String base64Image, String mimeType, String textPrompt) {
+        String url = GEMINI_API_BASE + model + ":generateContent?key=" + geminiApiKey.trim();
+
+        Map<String, Object> requestBody = new HashMap<>();
+        Map<String, Object> content = new HashMap<>();
+        List<Map<String, Object>> parts = new ArrayList<>();
+
+        // Text prompt part
+        Map<String, Object> textPart = new HashMap<>();
+        textPart.put("text", textPrompt);
+        parts.add(textPart);
+
+        // Image part with inlineData
+        Map<String, Object> imagePart = new HashMap<>();
+        Map<String, String> inlineData = new HashMap<>();
+        inlineData.put("mimeType", mimeType);
+        inlineData.put("data", base64Image);
+        imagePart.put("inlineData", inlineData);
+        parts.add(imagePart);
+
+        content.put("parts", parts);
+        requestBody.put("contents", List.of(content));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            return parseGeminiResponse(response.getBody());
+        }
+        return null;
+    }
+
     private String parseGeminiResponse(Map<String, Object> responseBody) {
         try {
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) responseBody.get("candidates");
             if (candidates != null && !candidates.isEmpty()) {
                 Map<String, Object> candidate = candidates.get(0);
                 Map<String, Object> content = (Map<String, Object>) candidate.get("content");
-                List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
-                if (parts != null && !parts.isEmpty()) {
-                    return (String) parts.get(0).get("text");
+                if (content != null) {
+                    List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+                    if (parts != null && !parts.isEmpty()) {
+                        return (String) parts.get(0).get("text");
+                    }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("⚠️ Could not parse Gemini response: " + e.getMessage());
         }
-        return "Unable to parse response";
+        return null;
     }
 
-    /**
-     * Call Gemini Text API (fallback for text-only operations)
-     * Uses TEXT models with better rate limits
-     */
-    private String callGeminiTextAPI(String prompt) {
-        if (geminiApiKey == null || geminiApiKey.isEmpty()) {
-            throw new RuntimeException("Gemini API key not configured");
+    // ==========================================
+    // Media & Helper Utilities
+    // ==========================================
+
+    private String downloadImageAsBase64(String imageUrl) throws IOException {
+        String cleanUrl = imageUrl.trim();
+        if (!cleanUrl.startsWith("http://") && !cleanUrl.startsWith("https://")) {
+            cleanUrl = "https://" + cleanUrl;
         }
+        URL url = new URL(cleanUrl);
+        byte[] imageBytes = url.openStream().readAllBytes();
+        return Base64.getEncoder().encodeToString(imageBytes);
+    }
 
-        // TEXT models only (better rate limits for text processing)
-        String[] models = {
-            geminiTextPrimary,
-            geminiTextFallback1,
-            geminiTextFallback2,
-            geminiTextFallback3
-        };
+    private String getMimeTypeFromUrl(String imageUrl) {
+        String lowerUrl = imageUrl.toLowerCase();
+        if (lowerUrl.contains(".png")) return "image/png";
+        if (lowerUrl.contains(".gif")) return "image/gif";
+        if (lowerUrl.contains(".webp")) return "image/webp";
+        if (lowerUrl.contains(".pdf")) return "application/pdf";
+        return "image/jpeg";
+    }
 
-        Exception lastError = null;
-        
-        for (int i = 0; i < models.length; i++) {
-            String model = models[i];
-            try {
-                System.out.println("\n=== Gemini Text API Fallback ===");
-                System.out.println("Trying model " + (i + 1) + "/" + models.length + ": " + model);
-                
-                String url = "https://generativelanguage.googleapis.com/v1/models/" + model + ":generateContent?key=" + geminiApiKey;
+    // ==========================================
+    // Model List Resolvers
+    // ==========================================
 
-                Map<String, Object> requestBody = new HashMap<>();
-                
-                List<Map<String, Object>> contents = new ArrayList<>();
-                Map<String, Object> content = new HashMap<>();
-                
-                List<Map<String, Object>> parts = new ArrayList<>();
-                Map<String, Object> textPart = new HashMap<>();
-                textPart.put("text", prompt);
-                parts.add(textPart);
-                
-                content.put("parts", parts);
-                contents.add(content);
-                requestBody.put("contents", contents);
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-
-                ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
-
-                if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                    String result = parseGeminiResponse(response.getBody());
-                    System.out.println("✅ Gemini Text Success with model: " + model);
-                    System.out.println("================================\n");
-                    return result;
-                }
-
-            } catch (org.springframework.web.client.HttpClientErrorException e) {
-                String responseBody = e.getResponseBodyAsString();
-                System.err.println("❌ Gemini error with model " + model + ": " + e.getStatusCode());
-                
-                if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS || 
-                    responseBody.contains("quota") || 
-                    responseBody.contains("RESOURCE_EXHAUSTED")) {
-                    lastError = e;
-                    continue;
-                }
-                
-                if (e.getStatusCode() == HttpStatus.FORBIDDEN || 
-                    e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                    throw new RuntimeException("Gemini API key invalid");
-                }
-                
-                lastError = e;
-                continue;
-                
-            } catch (Exception e) {
-                lastError = e;
-                continue;
+    private List<String> getGroqTextModels() {
+        Set<String> set = new LinkedHashSet<>();
+        List<String> candidates = List.of(
+                groqTextModel != null ? groqTextModel : "",
+                groqTextFallback1 != null ? groqTextFallback1 : "",
+                groqTextFallback2 != null ? groqTextFallback2 : "",
+                groqTextFallback3 != null ? groqTextFallback3 : "",
+                groqTextFallback4 != null ? groqTextFallback4 : ""
+        );
+        for (String c : candidates) {
+            if (!c.trim().isEmpty()) set.add(c.trim());
+        }
+        if (groqTextFallbacks != null && !groqTextFallbacks.trim().isEmpty()) {
+            for (String m : groqTextFallbacks.split(",")) {
+                if (!m.trim().isEmpty()) set.add(m.trim());
             }
         }
-
-        if (lastError != null) {
-            throw new RuntimeException("All AI services unavailable: " + lastError.getMessage());
+        // Fallback default list if empty
+        if (set.isEmpty()) {
+            set.addAll(List.of("groq/compound-mini", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "groq/compound"));
         }
-        
-        throw new RuntimeException("Unable to process with Gemini");
+        return new ArrayList<>(set);
+    }
+
+    private List<String> getGroqVisionModels() {
+        Set<String> set = new LinkedHashSet<>();
+        List<String> candidates = List.of(
+                groqVisionModel != null ? groqVisionModel : "",
+                groqVisionFallback1 != null ? groqVisionFallback1 : ""
+        );
+        for (String c : candidates) {
+            if (!c.trim().isEmpty()) set.add(c.trim());
+        }
+        if (groqVisionFallbacks != null && !groqVisionFallbacks.trim().isEmpty()) {
+            for (String m : groqVisionFallbacks.split(",")) {
+                if (!m.trim().isEmpty()) set.add(m.trim());
+            }
+        }
+        if (set.isEmpty()) {
+            set.addAll(List.of("qwen/qwen3.8-27b"));
+        }
+        return new ArrayList<>(set);
+    }
+
+    private List<String> getGeminiTextModels() {
+        Set<String> set = new LinkedHashSet<>();
+        List<String> candidates = List.of(
+                geminiTextPrimary != null ? geminiTextPrimary : "",
+                geminiTextFallback1 != null ? geminiTextFallback1 : "",
+                geminiTextFallback2 != null ? geminiTextFallback2 : "",
+                geminiTextFallback3 != null ? geminiTextFallback3 : "",
+                geminiTextFallback4 != null ? geminiTextFallback4 : ""
+        );
+        for (String c : candidates) {
+            if (!c.trim().isEmpty()) set.add(c.trim());
+        }
+        if (set.isEmpty()) {
+            set.addAll(List.of("gemini-3.6-flash", "gemini-flash-latest", "gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"));
+        }
+        return new ArrayList<>(set);
+    }
+
+    private List<String> getGeminiVisionModels() {
+        Set<String> set = new LinkedHashSet<>();
+        List<String> candidates = List.of(
+                geminiVisionPrimary != null ? geminiVisionPrimary : "",
+                geminiVisionFallback1 != null ? geminiVisionFallback1 : "",
+                geminiVisionFallback2 != null ? geminiVisionFallback2 : "",
+                geminiVisionFallback3 != null ? geminiVisionFallback3 : "",
+                geminiVisionFallback4 != null ? geminiVisionFallback4 : ""
+        );
+        for (String c : candidates) {
+            if (!c.trim().isEmpty()) set.add(c.trim());
+        }
+        if (set.isEmpty()) {
+            set.addAll(List.of("gemini-3.6-flash", "gemini-flash-latest", "gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"));
+        }
+        return new ArrayList<>(set);
     }
 }
